@@ -1,0 +1,9 @@
+/Users/jaehyung.eun/Desktop/network/FreeNet_server_sourcecode/CSampleClient/bin/Debug/CSampleClient.exe.config
+/Users/jaehyung.eun/Desktop/network/FreeNet_server_sourcecode/CSampleClient/bin/Debug/CSampleClient.exe
+/Users/jaehyung.eun/Desktop/network/FreeNet_server_sourcecode/CSampleClient/bin/Debug/CSampleClient.pdb
+/Users/jaehyung.eun/Desktop/network/FreeNet_server_sourcecode/CSampleClient/bin/Debug/FreeNet.dll
+/Users/jaehyung.eun/Desktop/network/FreeNet_server_sourcecode/CSampleClient/bin/Debug/FreeNet.pdb
+/Users/jaehyung.eun/Desktop/network/FreeNet_server_sourcecode/CSampleClient/obj/Debug/CSampleClient.csprojAssemblyReference.cache
+/Users/jaehyung.eun/Desktop/network/FreeNet_server_sourcecode/CSampleClient/obj/Debug/CSampleClient.csproj.CopyComplete
+/Users/jaehyung.eun/Desktop/network/FreeNet_server_sourcecode/CSampleClient/obj/Debug/CSampleClient.exe
+/Users/jaehyung.eun/Desktop/network/FreeNet_server_sourcecode/CSampleClient/obj/Debug/CSampleClient.pdb

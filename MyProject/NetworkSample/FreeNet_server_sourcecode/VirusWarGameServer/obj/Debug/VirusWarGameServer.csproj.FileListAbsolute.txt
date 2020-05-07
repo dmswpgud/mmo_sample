@@ -1,0 +1,9 @@
+/Users/jaehyung.eun/Desktop/network/FreeNet_server_sourcecode/VirusWarGameServer/bin/Debug/VirusWarGameServer.exe.config
+/Users/jaehyung.eun/Desktop/network/FreeNet_server_sourcecode/VirusWarGameServer/bin/Debug/VirusWarGameServer.exe
+/Users/jaehyung.eun/Desktop/network/FreeNet_server_sourcecode/VirusWarGameServer/bin/Debug/VirusWarGameServer.pdb
+/Users/jaehyung.eun/Desktop/network/FreeNet_server_sourcecode/VirusWarGameServer/bin/Debug/FreeNet.dll
+/Users/jaehyung.eun/Desktop/network/FreeNet_server_sourcecode/VirusWarGameServer/bin/Debug/FreeNet.pdb
+/Users/jaehyung.eun/Desktop/network/FreeNet_server_sourcecode/VirusWarGameServer/obj/Debug/VirusWarGameServer.csprojAssemblyReference.cache
+/Users/jaehyung.eun/Desktop/network/FreeNet_server_sourcecode/VirusWarGameServer/obj/Debug/VirusWarGameServer.csproj.CopyComplete
+/Users/jaehyung.eun/Desktop/network/FreeNet_server_sourcecode/VirusWarGameServer/obj/Debug/VirusWarGameServer.exe
+/Users/jaehyung.eun/Desktop/network/FreeNet_server_sourcecode/VirusWarGameServer/obj/Debug/VirusWarGameServer.pdb

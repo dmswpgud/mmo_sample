@@ -1,0 +1,140 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using Client.Game.Map;
+using GameServer;
+using UnityEngine;
+
+public partial class GameManager : MonoBehaviour
+{
+    public GameObject UnitObj;
+    
+    public List<Player> players = new List<Player>();
+    
+    public Player myPlayer;
+    
+    private void MakeMyPlayer(ResponseData res, ERROR error)
+    {
+        if (error != ERROR.NONE)
+        {
+            PrintSystemLog(error.ToString());
+            return;
+        }
+        
+        var data = (PlayerData) res;
+        
+        myPlayer = CreatePlayer(data);
+        
+        players.Add(myPlayer);
+        
+        myPlayer.IsMyPlayer = true;
+
+        Camera.main.transform.parent = myPlayer.transform;
+                
+        Camera.main.transform.localPosition = new Vector3(1.5f, 12f, 1.5f);
+
+        mapCollider.transform.parent = myPlayer.transform;
+                
+        mapCollider.transform.position = Vector3.zero;
+                
+        mapCollider.SetActive(true);
+    }
+    
+    private void MakePlayer(ResponseData res, ERROR error)
+    {
+        if (error != ERROR.NONE)
+        {
+            PrintSystemLog(error.ToString());
+            return;
+        }
+        
+        var data = (PlayerData) res;
+        
+        var player = CreatePlayer(data);
+        
+        players.Add(player);
+    }
+
+    private void DisconnectedPlayer(ResponseData res, ERROR error)
+    {
+        if (error != ERROR.NONE)
+        {
+            PrintSystemLog(error.ToString());
+            return;
+        }
+        
+        var data = (PlayerData) res;
+
+        DestroyPlayer(data, ERROR.NONE);
+
+        PrintSystemLog($"{data.userId}님이 서버를 종료했습니다.");
+    }
+    
+    private void DestroyPlayer(ResponseData res, ERROR error)
+    {
+        if (error != ERROR.NONE)
+        {
+            PrintSystemLog(error.ToString());
+            return;
+        }
+        
+        var data = (PlayerData) res;
+        
+        var player = players.Find(p => p.PlayerData.userId == data.userId);
+
+        Destroy(player.gameObject);
+        
+        var index = players.FindIndex(p => p.PlayerData.userId == data.userId);
+
+        players.RemoveAt(index);
+    }
+    
+    private Player CreatePlayer(PlayerData data)
+    {
+        GameObject ins = Instantiate(UnitObj);
+
+        var player = ins.GetComponent<Player>();
+
+        player.SetPlayer(data);
+
+        return player;
+    }
+
+    public Player GetPlayerFromId(int id)
+    {
+        return players.Find(p => p.PlayerData.userId == id);
+    }
+    
+    private void SetPath(Player player, GridPoint destPoint)
+    {
+        DrawWall();
+
+        var start = new GridPoint(player.currentTile.GridPoint.X, player.currentTile.GridPoint.Y);
+
+        var end = destPoint;
+
+        var pathFinder = new PathFinder();
+        
+        var listPath = pathFinder.FindPath(Map.MapTiles, start, end);
+
+        player.SetPath(listPath);
+
+        player.OnArrivePoint = (p) => CNetworkManager.Inst.RequestPlayerMove(p.PlayerData.userId, p.currentTile.GridPoint.X, p.currentTile.GridPoint.Y, ResponseMovePlayer);
+
+        DrawPath(listPath);
+    }
+
+    private void ResponseMovePlayer(ResponseData res, ERROR error)
+    {
+        if (error != ERROR.NONE)
+        {
+            PrintSystemLog(error.ToString());
+            return;
+        }
+        
+        var data = (PlayerData) res;
+        
+        var player = players.Find(p => p.PlayerData.userId == data.userId);
+        
+        player.MovePlayerNextPosition(data);
+    }
+}

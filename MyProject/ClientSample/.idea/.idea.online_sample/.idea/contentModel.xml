@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="$PROJECT_DIR$" t="IncludeRecursive">
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="FreeNet" t="Include">
+          <e p="CFreeNetEventManager.cs" t="Include" />
+          <e p="CFreeNetUnityService.cs" t="Include" />
+          <e p="CRemoteServerPeer.cs" t="Include" />
+        </e>
+        <e p="Script" t="Include">
+          <e p="Game" t="Include">
+            <e p="Map.cs" t="Include" />
+            <e p="MapMaker.cs" t="Include" />
+            <e p="PathFinder.cs" t="Include" />
+            <e p="Player.cs" t="Include" />
+            <e p="TestStarter.cs" t="Include" />
+            <e p="TileInfo.cs" t="Include" />
+          </e>
+          <e p="Manager" t="Include">
+            <e p="GameManager.cs" t="Include" />
+          </e>
+          <e p="Network" t="Include">
+            <e p="CLogManager.cs" t="Include" />
+            <e p="CNetworkManager.cs" t="Include" />
+            <e p="CNetworkManager.NetworkService.cs" t="Include" />
+            <e p="CRemoteServerPeer.cs" t="Include" />
+            <e p="Datas.cs" t="Include" />
+            <e p="Protocol.cs" t="Include" />
+          </e>
+          <e p="UI" t="Include">
+            <e p="ChatDialog.cs" t="Include" />
+            <e p="LoginDialog.cs" t="Include" />
+          </e>
+        </e>
+      </e>
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="online_sample.sln" t="IncludeFlat" />
+      <e p="Packages" t="ExcludeRecursive" />
+      <e p="Temp/bin" t="ExcludeRecursive" />
+    </e>
+    <e p="$USER_HOME$/Library/Caches/Rider2019.3/extResources" t="IncludeRecursive" />
+    <e p="$USER_HOME$/Library/Caches/Rider2019.3/resharper-host/local/Transient/ReSharperHost/v193/SolutionCaches/_online_sample.825143354.00" t="ExcludeRecursive" />
+  </component>
+</project>
