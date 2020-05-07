@@ -63,7 +63,7 @@ namespace CSampleServer
 				case PROTOCOL.GET_MY_PLAYER_REQ:
 				{
 					player.MoveSpeed = 5;
-					player.NearRange = 3;
+					player.NearRange = 10;
 					player.CurrentPosX = 10;
 					player.CurrentPosY = 10;
 					Program.gameServer.ResponseGetMyPlayer(this);

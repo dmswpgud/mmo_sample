@@ -17,8 +17,16 @@ public class LoginDialog : MonoBehaviour
             TextStateLog.text = "서버 점검중 입니다.";
             return;
         }
-        
-        var id = int.Parse(InputField.text);
+
+        int id;
+
+        bool isNum = int.TryParse(InputField.text, out id);
+
+        if (!isNum)
+        {
+            TextStateLog.text = "정상적인 아이디가 아닙니다.";
+            return;   
+        }
 
         CNetworkManager.Inst.RequestEnterGameServer(id, (res, error) =>
         {
