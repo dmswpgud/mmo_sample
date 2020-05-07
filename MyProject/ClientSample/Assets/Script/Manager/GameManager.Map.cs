@@ -10,6 +10,8 @@ public partial class GameManager : MonoBehaviour
     
     public TileInfo[,] tileInfos = new TileInfo[Map.MAX_GRID_Y, Map.MAX_GRID_Y];
     
+    public List<TileInfo> listTileInfo = new List<TileInfo>();
+    
     public GameObject mapCollider;
     
     private void MakeMap()
@@ -36,6 +38,33 @@ public partial class GameManager : MonoBehaviour
 					
                     mt.material.color = Color.blue;
                 }
+            }
+        }
+    }
+    
+    private void MakeMap(GridPoint position)
+    {
+        var listMap = GetRangeGridPoint(position, 5);
+
+        for (int i = 0; i < listMap.Count; ++i)
+        {
+            GameObject ins = Instantiate(TileObj, transform);
+            
+            ins.transform.position = new Vector3(listMap[i].X, 0, listMap[i].Y);
+            
+            var tileInfo = ins.AddComponent<TileInfo>();
+            
+            tileInfo.Init(listMap[i].X, listMap[i].Y);
+            
+            tileInfo.isBlock = Map.MapTiles[listMap[i].X, listMap[i].Y] == 0;
+
+            listTileInfo.Add(tileInfo);
+            
+            if (tileInfo.isBlock == true)
+            {
+                MeshRenderer mt = ins.GetComponent<MeshRenderer>();
+					
+                mt.material.color = Color.blue;
             }
         }
     }
@@ -105,7 +134,7 @@ public partial class GameManager : MonoBehaviour
         
         return tiles;
     }
-    
+
     public List<GridPoint> GetRangeGridPoint(GridPoint centerPoint, int range)
     {
         List<GridPoint> tiles = new List<GridPoint>();

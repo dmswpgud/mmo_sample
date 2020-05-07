@@ -30,14 +30,14 @@ public class TestStarter : MonoBehaviour
 		
 		astar = new PathFinder();
 		
-		List<GridPoint> result = astar.FindPath(tile, start, goal);
+		//List<GridPoint> result = astar.FindPath(tile, start, goal);
 
-		for (int i = 0; i < result.Count; ++i)
-		{
-			Debug.Log(string.Format("x:{0}   y:{1})", result[i].X, result[i].Y));
-		}
-
-		MakeMap(result);
+		// for (int i = 0; i < result.Count; ++i)
+		// {
+		// 	Debug.Log(string.Format("x:{0}   y:{1})", result[i].X, result[i].Y));
+		// }
+		//
+		// MakeMap(result);
 	}
 
 	void MakeMap(List<GridPoint> result)

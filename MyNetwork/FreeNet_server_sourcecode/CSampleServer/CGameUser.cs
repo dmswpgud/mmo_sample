@@ -63,7 +63,7 @@ namespace CSampleServer
 				case PROTOCOL.GET_MY_PLAYER_REQ:
 				{
 					player.MoveSpeed = 5;
-					player.NearRange = 10;
+					player.NearRange = 5;
 					player.CurrentPosX = 10;
 					player.CurrentPosY = 10;
 					Program.gameServer.ResponseGetMyPlayer(this);
@@ -76,8 +76,19 @@ namespace CSampleServer
 					var userId = msg.pop_int32();
 					var x = msg.pop_int32();
 					var y = msg.pop_int32();
-					player.SetPosition(x, y);
+					
+					// 이동할 좌표에 뭐가 있는지 체크.
+					var nearObjects = GameUtils.GetNearUserFromPosition(x, y, player.listNearbyUser);
+					
+					// 뭐가 있으면 이동 불허. (포지션 셋팅 안하고 그냥 패킷 보냄)
+					if (nearObjects.Count != 0)
+					{
+						Program.gameServer.RequestPlayerMove(this);
+						return;
+					}
 
+					// 뭐가 없으면 이동 허가. (포지션 셋팅 후 패킷 전송)
+					player.SetPosition(x, y);
 					Program.gameServer.RequestPlayerMove(this);
 					break;
 				}

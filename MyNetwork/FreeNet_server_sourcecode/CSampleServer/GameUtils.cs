@@ -25,5 +25,14 @@ namespace CSampleServer
 
             return listNearUsers;
         }
+        
+        public static List<CGameUser> GetNearUserFromPosition(int x, int y, List<CGameUser> listUSer)
+        {
+            List<CGameUser> listNearUsers = listUSer.FindAll(p =>
+                p.player.CurrentPosX == x &&
+                p.player.CurrentPosY == y);
+
+            return listNearUsers;
+        }
     }
 }
