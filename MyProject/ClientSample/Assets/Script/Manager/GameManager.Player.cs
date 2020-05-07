@@ -103,6 +103,8 @@ public partial class GameManager : MonoBehaviour
     {
         return players.Find(p => p.PlayerData.userId == id);
     }
+
+    private List<GridPoint> path;
     
     private void SetPath(Player player, GridPoint destPoint)
     {
@@ -114,13 +116,30 @@ public partial class GameManager : MonoBehaviour
 
         var pathFinder = new PathFinder();
         
-        var listPath = pathFinder.FindPath(Map.MapTiles, start, end);
+        path = pathFinder.FindPath(Map.MapTiles, start, end);
 
-        player.SetPath(listPath);
+        // 경로가 없다면 리턴.
+        if (path.Count <= 0)
+            return;
+        
+        // 서버에 이동할 경로를 보냄.
+        CNetworkManager.Inst.RequestPlayerMove(player.PlayerData.userId, path[0].X, path[0].Y, ResponseMovePlayer);
+        
+        // 목표지점에 도착하면 다음 경로로 이동하는걸 경로가 0이 될때까지 반복.
+        player.OnArrivePoint = (p) =>
+        {
+            if (path.Count > 0)
+            {
+                path.RemoveAt(0);
+            }
+            
+            if (path.Count != 0)
+            {
+                CNetworkManager.Inst.RequestPlayerMove(p.PlayerData.userId, path[0].X, path[0].Y, ResponseMovePlayer);
+            }
+        };
 
-        player.OnArrivePoint = (p) => CNetworkManager.Inst.RequestPlayerMove(p.PlayerData.userId, p.currentTile.GridPoint.X, p.currentTile.GridPoint.Y, ResponseMovePlayer);
-
-        DrawPath(listPath);
+        DrawPath(path);
     }
 
     private void ResponseMovePlayer(ResponseData res, ERROR error)
