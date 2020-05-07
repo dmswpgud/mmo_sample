@@ -73,7 +73,7 @@ public partial class GameManager : MonoBehaviour
         }
     }
 
-    private void DrawPath(List<GridPoint> path)
+    private void DrawTile(List<GridPoint> path)
     {
         for (int i = 0; i < path.Count; ++i)
         {
@@ -83,5 +83,47 @@ public partial class GameManager : MonoBehaviour
 					
             mt.material.color = Color.red;
         }
+    }
+
+    public List<TileInfo> GetRangeTiles(GridPoint centerPoint, int range)
+    {
+        List<TileInfo> tiles = new List<TileInfo>();
+        
+        for (int x = centerPoint.X - range; x < centerPoint.X + range; ++x)
+        {
+            for (int y = centerPoint.Y - range; y < centerPoint.Y + range; ++y)
+            {
+                if (x < 0 || tileInfos.GetLength(0) - 1 < x)
+                    continue;
+                
+                if (y < 0 || tileInfos.GetLength(1) - 1 < y)
+                    continue;
+                
+                tiles.Add(GetTileInfo(x, y));
+            }
+        }
+        
+        return tiles;
+    }
+    
+    public List<GridPoint> GetRangeGridPoint(GridPoint centerPoint, int range)
+    {
+        List<GridPoint> tiles = new List<GridPoint>();
+        
+        for (int x = centerPoint.X - range; x <= centerPoint.X + range; ++x)
+        {
+            for (int y = centerPoint.Y - range; y <= centerPoint.Y + range; ++y)
+            {
+                if (x < 0 || tileInfos.GetLength(0) - 1 < x)
+                    continue;
+                
+                if (y < 0 || tileInfos.GetLength(1) - 1 < y)
+                    continue;
+                
+                tiles.Add(new GridPoint(x, y));
+            }
+        }
+        
+        return tiles;
     }
 }

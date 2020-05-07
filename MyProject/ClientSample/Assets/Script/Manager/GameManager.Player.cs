@@ -108,7 +108,7 @@ public partial class GameManager : MonoBehaviour
     
     private void SetPath(Player player, GridPoint destPoint)
     {
-        DrawWall();
+        //DrawWall();
 
         var start = new GridPoint(player.currentTile.GridPoint.X, player.currentTile.GridPoint.Y);
 
@@ -139,7 +139,7 @@ public partial class GameManager : MonoBehaviour
             }
         };
 
-        DrawPath(path);
+        //DrawPath(path);
     }
 
     private void ResponseMovePlayer(ResponseData res, ERROR error)
@@ -150,10 +150,16 @@ public partial class GameManager : MonoBehaviour
             return;
         }
         
+        DrawWall();
+        
         var data = (PlayerData) res;
         
         var player = players.Find(p => p.PlayerData.userId == data.userId);
         
         player.MovePlayerNextPosition(data);
+
+        var rangeTiles = GetRangeGridPoint(new GridPoint(data.currentPosX, data.currentPosY), data.NearRange);
+        
+        DrawTile(rangeTiles);
     }
 }

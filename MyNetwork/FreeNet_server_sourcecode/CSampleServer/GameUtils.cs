@@ -14,10 +14,10 @@ namespace CSampleServer
                 if (targetPlayer.player.UserId == listUSer[i].player.UserId)
                     continue;
                 
-                if ((targetPlayer.player.CurrentPosX + range > listUSer[i].player.CurrentPosX &&
-                     targetPlayer.player.CurrentPosX - range < listUSer[i].player.CurrentPosX) &&
-                    (targetPlayer.player.CurrentPosY + range > listUSer[i].player.CurrentPosY &&
-                     targetPlayer.player.CurrentPosY - range < listUSer[i].player.CurrentPosY))
+                if ((targetPlayer.player.CurrentPosX + range >= listUSer[i].player.CurrentPosX &&
+                     targetPlayer.player.CurrentPosX - range <= listUSer[i].player.CurrentPosX) &&
+                    (targetPlayer.player.CurrentPosY + range >= listUSer[i].player.CurrentPosY &&
+                     targetPlayer.player.CurrentPosY - range <= listUSer[i].player.CurrentPosY))
                 {
                     listNearUsers.Add(listUSer[i]);
                 }
