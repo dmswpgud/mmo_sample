@@ -130,7 +130,7 @@ public partial class CNetworkManager : MonoBehaviour {
                 PlayerData data = CreatePlayerData(msg);
 
                 if (GameManager.Inst.UserId == data.userId)
-                    OnMovePlayer(data, ERROR.NONE);
+                    OnMovePlayer?.Invoke(data, ERROR.NONE);
                 else
                 {
                     OnReceiveMoveOtherPlayer?.Invoke(data, ERROR.NONE);    

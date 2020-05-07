@@ -116,8 +116,17 @@ public partial class GameManager : MonoBehaviour
         
         var listPath = pathFinder.FindPath(Map.MapTiles, start, end);
 
+        // 경로가 없다면 리턴.
+        if (listPath.Count <= 0)
+            return;
+        
+        // 서버에 이동할 경로를 보냄.
+        CNetworkManager.Inst.RequestPlayerMove(player.PlayerData.userId, listPath[0].X, listPath[0].Y);
+
+        // 경로를 플레이어에게 줌.
         player.SetPath(listPath);
 
+        // 목표지점에 도착하면 다음 경로로 이동하는걸 경로가 0이 될때까지 반복.
         player.OnArrivePoint = (p) => CNetworkManager.Inst.RequestPlayerMove(p.PlayerData.userId, p.currentTile.GridPoint.X, p.currentTile.GridPoint.Y, ResponseMovePlayer);
 
         DrawPath(listPath);

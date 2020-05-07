@@ -32,18 +32,7 @@ public class Player : MonoBehaviour
 
     public void SetPath(List<GridPoint> path)
     {
-        OnArrivePoint = null;
-        
-        var newPath = new List<GridPoint>();
-
-        if (nextTile != null)
-        {
-            newPath.Add(nextTile.GridPoint);
-        }
-        
-        newPath.AddRange(path);
-        
-        listPath = newPath;
+        listPath = path;
     }
 
     public void MovePlayerNextPosition(PlayerData playerData = null)
