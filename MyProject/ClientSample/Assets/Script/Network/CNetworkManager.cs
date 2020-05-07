@@ -5,6 +5,12 @@ using FreeNet;
 using FreeNetUnity;
 using GameServer;
 
+public enum USER_STATE
+{
+    NOT_CONNECTED,
+    CONNECTED,
+}
+
 public partial class CNetworkManager : MonoBehaviour {
 
     public static CNetworkManager Inst;
@@ -22,13 +28,7 @@ public partial class CNetworkManager : MonoBehaviour {
     private Action<ResponseData, ERROR> OnReceiveMoveOtherPlayer;
     private Action<ResponseData, ERROR> OnReceivedAddNearPlayer;
     private Action<ResponseData, ERROR> OnReceivedRemoveNearPlayer;
-    private USER_STATE user_state = USER_STATE.NOT_CONNECTED;
-    
-    enum USER_STATE
-    {
-        NOT_CONNECTED,
-        CONNECTED,
-    }
+    public USER_STATE user_state = USER_STATE.NOT_CONNECTED;
 
     void Awake()
     {

@@ -12,6 +12,12 @@ public class LoginDialog : MonoBehaviour
     
     public void OnClickLogin()
     {
+        if (CNetworkManager.Inst.user_state == USER_STATE.NOT_CONNECTED)
+        {
+            TextStateLog.text = "서버 점검중 입니다.";
+            return;
+        }
+        
         var id = int.Parse(InputField.text);
 
         CNetworkManager.Inst.RequestEnterGameServer(id, (res, error) =>
