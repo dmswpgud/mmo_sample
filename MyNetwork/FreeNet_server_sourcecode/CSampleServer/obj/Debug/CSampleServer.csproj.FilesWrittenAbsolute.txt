@@ -6,3 +6,11 @@
 /Users/eunjehyeong/Desktop/SampleMMO/MyNetwork/FreeNet_server_sourcecode/CSampleServer/obj/Debug/CSampleServer.pdb
 /Users/eunjehyeong/Desktop/SampleMMO/MyNetwork/FreeNet_server_sourcecode/CSampleServer/bin/Debug/FreeNet.dll
 /Users/eunjehyeong/Desktop/SampleMMO/MyNetwork/FreeNet_server_sourcecode/CSampleServer/bin/Debug/FreeNet.pdb
+/Users/eunjehyeong/Desktop/MMO/MyNetwork/FreeNet_server_sourcecode/CSampleServer/obj/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/Users/eunjehyeong/Desktop/MMO/MyNetwork/FreeNet_server_sourcecode/CSampleServer/bin/Debug/CSampleServer.exe.config
+/Users/eunjehyeong/Desktop/MMO/MyNetwork/FreeNet_server_sourcecode/CSampleServer/bin/Debug/CSampleServer.pdb
+/Users/eunjehyeong/Desktop/MMO/MyNetwork/FreeNet_server_sourcecode/CSampleServer/bin/Debug/CSampleServer.exe
+/Users/eunjehyeong/Desktop/MMO/MyNetwork/FreeNet_server_sourcecode/CSampleServer/obj/Debug/CSampleServer.exe
+/Users/eunjehyeong/Desktop/MMO/MyNetwork/FreeNet_server_sourcecode/CSampleServer/obj/Debug/CSampleServer.pdb
+/Users/eunjehyeong/Desktop/MMO/MyNetwork/FreeNet_server_sourcecode/CSampleServer/bin/Debug/FreeNet.dll
+/Users/eunjehyeong/Desktop/MMO/MyNetwork/FreeNet_server_sourcecode/CSampleServer/bin/Debug/FreeNet.pdb

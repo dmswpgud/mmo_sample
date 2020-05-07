@@ -81,31 +81,31 @@
     <Compile Include="Assets\Script\UI\ChatDialog.cs" />
     <Compile Include="Assets\Script\UI\LoginDialog.cs" />
     <Reference Include="Unity.Timeline.Editor">
-      <HintPath>/Users/eunjehyeong/Desktop/SampleMMO/MyProject/ClientSample/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+      <HintPath>/Users/eunjehyeong/Desktop/MMO/MyProject/ClientSample/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
-      <HintPath>/Users/eunjehyeong/Desktop/SampleMMO/MyProject/ClientSample/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
+      <HintPath>/Users/eunjehyeong/Desktop/MMO/MyProject/ClientSample/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>/Users/eunjehyeong/Desktop/SampleMMO/MyProject/ClientSample/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>/Users/eunjehyeong/Desktop/MMO/MyProject/ClientSample/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>/Users/eunjehyeong/Desktop/SampleMMO/MyProject/ClientSample/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+      <HintPath>/Users/eunjehyeong/Desktop/MMO/MyProject/ClientSample/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
-      <HintPath>/Users/eunjehyeong/Desktop/SampleMMO/MyProject/ClientSample/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+      <HintPath>/Users/eunjehyeong/Desktop/MMO/MyProject/ClientSample/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>/Users/eunjehyeong/Desktop/SampleMMO/MyProject/ClientSample/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+      <HintPath>/Users/eunjehyeong/Desktop/MMO/MyProject/ClientSample/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Rider.Editor">
-      <HintPath>/Users/eunjehyeong/Desktop/SampleMMO/MyProject/ClientSample/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
+      <HintPath>/Users/eunjehyeong/Desktop/MMO/MyProject/ClientSample/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>/Users/eunjehyeong/Desktop/SampleMMO/MyProject/ClientSample/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>/Users/eunjehyeong/Desktop/MMO/MyProject/ClientSample/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
-      <HintPath>/Users/eunjehyeong/Desktop/SampleMMO/MyProject/ClientSample/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+      <HintPath>/Users/eunjehyeong/Desktop/MMO/MyProject/ClientSample/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>/Applications/Unity/Hub/Editor/2019.3.2f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -285,7 +285,7 @@
       <HintPath>/Applications/Unity/Hub/Editor/2019.3.2f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
     </Reference>
     <Reference Include="FreeNet">
-      <HintPath>/Users/eunjehyeong/Desktop/SampleMMO/MyProject/ClientSample/Assets/FreeNet/FreeNet.dll</HintPath>
+      <HintPath>/Users/eunjehyeong/Desktop/MMO/MyProject/ClientSample/Assets/FreeNet/FreeNet.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>/Applications/Unity/Hub/Editor/2019.3.2f1/Unity.app/Contents/NetStandard/ref/2.0.0/netstandard.dll</HintPath>

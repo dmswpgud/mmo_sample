@@ -2,3 +2,7 @@
 /Users/eunjehyeong/Desktop/SampleMMO/MyNetwork/FreeNet_server_sourcecode/FreeNet/bin/Debug/FreeNet.dll
 /Users/eunjehyeong/Desktop/SampleMMO/MyNetwork/FreeNet_server_sourcecode/FreeNet/obj/Debug/FreeNet.dll
 /Users/eunjehyeong/Desktop/SampleMMO/MyNetwork/FreeNet_server_sourcecode/FreeNet/obj/Debug/FreeNet.pdb
+/Users/eunjehyeong/Desktop/MMO/MyNetwork/FreeNet_server_sourcecode/FreeNet/bin/Debug/FreeNet.pdb
+/Users/eunjehyeong/Desktop/MMO/MyNetwork/FreeNet_server_sourcecode/FreeNet/bin/Debug/FreeNet.dll
+/Users/eunjehyeong/Desktop/MMO/MyNetwork/FreeNet_server_sourcecode/FreeNet/obj/Debug/FreeNet.dll
+/Users/eunjehyeong/Desktop/MMO/MyNetwork/FreeNet_server_sourcecode/FreeNet/obj/Debug/FreeNet.pdb
