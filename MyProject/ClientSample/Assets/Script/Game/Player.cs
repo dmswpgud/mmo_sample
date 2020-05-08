@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
 
     public TileInfo currentTile;
     
-    public TileInfo nextTile;
+    private TileInfo nextTile;
     
     public TextMesh textMesh;
 
@@ -51,7 +51,7 @@ public class Player : MonoBehaviour
     {
         if (nextTile == null)
         {
-            nextTile = GameManager.Inst.GetTileInfo(PlayerData.currentPosX, PlayerData.currentPosY);
+            return;
         }
         
         transform.position = Vector3.MoveTowards(transform.position, nextTile.transform.position, PlayerData.MoveSpeed * Time.deltaTime);

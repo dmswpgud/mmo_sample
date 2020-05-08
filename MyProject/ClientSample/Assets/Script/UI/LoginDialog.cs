@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using GameServer;
+﻿using GameServer;
 using UnityEngine;
 using UnityEngine.UI;
 

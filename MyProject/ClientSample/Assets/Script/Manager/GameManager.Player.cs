@@ -116,7 +116,7 @@ public partial class GameManager : MonoBehaviour
 
         var pathFinder = new PathFinder();
         
-        path = pathFinder.FindPath(Map.MapTiles, start, end);
+        path = pathFinder.FindPath(tileInfos, start, end);
 
         // 경로가 없다면 리턴.
         if (path.Count <= 0)
@@ -139,7 +139,7 @@ public partial class GameManager : MonoBehaviour
             }
         };
 
-        DrawPath(path);
+        DrawTile(path);
     }
 
     private void ResponseMovePlayer(ResponseData res, ERROR error)
@@ -150,10 +150,19 @@ public partial class GameManager : MonoBehaviour
             return;
         }
         
+        //DrawWall();
+        
         var data = (PlayerData) res;
         
         var player = players.Find(p => p.PlayerData.userId == data.userId);
+
+        if (player.PlayerData.currentPosX == data.currentPosX && player.PlayerData.currentPosY == data.currentPosY)
+            return;
         
         player.MovePlayerNextPosition(data);
+
+        var rangeTiles = GetRangeGridPoint(new GridPoint(data.currentPosX, data.currentPosY), data.NearRange);
+        
+        //DrawTile(rangeTiles);
     }
 }
