@@ -22,9 +22,7 @@ namespace CSampleServer
 
             CPacket response = CPacket.create((short)PROTOCOL.ENTER_GAME_ROOM_RES);
             response.push(user.player.UserId);
-            
-            // 서버의 모든 유저에게 나 왔다고 알림.
-            ResponsePacketUsers(userList, response);
+            user.send(response);
         }
         
         // 서버 접속 종료.
