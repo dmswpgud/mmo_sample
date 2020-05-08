@@ -100,7 +100,10 @@ namespace CSampleServer
 		{
 			Console.WriteLine("The client disconnected.");
 
-			player.DisconnectedPlayer();
+			if (player != null)
+			{
+				player.DisconnectedPlayer();
+			}
 
 			Program.gameServer.DisconnectedUser(this);
 
