@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using Client.Game.Map;
 using UnityEngine;
@@ -150,6 +149,21 @@ public partial class GameManager : MonoBehaviour
                     continue;
                 
                 tiles.Add(new GridPoint(x, y));
+            }
+        }
+        
+        return tiles;
+    }
+
+    public int[,] GetRangeMapTile(GridPoint center, int range)
+    {
+        int[,] tiles = new int[range * 2 + 1, range * 2 + 1];
+
+        for (int x = 0; x < tiles.GetLength(0); ++x)
+        {
+            for (int y = 0; y < tiles.GetLength(1); ++y)
+            {
+                tiles[x, y] = Map.MapTiles[x + range, y + range];
             }
         }
         

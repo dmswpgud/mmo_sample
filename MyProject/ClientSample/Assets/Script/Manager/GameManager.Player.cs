@@ -116,14 +116,17 @@ public partial class GameManager : MonoBehaviour
 
         var pathFinder = new PathFinder();
         
-        path = pathFinder.FindPath(tileInfos, start, end);
+        path = pathFinder.FindPath(Map.MapTiles, start, end);
 
         // 경로가 없다면 리턴.
         if (path.Count <= 0)
             return;
         
+        // 방향 설정.
+        player.MoveSetDirection(path[0].X, path[0].Y);
+        
         // 서버에 이동할 경로를 보냄.
-        CNetworkManager.Inst.RequestPlayerMove(player.PlayerData.userId, path[0].X, path[0].Y, ResponseMovePlayer);
+        CNetworkManager.Inst.RequestPlayerMove(player.PlayerData.userId, path[0].X, path[0].Y, (int)player.Direction, ResponseMovePlayer);
         
         // 목표지점에 도착하면 다음 경로로 이동하는걸 경로가 0이 될때까지 반복.
         player.OnArrivePoint = (p) =>
@@ -135,7 +138,7 @@ public partial class GameManager : MonoBehaviour
             
             if (path.Count != 0)
             {
-                CNetworkManager.Inst.RequestPlayerMove(p.PlayerData.userId, path[0].X, path[0].Y, ResponseMovePlayer);
+                CNetworkManager.Inst.RequestPlayerMove(p.PlayerData.userId, path[0].X, path[0].Y, (int)player.Direction, ResponseMovePlayer);
             }
         };
 
@@ -155,14 +158,17 @@ public partial class GameManager : MonoBehaviour
         var data = (PlayerData) res;
         
         var player = players.Find(p => p.PlayerData.userId == data.userId);
-
+        
+        PrintSystemLog($"{data.userId}가 {(ObjectDirection)data.direction}을 향해 달려가고 있습니다.");
+        
         if (player.PlayerData.currentPosX == data.currentPosX && player.PlayerData.currentPosY == data.currentPosY)
+        {
             return;
+        }
         
-        player.MovePlayerNextPosition(data);
+        player.MovePlayerNextPosition(data);    
 
-        var rangeTiles = GetRangeGridPoint(new GridPoint(data.currentPosX, data.currentPosY), data.NearRange);
-        
-        //DrawTile(rangeTiles);
+        // var rangeTiles = GetRangeGridPoint(new GridPoint(data.currentPosX, data.currentPosY), data.NearRange);
+        // DrawTile(rangeTiles);
     }
 }

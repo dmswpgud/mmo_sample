@@ -177,6 +177,7 @@ public partial class CNetworkManager : MonoBehaviour {
         data.NearRange = msg.pop_int32();
         data.currentPosX = msg.pop_int32();
         data.currentPosY = msg.pop_int32();
+        data.direction = msg.pop_int32();
         
         return data;
     }

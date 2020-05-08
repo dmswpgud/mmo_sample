@@ -1,5 +1,15 @@
 ﻿namespace GameServer
 {
+    public enum ObjectDirection
+    {
+        UP, UP_LEFT, LEFT, DOWN_LEFT, DOWN, DOWN_RIGHT, RIGHT, UP_RIGHT
+    }
+
+    public enum ObjectType
+    {
+        PLAYER, ENEMY, MAP_OBJECT 
+    }
+    
     public enum PROTOCOL : short
     {
         ERROR = -1,

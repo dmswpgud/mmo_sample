@@ -28,4 +28,5 @@ public class PlayerData : ResponseData
     public Int32 NearRange;
     public Int32 currentPosX;
     public Int32 currentPosY;
+    public Int32 direction;
 }

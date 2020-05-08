@@ -13,6 +13,7 @@ namespace CSampleServer
         public Int32 NearRange;
         public Int32 CurrentPosX {get; set;}
         public Int32 CurrentPosY {get; set;}
+        public Int32 Direction {get; set;}
 
         public List<CGameUser> listNearbyUser = new List<CGameUser>();
         
@@ -22,10 +23,11 @@ namespace CSampleServer
             UserId = userId;
         }
 
-        public void SetPosition(int x, int y)
+        public void SetPosition(int x, int y, int dir)
         {
             CurrentPosX = x;
             CurrentPosY = y;
+            Direction = dir;
             
            var updateNearPlayers = GameUtils.GetNearbyUsers(owner, Program.gameServer.userList);
            var list1 = listNearbyUser.Where(i => !updateNearPlayers.Contains(i)).ToList(); // 삭제된 플레이어 리스트

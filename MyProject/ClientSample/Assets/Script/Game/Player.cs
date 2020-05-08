@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using Client.Game.Map;
+using GameServer;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : ObjectBase
 {
     public PlayerData PlayerData;
-
-    public TileInfo currentTile;
     
     private TileInfo nextTile;
     
@@ -22,8 +19,10 @@ public class Player : MonoBehaviour
         PlayerData = data;
 
         currentTile = GameManager.Inst.GetTileInfo(data.currentPosX, data.currentPosY);
-        
-        transform.position = currentTile.transform.position;
+
+        SetPosition(data.currentPosX, data.currentPosY);
+
+        SetDirection((ObjectDirection)data.direction);
 
         textMesh.text = data.userId.ToString();
     }
@@ -33,13 +32,6 @@ public class Player : MonoBehaviour
         PlayerData = playerData;
 
         nextTile = GameManager.Inst.GetTileInfo(PlayerData.currentPosX, PlayerData.currentPosY);
-    }
-
-    public void SetPosition(GridPoint position)
-    {
-        var tile = GameManager.Inst.GetTileInfo(position.X, position.Y);
-
-        transform.position = tile.transform.position;
     }
 
     private void Update()

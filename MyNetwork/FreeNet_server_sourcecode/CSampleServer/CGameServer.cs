@@ -107,6 +107,7 @@ namespace CSampleServer
             response.push(user.player.NearRange);
             response.push(user.player.CurrentPosX);
             response.push(user.player.CurrentPosY);
+            response.push(user.player.Direction);
         }
     }
 }
