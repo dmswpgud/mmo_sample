@@ -7,6 +7,8 @@ public partial class GameManager
 {
     public GameObject PlayerObj;
     
+    public GameObject OtherPlayerObj;
+    
     public List<Player> players = new List<Player>();
     
     public Player myPlayer;
@@ -21,7 +23,7 @@ public partial class GameManager
         
         var data = (PlayerData) res;
         
-        myPlayer = CreatePlayer(data);
+        myPlayer = CreatePlayer(data, PlayerObj);
         
         players.Add(myPlayer);
         
@@ -48,7 +50,7 @@ public partial class GameManager
         
         var data = (PlayerData) res;
         
-        var player = CreatePlayer(data);
+        var player = CreatePlayer(data, OtherPlayerObj);
         
         players.Add(player);
     }
@@ -87,9 +89,9 @@ public partial class GameManager
         players.RemoveAt(index);
     }
     
-    private Player CreatePlayer(PlayerData data)
+    private Player CreatePlayer(PlayerData data, GameObject model)
     {
-        GameObject ins = Instantiate(PlayerObj);
+        GameObject ins = Instantiate(model);
 
         var player = ins.GetComponent<Player>();
 

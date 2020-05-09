@@ -472,7 +472,7 @@ GameObject:
   - component: {fileID: 2226473013055679282}
   - component: {fileID: 2242689825944181766}
   m_Layer: 0
-  m_Name: HumanMesh_Red
+  m_Name: HumanMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -535,7 +535,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: 4300010, guid: 9035850883732af4daf57c888e1fefce, type: 3}
+  m_Mesh: {fileID: 4300012, guid: 9035850883732af4daf57c888e1fefce, type: 3}
   m_Bones:
   - {fileID: 2232078254058959486}
   - {fileID: 2226790815636159176}
