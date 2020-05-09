@@ -66,9 +66,9 @@ namespace CSampleServer
 					player.NearRange = 5;
 					player.CurrentPosX = 10;
 					player.CurrentPosY = 10;
-					player.Direction = 4; // DOWN
+					player.unitDirection = 4; // DOWN
 					Program.gameServer.ResponseGetMyPlayer(this);
-					player.SetPosition(player.CurrentPosX, player.CurrentPosY, player.Direction);
+					player.SetPosition(player.CurrentPosX, player.CurrentPosY, player.unitDirection);
 					break;
 				}
 				// 케릭을 이동시키겠다고 요청이 옴.
@@ -92,6 +92,14 @@ namespace CSampleServer
 					// 뭐가 없으면 이동 허가. (포지션 셋팅 후 패킷 전송)
 					player.SetPosition(x, y, dir);
 					Program.gameServer.RequestPlayerMove(this);
+					break;
+				}
+				// 플레이어가 상태를 보내옴.
+				case PROTOCOL.PLAYER_STATE_REQ:
+				{
+					player.playerState = msg.pop_int32();
+					player.unitDirection = msg.pop_int32();
+					Program.gameServer.RequestPlayerState(this);
 					break;
 				}
 			}

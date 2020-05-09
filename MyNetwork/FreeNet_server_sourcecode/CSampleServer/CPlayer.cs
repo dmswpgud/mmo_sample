@@ -1,9 +1,22 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FreeNet;
+using GameServer;
 
 namespace CSampleServer
 {
+    public class GridPoint 
+    {
+        public int X, Y;
+
+        public GridPoint(int x, int y)
+        {
+            X = x;
+            Y = y;
+        }
+    }
+    
     public class CPlayer
     {
         CGameUser owner;
@@ -13,7 +26,9 @@ namespace CSampleServer
         public Int32 NearRange;
         public Int32 CurrentPosX {get; set;}
         public Int32 CurrentPosY {get; set;}
-        public Int32 Direction {get; set;}
+        public Int32 unitDirection {get; set;}
+        public Int32 targetUserId;
+        public Int32 playerState;
 
         public List<CGameUser> listNearbyUser = new List<CGameUser>();
         
@@ -23,11 +38,23 @@ namespace CSampleServer
             UserId = userId;
         }
 
+        public void SetPlayer(CPacket msg)
+        {
+            UserId = msg.pop_int32();
+            MoveSpeed = msg.pop_int32();
+            NearRange = msg.pop_int32();
+            CurrentPosX = msg.pop_int32();
+            CurrentPosY = msg.pop_int32();
+            unitDirection = msg.pop_int32();
+            targetUserId = msg.pop_int32();
+            playerState = msg.pop_int32();
+        }
+
         public void SetPosition(int x, int y, int dir)
         {
             CurrentPosX = x;
             CurrentPosY = y;
-            Direction = dir;
+            unitDirection = dir;
             
            var updateNearPlayers = GameUtils.GetNearbyUsers(owner, Program.gameServer.userList);
            var list1 = listNearbyUser.Where(i => !updateNearPlayers.Contains(i)).ToList(); // 삭제된 플레이어 리스트
@@ -75,5 +102,18 @@ namespace CSampleServer
                 user.player.RemoveNearPlayer(owner);
             }
         }
+
+        public CGameUser GetFrontPositionTarget()
+        {
+            var listTarget = GameUtils.GetNearbyUsers(owner, Program.gameServer.userList);
+
+            var frontPosition = GameUtils.GetFrontPositionUnit((UnitDirection)unitDirection, CurrentPosX, CurrentPosY);
+
+            var target = listTarget.Find(p => p.player.CurrentPosX == frontPosition.X && p.player.CurrentPosY == frontPosition.Y);
+
+            return target;
+        }
+        
+
     }
 }

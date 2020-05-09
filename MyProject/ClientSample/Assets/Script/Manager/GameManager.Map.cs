@@ -10,6 +10,23 @@ public partial class GameManager : MonoBehaviour
     public TileInfo[,] tileInfos = new TileInfo[Map.MAX_GRID_Y, Map.MAX_GRID_Y];
     
     public GameObject mapCollider;
+
+    private void UpdateGameManagerMap()
+    {
+        if (InputKey.InputAttack)
+            return;
+        
+        if (Input.GetMouseButtonDown (0))
+        {
+            var target = GetClickedObject();
+
+            if (target != null && target.isBlock == false)
+            {
+                target.GetComponent<MeshRenderer>().material.color = Color.green;
+                SetPath(myPlayer, target.GridPoint);
+            }
+        }
+    }
     
     private void MakeMap()
     {

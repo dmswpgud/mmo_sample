@@ -39,6 +39,15 @@ public partial class CNetworkManager : MonoBehaviour
         OnMovePlayer = onRes;
     }
     
+    public void RequestPlayerState(Int32 PlayerState, Int32 unitDirection, Action<ResponseData, ERROR> onRes)
+    {
+        CPacket msg = CPacket.create((short)PROTOCOL.PLAYER_STATE_REQ);
+        msg.push(PlayerState);
+        msg.push(unitDirection);
+        send(msg);
+        OnNetworkCallback = onRes;
+    }
+    
     public void RegisterChatEvent(Action<ResponseData, ERROR> onRes)
     {
         OnReceiveChatInfoCallback = onRes;
@@ -62,5 +71,10 @@ public partial class CNetworkManager : MonoBehaviour
     public void RegisterRemoveNearPlayer(Action<ResponseData, ERROR> onRes)
     {
         OnReceivedRemoveNearPlayer = onRes;
+    }
+    
+    public void RegisterChangedOtherPlayerstate(Action<ResponseData, ERROR> onRes)
+    {
+        OnReceivedOtherPlayerChangedState = onRes;
     }
 }

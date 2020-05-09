@@ -1,5 +1,6 @@
 ﻿using GameServer;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 /// <summary>
 /// 유닛 방향
@@ -8,8 +9,8 @@ using UnityEngine;
 /// </summary>
 public abstract class Unit : MonoBehaviour
 {
+    public int userId;
     public UnitDirection Direction;
-
     private TileInfo currentTile;
     public TileInfo GetCurrentTile => currentTile;
 

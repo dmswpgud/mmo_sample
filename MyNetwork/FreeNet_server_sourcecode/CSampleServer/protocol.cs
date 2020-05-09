@@ -9,6 +9,11 @@
     {
         PLAYER, ENEMY, MAP_OBJECT 
     }
+
+    public enum PlayerState
+    {
+        IDLE, WARK, ATTACK, DAMAGE, 
+    }
     
     public enum PROTOCOL : short
     {
@@ -27,6 +32,9 @@
         PLAYER_MOVE_RES,
         ADD_NEAR_PLAYER_RES,
         REMOVE_NEAR_PLAYER_RES,
+        
+        PLAYER_STATE_REQ,
+        PLAYER_STATE_RES,
 
         END
     }

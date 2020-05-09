@@ -6,12 +6,15 @@ using UnityEngine;
 public partial class GameManager
 {
     public GameObject PlayerObj;
-    
     public GameObject OtherPlayerObj;
-    
     public List<Player> players = new List<Player>();
-    
     public Player myPlayer;
+    private List<GridPoint> path;
+
+    private void UpdateGameManagerPlayer()
+    {
+        RequestPlayerState();
+    }
     
     private void MakeMyPlayer(ResponseData res, ERROR error)
     {
@@ -104,8 +107,6 @@ public partial class GameManager
     {
         return players.Find(p => p.PlayerData.userId == id);
     }
-
-    private List<GridPoint> path;
     
     private void SetPath(Player player, GridPoint destPoint)
     {
@@ -170,4 +171,63 @@ public partial class GameManager
         // var rangeTiles = GetRangeGridPoint(new GridPoint(data.currentPosX, data.currentPosY), data.NearRange);
         // DrawTile(rangeTiles);
     }
+
+    private void RequestPlayerState()
+    {
+        if (myPlayer == null)
+            return;
+
+        if (InputKey.InputAttack)
+        {
+            CNetworkManager.Inst.RequestPlayerState((int) PlayerState.ATTACK, (int)myPlayer.Direction, OnReceivedChangedPlayerState);
+        }
+    }
+
+    private void OnReceivedChangedPlayerState(ResponseData res, ERROR error)
+    {
+        if (error != ERROR.NONE)
+        {
+            PrintSystemLog(error.ToString());
+            return;
+        }
+
+        PlayerStateData data = (PlayerStateData) res;
+        
+        // 나냐?
+        if (data.ownerUserId == UserId)
+        {
+            var str = $"{data.ownerUserId}님이 {data.receiveUserId}님에게 {(PlayerState)data.playerState}하고 있습니다.";
+            PrintSystemLog(str);
+        }
+        // 타겟이냐?
+        else if (data.receiveUserId == UserId)
+        {
+            var str = $"{data.ownerUserId}님이 {data.receiveUserId}님에게 {(PlayerState)data.playerState}하고 있습니다.";
+            PrintSystemLog(str);
+        }
+        // 그냥 주변 유닛이냐?
+        else
+        {
+            var str = $"{data.ownerUserId}님이 {data.receiveUserId}님에게 {(PlayerState)data.playerState}하고 있습니다.";
+            PrintSystemLog(str);
+        }
+    }
+
+    // private void RequestAttack()
+    // {
+    //     if (error != ERROR.NONE)
+    //     {
+    //         PrintSystemLog(error.ToString());
+    //         return;
+    //     }
+    //     
+    //     var x = Input.mousePosition.x;
+    //     var y = Input.mousePosition.y;
+    //     var tile = GameManager.Inst.GetTileInfo(x, y);
+    //         
+    //     if (TargetUnit.userId == tile.GetTileUnit().userId)
+    //     {
+    //         CNetworkManager.Inst.RequsetAttack(this, ResponeAttack);
+    //     }
+    // }
 }

@@ -5,17 +5,10 @@ using UnityEngine;
 public class Player : Unit
 {
     public PlayerData PlayerData { private set; get; }
-    
     private TileInfo nextTile;
-    
-    //public TextMesh textMesh;
-
     public Action<Player> OnArrivePoint;
-
     public bool IsMyPlayer;
-    
     public Animator animator;
-
     private PlayerState playerState = PlayerState.IDLE;
 
     [SerializeField]
@@ -33,19 +26,16 @@ public class Player : Unit
     public void InitPlayer(PlayerData data)
     {
         PlayerData = data;
-
+        userId = data.userId;
         SetPosition(data.currentPosX, data.currentPosY);
-
         SetDirection((UnitDirection)data.direction);
-
-        //textMesh.text = data.userId.ToString();
-
         animController.SetState(PlayerState.IDLE);
     }
 
     public void MovePlayerNextPosition(PlayerData playerData = null)
     {
         PlayerData = playerData;
+        userId = playerData.userId;
         nextTile = GameManager.Inst.GetTileInfo(PlayerData.currentPosX, PlayerData.currentPosY);
         MoveSetDirection(PlayerData.currentPosX, PlayerData.currentPosY);
     }
@@ -53,6 +43,7 @@ public class Player : Unit
     private void Update()
     {
         PlayerMoving();
+        Attack();
     }
 
     private void PlayerMoving()
@@ -75,6 +66,11 @@ public class Player : Unit
             
             nextTile = null;
         }
+    }
+
+    private void Attack()
+    {
+
     }
 
     protected override void ChangedDirection(UnitDirection dir)
