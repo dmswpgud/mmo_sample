@@ -28,14 +28,14 @@ namespace CSampleServer
         // 서버 접속 종료.
         public void DisconnectedUser(CGameUser user)
         {
+            userList.Remove(user);
+            
             foreach (var otherUser in userList)
             {
                 CPacket response = CPacket.create((short)PROTOCOL.DISCONECTED_PLAYER_RES);
                 response.push(user.player.UserId);
                 otherUser.send(response);
             }
-            
-            userList.Remove(user);
         }
 
         // 다른 유저에게 채팅 보내기
