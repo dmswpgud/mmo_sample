@@ -54,16 +54,16 @@ public partial class GameManager : MonoBehaviour
         return GetTileInfo((int) panelX, (int) panelY);
     }
     
-    public void SetObjectBase(TileInfo targetPanel, ObjectBase targetObject)
+    public void SetUnitTile(TileInfo targetPanel, Unit targetObject)
     {
         var tile = tileInfos[targetPanel.GridPoint.X, targetPanel.GridPoint.Y];
 
-        RemoveObjectBase(targetObject);
+        RemoveUnitTile(targetObject);
 
         tile.AddObjectBase(targetObject);
     }
 
-    private void RemoveObjectBase(ObjectBase targetObject)
+    private void RemoveUnitTile(Unit targetObject)
     {
         for (int y = 0; y < tileInfos.GetLength(0); ++y)
         {

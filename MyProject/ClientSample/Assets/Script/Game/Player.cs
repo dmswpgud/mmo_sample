@@ -2,25 +2,25 @@
 using GameServer;
 using UnityEngine;
 
-public class Player : ObjectBase
+public class Player : Unit
 {
-    public PlayerData PlayerData;
+    public PlayerData PlayerData { private set; get; }
     
     private TileInfo nextTile;
     
-    public TextMesh textMesh;
+    private TextMesh textMesh;
 
     public Action<Player> OnArrivePoint;
 
     public bool IsMyPlayer;
 
-    public void SetPlayer(PlayerData data)
+    public void InitPlayer(PlayerData data)
     {
         PlayerData = data;
 
         SetPosition(data.currentPosX, data.currentPosY);
 
-        SetDirection((ObjectDirection)data.direction);
+        SetDirection((UnitDirection)data.direction);
 
         textMesh.text = data.userId.ToString();
     }

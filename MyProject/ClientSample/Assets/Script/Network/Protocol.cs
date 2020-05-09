@@ -1,11 +1,11 @@
 ﻿namespace GameServer
 {
-    public enum ObjectDirection
+    public enum UnitDirection
     {
         UP, UP_LEFT, LEFT, DOWN_LEFT, DOWN, DOWN_RIGHT, RIGHT, UP_RIGHT
     }
 
-    public enum ObjectType
+    public enum UnitType
     {
         PLAYER, ENEMY, MAP_OBJECT 
     }

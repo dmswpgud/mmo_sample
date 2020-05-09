@@ -2289,7 +2289,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TileObj: {fileID: 9025876227864709728, guid: d33f3847d6d42458aaecff4c40deb474, type: 3}
   mapCollider: {fileID: 385243205}
-  UnitObj: {fileID: 6171204044382284095, guid: 428df5d2f79c748ed923610047f1b602, type: 3}
+  PlayerObj: {fileID: 6171204044382284095, guid: 428df5d2f79c748ed923610047f1b602,
+    type: 3}
   players: []
   myPlayer: {fileID: 0}
   LoginDialog: {fileID: 1028406321}

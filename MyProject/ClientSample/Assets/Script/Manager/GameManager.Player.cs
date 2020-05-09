@@ -1,12 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Client.Game.Map;
 using GameServer;
 using UnityEngine;
 
 public partial class GameManager : MonoBehaviour
 {
-    public GameObject UnitObj;
+    public GameObject PlayerObj;
     
     public List<Player> players = new List<Player>();
     
@@ -90,11 +89,11 @@ public partial class GameManager : MonoBehaviour
     
     private Player CreatePlayer(PlayerData data)
     {
-        GameObject ins = Instantiate(UnitObj);
+        GameObject ins = Instantiate(PlayerObj);
 
         var player = ins.GetComponent<Player>();
 
-        player.SetPlayer(data);
+        player.InitPlayer(data);
 
         return player;
     }
