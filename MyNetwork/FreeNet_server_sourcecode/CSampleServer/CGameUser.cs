@@ -62,7 +62,7 @@ namespace CSampleServer
 				// 내 케릭정보를 보내달라고 요청이 옴.
 				case PROTOCOL.GET_MY_PLAYER_REQ:
 				{
-					player.MoveSpeed = 5;
+					player.MoveSpeed = 2;
 					player.NearRange = 5;
 					player.CurrentPosX = 10;
 					player.CurrentPosY = 10;

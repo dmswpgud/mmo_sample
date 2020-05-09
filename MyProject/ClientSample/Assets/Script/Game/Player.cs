@@ -8,11 +8,27 @@ public class Player : Unit
     
     private TileInfo nextTile;
     
-    public TextMesh textMesh;
+    //public TextMesh textMesh;
 
     public Action<Player> OnArrivePoint;
 
     public bool IsMyPlayer;
+    
+    public Animator animator;
+
+    private PlayerState playerState = PlayerState.IDLE;
+
+    [SerializeField]
+    private GameObject model;
+    
+    PlayerAnimationController animController;
+
+    void Awake()
+    {
+        animator = GetComponent<Animator>();
+        animController = gameObject.AddComponent<PlayerAnimationController>();
+        animController.Set(model, animator);
+    }
 
     public void InitPlayer(PlayerData data)
     {
@@ -22,14 +38,16 @@ public class Player : Unit
 
         SetDirection((UnitDirection)data.direction);
 
-        textMesh.text = data.userId.ToString();
+        //textMesh.text = data.userId.ToString();
+
+        animController.SetState(PlayerState.IDLE);
     }
 
     public void MovePlayerNextPosition(PlayerData playerData = null)
     {
         PlayerData = playerData;
-
         nextTile = GameManager.Inst.GetTileInfo(PlayerData.currentPosX, PlayerData.currentPosY);
+        MoveSetDirection(PlayerData.currentPosX, PlayerData.currentPosY);
     }
 
     private void Update()
@@ -41,8 +59,11 @@ public class Player : Unit
     {
         if (nextTile == null)
         {
+            animController.SetState(PlayerState.IDLE);
             return;
         }
+        
+        animController.SetState(PlayerState.WARK);
         
         transform.position = Vector3.MoveTowards(transform.position, nextTile.transform.position, PlayerData.MoveSpeed * Time.deltaTime);
 
@@ -54,5 +75,10 @@ public class Player : Unit
             
             nextTile = null;
         }
+    }
+
+    protected override void ChangedDirection(UnitDirection dir)
+    {
+        animController.SetDirection(dir);
     }
 }

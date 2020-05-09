@@ -3,7 +3,7 @@ using Client.Game.Map;
 using GameServer;
 using UnityEngine;
 
-public partial class GameManager : MonoBehaviour
+public partial class GameManager
 {
     public GameObject PlayerObj;
     
@@ -29,7 +29,7 @@ public partial class GameManager : MonoBehaviour
 
         Camera.main.transform.parent = myPlayer.transform;
                 
-        Camera.main.transform.localPosition = new Vector3(1.5f, 12f, 1.5f);
+        Camera.main.transform.localPosition = new Vector3(0f, 8f, -6.7f);
 
         mapCollider.transform.parent = myPlayer.transform;
                 
