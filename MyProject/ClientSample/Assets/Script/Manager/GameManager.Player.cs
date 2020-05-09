@@ -212,22 +212,4 @@ public partial class GameManager
             PrintSystemLog(str);
         }
     }
-
-    // private void RequestAttack()
-    // {
-    //     if (error != ERROR.NONE)
-    //     {
-    //         PrintSystemLog(error.ToString());
-    //         return;
-    //     }
-    //     
-    //     var x = Input.mousePosition.x;
-    //     var y = Input.mousePosition.y;
-    //     var tile = GameManager.Inst.GetTileInfo(x, y);
-    //         
-    //     if (TargetUnit.userId == tile.GetTileUnit().userId)
-    //     {
-    //         CNetworkManager.Inst.RequsetAttack(this, ResponeAttack);
-    //     }
-    // }
 }

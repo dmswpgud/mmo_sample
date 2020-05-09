@@ -128,8 +128,10 @@ namespace CSampleServer
                 response.push(attacker.player.unitDirection);
                 response.push(0); // 타겟이 없기에 0 보냄.
                 response.push(0); // 타겟이 없기에 0 보냄. // 공격 받는자의 HP보냄 // 사실 보낼 필욘 없음;
-                attacker.send(response);
+                
                 ResponsePacketToUsers(attacker.player.listNearbyUser, response);
+                
+                attacker.send(response); // TODO: <= 로그 확인용.. 나한테 보낼 필요는 없기에 나중에 삭제
             }
             // 타겟이 있으면 서버에서 HP계산 후 어태커와 디펜더에게 결과 전송,
             // 다른 플레이어들에겐 상태값과 어태커, 디펜더 아이디를 보낸다.
