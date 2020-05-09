@@ -9,8 +9,6 @@ public partial class GameManager : MonoBehaviour
     
     public TileInfo[,] tileInfos = new TileInfo[Map.MAX_GRID_Y, Map.MAX_GRID_Y];
     
-    public List<TileInfo> listTileInfo = new List<TileInfo>();
-    
     public GameObject mapCollider;
     
     private void MakeMap()
@@ -40,34 +38,7 @@ public partial class GameManager : MonoBehaviour
             }
         }
     }
-    
-    private void MakeMap(GridPoint position)
-    {
-        var listMap = GetRangeGridPoint(position, 5);
 
-        for (int i = 0; i < listMap.Count; ++i)
-        {
-            GameObject ins = Instantiate(TileObj, transform);
-            
-            ins.transform.position = new Vector3(listMap[i].X, 0, listMap[i].Y);
-            
-            var tileInfo = ins.AddComponent<TileInfo>();
-            
-            tileInfo.Init(listMap[i].X, listMap[i].Y);
-            
-            tileInfo.isBlock = Map.MapTiles[listMap[i].X, listMap[i].Y] == 0;
-
-            listTileInfo.Add(tileInfo);
-            
-            if (tileInfo.isBlock == true)
-            {
-                MeshRenderer mt = ins.GetComponent<MeshRenderer>();
-					
-                mt.material.color = Color.blue;
-            }
-        }
-    }
-    
     public TileInfo GetTileInfo(int x, int y)
     {
         return tileInfos[x, y];
@@ -81,6 +52,30 @@ public partial class GameManager : MonoBehaviour
         Debug.Log($"{(int) panelX} {(int) panelY}");
 
         return GetTileInfo((int) panelX, (int) panelY);
+    }
+    
+    public void SetObjectBase(TileInfo targetPanel, ObjectBase targetObject)
+    {
+        var tile = tileInfos[targetPanel.GridPoint.X, targetPanel.GridPoint.Y];
+
+        RemoveObjectBase(targetObject);
+
+        tile.AddObjectBase(targetObject);
+    }
+
+    private void RemoveObjectBase(ObjectBase targetObject)
+    {
+        for (int y = 0; y < tileInfos.GetLength(0); ++y)
+        {
+            for (int x = 0; x < tileInfos.GetLength(1); ++x)
+            {
+                if (tileInfos[x, y].HasTargetObject(targetObject))
+                {
+                    tileInfos[x, y].RemoveObjectBase(targetObject);
+                    return;
+                }
+            }
+        }
     }
     
     private void DrawWall()

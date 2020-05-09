@@ -110,13 +110,13 @@ public partial class GameManager : MonoBehaviour
     {
         DrawWall();
 
-        var start = new GridPoint(player.currentTile.GridPoint.X, player.currentTile.GridPoint.Y);
+        var start = new GridPoint(player.GetCurrentTile.GridPoint.X, player.GetCurrentTile.GridPoint.Y);
 
         var end = destPoint;
 
         var pathFinder = new PathFinder();
         
-        path = pathFinder.FindPath(Map.MapTiles, start, end);
+        path = pathFinder.FindPath(tileInfos, start, end);
 
         // 경로가 없다면 리턴.
         if (path.Count <= 0)
@@ -158,8 +158,6 @@ public partial class GameManager : MonoBehaviour
         var data = (PlayerData) res;
         
         var player = players.Find(p => p.PlayerData.userId == data.userId);
-        
-        PrintSystemLog($"{data.userId}가 {(ObjectDirection)data.direction}을 향해 달려가고 있습니다.");
         
         if (player.PlayerData.currentPosX == data.currentPosX && player.PlayerData.currentPosY == data.currentPosY)
         {

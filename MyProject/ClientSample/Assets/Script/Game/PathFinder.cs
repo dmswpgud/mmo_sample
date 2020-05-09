@@ -22,7 +22,7 @@ namespace Client.Game.Map
 
         Dictionary<GridPoint, GridPoint> nodeLinks = new Dictionary<GridPoint, GridPoint>();
         
-        public List<GridPoint> FindPath(int[,] graph, GridPoint start, GridPoint goal)
+        public List<GridPoint> FindPath(TileInfo[,] graph, GridPoint start, GridPoint goal)
         {
             openSet[start] = true;
             gScore[start] = 0;
@@ -94,7 +94,7 @@ namespace Client.Game.Map
             return score;
         }
 
-        public static IEnumerable<GridPoint> Neighbors(int[,] graph, GridPoint center)
+        public static IEnumerable<GridPoint> Neighbors(TileInfo[,] graph, GridPoint center)
         {
 
             GridPoint pt = new GridPoint(center.X - 1, center.Y - 1);
@@ -133,7 +133,7 @@ namespace Client.Game.Map
                 yield return pt;
         }
 
-        public static bool IsValidNeighbor(int[,] matrix, GridPoint pt) 
+        public static bool IsValidNeighbor(TileInfo[,] matrix, GridPoint pt) 
         {
             int x = pt.X;
             int y = pt.Y;
@@ -143,7 +143,8 @@ namespace Client.Game.Map
             if (y < 0 || y >= matrix.GetLength(1))
                 return false;
 
-            return matrix[x, y] == 1;
+            return matrix[x, y].isBlock == false && // 벽이 있는가?
+                   matrix[x, y].HasObject == false; // 다른 오브젝트가 있는가?
         }
 
         private List<GridPoint> Reconstruct(GridPoint current) 

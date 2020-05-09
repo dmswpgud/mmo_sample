@@ -18,8 +18,6 @@ public class Player : ObjectBase
     {
         PlayerData = data;
 
-        currentTile = GameManager.Inst.GetTileInfo(data.currentPosX, data.currentPosY);
-
         SetPosition(data.currentPosX, data.currentPosY);
 
         SetDirection((ObjectDirection)data.direction);
@@ -50,7 +48,7 @@ public class Player : ObjectBase
 
         if (Vector3.Distance(transform.position, nextTile.transform.position) < 0.01f)
         {
-            currentTile = nextTile;
+            SetPosition(nextTile.GridPoint.X, nextTile.GridPoint.Y);
             
             OnArrivePoint?.Invoke(this);
             
