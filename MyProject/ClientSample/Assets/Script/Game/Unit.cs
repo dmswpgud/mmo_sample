@@ -1,6 +1,11 @@
 ﻿using GameServer;
 using UnityEngine;
 
+/// <summary>
+/// 유닛 방향
+/// 유닛 포지션
+/// 유닛이 속해있는 타일
+/// </summary>
 public class Unit : MonoBehaviour
 {
     public UnitDirection Direction;

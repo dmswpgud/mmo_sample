@@ -8,7 +8,7 @@ public class Player : Unit
     
     private TileInfo nextTile;
     
-    private TextMesh textMesh;
+    public TextMesh textMesh;
 
     public Action<Player> OnArrivePoint;
 

@@ -90,7 +90,7 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
+  serializedVersion: 3
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
@@ -105,7 +105,7 @@ GameObject:
   - component: {fileID: 941086240910348702}
   - component: {fileID: -5423414990914256484}
   m_Layer: 0
-  m_Name: Unit
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -139,8 +139,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb4c3e6e353204bbd9e68975ced217f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentTile: {fileID: 0}
+  Direction: 0
   textMesh: {fileID: 1900155217738200937}
+  IsMyPlayer: 0
 --- !u!1 &8817157304115917395
 GameObject:
   m_ObjectHideFlags: 0

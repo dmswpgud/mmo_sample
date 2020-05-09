@@ -27,7 +27,7 @@ namespace Client.Game.Map
             openSet[start] = true;
             gScore[start] = 0;
             fScore[start] = Heuristic(start, goal);
-            
+
             while(openSet.Count > 0) 
             {
                 var current = nextBest();
