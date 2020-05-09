@@ -3,9 +3,11 @@ using Client.Game.Map;
 using GameServer;
 using UnityEngine;
 
-public partial class GameManager : MonoBehaviour
+public partial class GameManager
 {
     public GameObject PlayerObj;
+    
+    public GameObject OtherPlayerObj;
     
     public List<Player> players = new List<Player>();
     
@@ -21,7 +23,7 @@ public partial class GameManager : MonoBehaviour
         
         var data = (PlayerData) res;
         
-        myPlayer = CreatePlayer(data);
+        myPlayer = CreatePlayer(data, PlayerObj);
         
         players.Add(myPlayer);
         
@@ -29,7 +31,7 @@ public partial class GameManager : MonoBehaviour
 
         Camera.main.transform.parent = myPlayer.transform;
                 
-        Camera.main.transform.localPosition = new Vector3(1.5f, 12f, 1.5f);
+        Camera.main.transform.localPosition = new Vector3(0f, 8f, -6.7f);
 
         mapCollider.transform.parent = myPlayer.transform;
                 
@@ -48,7 +50,7 @@ public partial class GameManager : MonoBehaviour
         
         var data = (PlayerData) res;
         
-        var player = CreatePlayer(data);
+        var player = CreatePlayer(data, OtherPlayerObj);
         
         players.Add(player);
     }
@@ -87,9 +89,9 @@ public partial class GameManager : MonoBehaviour
         players.RemoveAt(index);
     }
     
-    private Player CreatePlayer(PlayerData data)
+    private Player CreatePlayer(PlayerData data, GameObject model)
     {
-        GameObject ins = Instantiate(PlayerObj);
+        GameObject ins = Instantiate(model);
 
         var player = ins.GetComponent<Player>();
 

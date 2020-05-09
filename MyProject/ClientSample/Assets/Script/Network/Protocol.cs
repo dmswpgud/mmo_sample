@@ -9,6 +9,11 @@
     {
         PLAYER, ENEMY, MAP_OBJECT 
     }
+
+    public enum PlayerState
+    {
+        IDLE, WARK, ATTACK, DAMAGE, 
+    }
     
     public enum PROTOCOL : short
     {

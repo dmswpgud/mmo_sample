@@ -1336,13 +1336,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: -0.29883623, y: 0.64085644, z: -0.64085644, w: -0.29883623}
-  m_LocalPosition: {x: 0, y: 12, z: 0}
+  m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 90, y: 180, z: -50}
+  m_LocalEulerAnglesHint: {x: 60, y: 0, z: 0}
 --- !u!1 &977913659
 GameObject:
   m_ObjectHideFlags: 0
@@ -1668,50 +1668,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InputField: {fileID: 789274085}
   TextStateLog: {fileID: 807129477}
---- !u!1 &1376769970
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1376769972}
-  - component: {fileID: 1376769971}
-  m_Layer: 0
-  m_Name: TestStarter
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &1376769971
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1376769970}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8eb29658f72c4ab48a01eaec34ffc02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TileObj: {fileID: 9025876227864709728, guid: d33f3847d6d42458aaecff4c40deb474, type: 3}
---- !u!4 &1376769972
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1376769970}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 102.70359, y: 116.622696, z: -89.376816}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1378441515
 GameObject:
   m_ObjectHideFlags: 0
@@ -2289,7 +2245,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TileObj: {fileID: 9025876227864709728, guid: d33f3847d6d42458aaecff4c40deb474, type: 3}
   mapCollider: {fileID: 385243205}
-  PlayerObj: {fileID: 6171204044382284095, guid: 428df5d2f79c748ed923610047f1b602,
+  PlayerObj: {fileID: 2230222774326015030, guid: 9c6a95c1b58cd41daab15fcab5afdcef,
+    type: 3}
+  OtherPlayerObj: {fileID: 3184412276953185456, guid: cf3958b3393234f02ae4ef02248e12b4,
     type: 3}
   players: []
   myPlayer: {fileID: 0}
