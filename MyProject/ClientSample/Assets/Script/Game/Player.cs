@@ -29,7 +29,7 @@ public class Player : Unit
         userId = data.userId;
         SetPosition(data.currentPosX, data.currentPosY);
         SetDirection((UnitDirection)data.direction);
-        animController.SetState(PlayerState.IDLE);
+        SetState(PlayerState.IDLE);
     }
 
     public void MovePlayerNextPosition(PlayerData playerData = null)
@@ -37,7 +37,7 @@ public class Player : Unit
         PlayerData = playerData;
         userId = playerData.userId;
         nextTile = GameManager.Inst.GetTileInfo(PlayerData.currentPosX, PlayerData.currentPosY);
-        MoveSetDirection(PlayerData.currentPosX, PlayerData.currentPosY);
+        ChangeDirectionByTargetPoint(PlayerData.currentPosX, PlayerData.currentPosY);
     }
 
     private void Update()
@@ -50,11 +50,10 @@ public class Player : Unit
     {
         if (nextTile == null)
         {
-            animController.SetState(PlayerState.IDLE);
             return;
         }
         
-        animController.SetState(PlayerState.WARK);
+        SetState(PlayerState.WARK);
         
         transform.position = Vector3.MoveTowards(transform.position, nextTile.transform.position, PlayerData.MoveSpeed * Time.deltaTime);
 
@@ -76,5 +75,10 @@ public class Player : Unit
     protected override void ChangedDirection(UnitDirection dir)
     {
         animController.SetDirection(dir);
+    }
+
+    public void SetState(PlayerState state)
+    {
+        animController.SetState(state);
     }
 }

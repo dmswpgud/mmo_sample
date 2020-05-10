@@ -14,9 +14,9 @@ namespace CSampleServer
             return userList.Exists(user => user.player.UserId == userId);
         }
 
-        public CGameUser GetUserFromUserId(int userId)
+        public CGameUser GetTargetUserFromUserId(int targetUserId)
         {
-            return userList.Find(p => p.player.targetUserId == userId);
+            return userList.Find(p => p.player.UserId == targetUserId);
         }
         
         // 서버 접속.
@@ -96,21 +96,19 @@ namespace CSampleServer
         }
         
         // 플레이어 공격 요청
-        public void RequestPlayerState(CGameUser user)
+        public void RequestPlayerState(CGameUser user, int receiveUserId)
         {
             switch ((PlayerState)user.player.playerState)
             {
                 case PlayerState.ATTACK:
-                    PlayerStateAttack(user);
-                    break;
-                case PlayerState.DAMAGE:
+                    PlayerStateAttack(user, receiveUserId);
                     break;
             }
         }
 
-        private void PlayerStateAttack(CGameUser attacker)
+        private void PlayerStateAttack(CGameUser attacker, int defenderUserId)
         {
-            var defender = attacker.player.GetFrontPositionTarget();
+            var defender = attacker.player.listNearbyUser.Find(p => p.player.UserId == defenderUserId);
             
             // 패킷 구성.
             // 상태를 요청한 유저 아이디.
@@ -137,7 +135,7 @@ namespace CSampleServer
             // 다른 플레이어들에겐 상태값과 어태커, 디펜더 아이디를 보낸다.
             else
             {
-                // 공격자
+                // 공격자.
                 {
                     CPacket response = CPacket.create((short)PROTOCOL.PLAYER_STATE_RES);
                     response.push(attacker.player.UserId);
@@ -147,23 +145,23 @@ namespace CSampleServer
                     response.push(GameUtils.DamageCalculator(attacker.player, defender.player)); // 공격 받는자의 HP보냄
                     attacker.send(response);
                 }
-                // 공격받는 자.
+                // 피격자.
                 {
                     CPacket response = CPacket.create((short)PROTOCOL.PLAYER_STATE_RES);
-                    response.push(defender.player.UserId);
+                    response.push(attacker.player.UserId);
                     response.push((int)PlayerState.DAMAGE);
                     response.push(attacker.player.unitDirection);
-                    response.push(attacker.player.UserId); // 공격한 자의 아이디도 보냄.
+                    response.push(defender.player.UserId); // 공격한 자의 아이디도 보냄.
                     response.push(GameUtils.DamageCalculator(attacker.player, defender.player)); // 공격 받는자의 HP보냄
                     defender.send(response);
                 }
-                
+                // 방관자.
                 {
                     List<CGameUser> attackerDefenderNearUserList = new List<CGameUser>();
                     // 어태커에 없는 디펜더의 범위 유저 리스트.
-                    var defenderList = attacker.player.listNearbyUser.Where(i => !defender.player.listNearbyUser.Contains(i)).ToList();
+                    var defenderList = defender.player.listNearbyUser.Where(i => !attacker.player.listNearbyUser.Contains(i)).ToList();
                     attackerDefenderNearUserList.AddRange(attacker.player.listNearbyUser);
-                    attackerDefenderNearUserList.AddRange(defender.player.listNearbyUser);
+                    attackerDefenderNearUserList.AddRange(defenderList);
                     
                     CPacket response = CPacket.create((short)PROTOCOL.PLAYER_STATE_RES);
                     foreach (var user in attackerDefenderNearUserList)
@@ -203,7 +201,6 @@ namespace CSampleServer
             response.push(user.player.CurrentPosX);
             response.push(user.player.CurrentPosY);
             response.push(user.player.unitDirection);
-            response.push(user.player.targetUserId);
             response.push(user.player.playerState);
         }
     }

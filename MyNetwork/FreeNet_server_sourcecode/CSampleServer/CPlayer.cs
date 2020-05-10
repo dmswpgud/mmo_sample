@@ -27,7 +27,6 @@ namespace CSampleServer
         public Int32 CurrentPosX {get; set;}
         public Int32 CurrentPosY {get; set;}
         public Int32 unitDirection {get; set;}
-        public Int32 targetUserId;
         public Int32 playerState;
 
         public List<CGameUser> listNearbyUser = new List<CGameUser>();
@@ -46,7 +45,6 @@ namespace CSampleServer
             CurrentPosX = msg.pop_int32();
             CurrentPosY = msg.pop_int32();
             unitDirection = msg.pop_int32();
-            targetUserId = msg.pop_int32();
             playerState = msg.pop_int32();
         }
 

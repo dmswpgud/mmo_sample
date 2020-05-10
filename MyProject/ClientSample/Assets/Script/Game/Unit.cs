@@ -31,7 +31,7 @@ public abstract class Unit : MonoBehaviour
     protected abstract void ChangedDirection(UnitDirection dir);
 
     // 이동할 곳에 대한 오브트의 방향을 셋팅.
-    public void MoveSetDirection(int destX, int destY)
+    public void ChangeDirectionByTargetPoint(int destX, int destY)
     {
         var pos = currentTile.GridPoint;
 

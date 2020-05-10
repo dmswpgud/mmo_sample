@@ -74,7 +74,6 @@ namespace CSampleServer
 				// 케릭을 이동시키겠다고 요청이 옴.
 				case PROTOCOL.PLAYER_MOVE_REQ:
 				{
-					var userId = msg.pop_int32();
 					var x = msg.pop_int32();
 					var y = msg.pop_int32();
 					var dir = msg.pop_int32();
@@ -99,7 +98,8 @@ namespace CSampleServer
 				{
 					player.playerState = msg.pop_int32();
 					player.unitDirection = msg.pop_int32();
-					Program.gameServer.RequestPlayerState(this);
+					var receiveUserId = msg.pop_int32();
+					Program.gameServer.RequestPlayerState(this, receiveUserId);
 					break;
 				}
 			}

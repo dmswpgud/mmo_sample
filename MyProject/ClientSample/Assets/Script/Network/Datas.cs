@@ -29,7 +29,6 @@ public class PlayerData : ResponseData
     public Int32 currentPosX;
     public Int32 currentPosY;
     public Int32 direction;
-    public Int32 targetUserId;
     public Int32 playerState;
 }
 

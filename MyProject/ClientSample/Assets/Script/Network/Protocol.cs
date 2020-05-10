@@ -12,7 +12,7 @@
 
     public enum PlayerState
     {
-        IDLE, WARK, ATTACK, DAMAGE, 
+        IDLE, WARK, ATTACK, DAMAGE, CHANGED_DIRECTION,
     }
     
     public enum PROTOCOL : short

@@ -103,18 +103,15 @@ public partial class CNetworkManager : MonoBehaviour {
             }
             case PROTOCOL.CHAT_MSG_ACK: // 채팅 정보 받음.
             {
-                int userId = msg.pop_int32();
-                string text = msg.pop_string();
                 var res = new ChatData();
-                res.userId = userId;
-                res.message = text;
+                res.userId = msg.pop_int32();;
+                res.message =  msg.pop_string();
                 OnReceiveChatInfoCallback(res, ERROR.NONE);
                 break;
             }
             case PROTOCOL.GET_MY_PLAYER_RES: // 내 케릭을 달라고 요청하고 정보를 알려옴.
             {
                 PlayerData data = CreatePlayerData(msg);
-                
                 OnNetworkCallback(data, ERROR.NONE);
                 break;
             }
@@ -122,8 +119,7 @@ public partial class CNetworkManager : MonoBehaviour {
             {
                 PlayerData data = new PlayerData();
                 data.userId = msg.pop_int32();
-
-                OnDisconnectedPlayer(data, ERROR.NONE);
+                OnDisconnectedPlayer?.Invoke(data, ERROR.NONE);
                 break;
             }
             case PROTOCOL.PLAYER_MOVE_RES: // 유닛의 이동 요청 후 이동 횄다고 알려옴.
@@ -181,7 +177,6 @@ public partial class CNetworkManager : MonoBehaviour {
         data.currentPosX = msg.pop_int32();
         data.currentPosY = msg.pop_int32();
         data.direction = msg.pop_int32();
-        data.targetUserId = msg.pop_int32();
         data.playerState = msg.pop_int32();
         
         return data;
@@ -209,7 +204,6 @@ public partial class CNetworkManager : MonoBehaviour {
         msg.push(player.PlayerData.currentPosX);
         msg.push(player.PlayerData.currentPosY);
         msg.push(player.PlayerData.direction);
-        msg.push(player.PlayerData.targetUserId);
         msg.push(player.PlayerData.playerState);
     }
 
