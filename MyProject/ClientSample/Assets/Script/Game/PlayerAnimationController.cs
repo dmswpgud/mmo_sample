@@ -30,6 +30,9 @@ public class PlayerAnimationController : MonoBehaviour
             case PlayerState.DAMAGE:
                 animator.Play("ShieldWarrior@Damage01");
                 break;
+            case PlayerState.DEATH:
+                animator.Play("ShieldWarrior@Death01");
+                break;
         }
     }
     

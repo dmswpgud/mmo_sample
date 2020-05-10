@@ -218,6 +218,11 @@ public partial class GameManager
                 {
                     var defecderPlayer = GetPlayerFromId(data.receiveUserId);
                     defecderPlayer?.SetState(PlayerState.DAMAGE);
+                    var defenderHp = data.resultData;
+                    if (defenderHp <= 0)
+                    {
+                        defecderPlayer?.SetState(PlayerState.DEATH);
+                    }
                     var str = $"내가 {data.receiveUserId}님에게 {(PlayerState)data.playerState}하고 있습니다.";
                     PrintSystemLog(str);
                 }
@@ -230,6 +235,11 @@ public partial class GameManager
                     ownerPlayer?.SetState(PlayerState.ATTACK);
                     var defecderPlayer = GetPlayerFromId(data.receiveUserId);
                     defecderPlayer?.SetState(PlayerState.DAMAGE);
+                    var defenderHp = data.resultData;
+                    if (defenderHp <= 0)
+                    {
+                        defecderPlayer?.SetState(PlayerState.DEATH);
+                    }
                     var str = $"{data.ownerUserId}님이 {data.receiveUserId}님에게 {(PlayerState)data.playerState}하고 있습니다.";
                     PrintSystemLog(str);
                 }
@@ -242,6 +252,11 @@ public partial class GameManager
                 attacker.SetState(PlayerState.ATTACK);
                 attacker.SetDirection((UnitDirection)data.direction);
                 myPlayer.SetState(PlayerState.DAMAGE);
+                var defenderHp = data.resultData;
+                if (defenderHp <= 0)
+                {
+                    myPlayer.SetState(PlayerState.DEATH);
+                }
                 break;
             }
             case PlayerState.CHANGED_DIRECTION:

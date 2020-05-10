@@ -17,6 +17,7 @@ namespace CSampleServer
         public Int32 unitDirection {get; set;}
         public Int32 playerState;
         public List<CGameUser> listNearbyUser = new List<CGameUser>();
+        public PlayerStatus status = new PlayerStatus();
         
         public CPlayer(CGameUser user, int userId)
         {

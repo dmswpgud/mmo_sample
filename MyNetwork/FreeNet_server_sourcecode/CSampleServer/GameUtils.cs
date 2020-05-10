@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using GameServer;
 
@@ -67,9 +68,9 @@ namespace CSampleServer
             return null;
         }
 
-        public static int DamageCalculator(CPlayer attacker, CPlayer deffender)
+        public static Int32 DamageCalculator(CPlayer attacker, CPlayer deffender)
         {
-            return 1;
+            return deffender.status.HP -= 10;
         }
         
         public CGameUser GetFrontPositionTarget(CGameUser user, List<CGameUser> nearUsers)
