@@ -28,6 +28,7 @@ public partial class GameManager : MonoBehaviour
         
         MakeMap();
 
+        CNetworkManager.Inst.RegisterDisconnectedServer(OnDisconnectServer);
         CNetworkManager.Inst.RegisterDisconnectedPlayer(DisconnectedPlayer);
         CNetworkManager.Inst.RequsetGetMyPlayer(MakeMyPlayer);
         CNetworkManager.Inst.RegisterAddNearPlayer(MakePlayer);
@@ -41,7 +42,17 @@ public partial class GameManager : MonoBehaviour
         UpdateGameManagerMap();
         UpdateGameManagerPlayer();
     }
-    
+
+    private void OnDisconnectServer()
+    {
+        AnnounceDialog.Show("서버가 종료되었습니다.", () =>
+            {
+                Application.Quit();
+                AnnounceDialog.Close();
+            });
+                
+    }
+
     private TileInfo GetClickedObject()
     {
         RaycastHit hit;

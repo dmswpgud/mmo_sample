@@ -70,7 +70,7 @@ namespace CSampleServer
 
         public static Int32 DamageCalculator(CPlayer attacker, CPlayer deffender)
         {
-            return deffender.status.HP -= 10;
+            return deffender.HP -= 10;
         }
         
         public CGameUser GetFrontPositionTarget(CGameUser user, List<CGameUser> nearUsers)

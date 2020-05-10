@@ -22,7 +22,8 @@ public partial class CNetworkManager : MonoBehaviour {
     private Action<ResponseData, ERROR> OnNetworkCallback;
     private Action<ResponseData, ERROR> OnDisconnectedPlayer;
     private Action<ResponseData, ERROR> OnMovePlayer;
-    
+
+    public Action OnReceivedDisconnectedServer;
     private Action<ResponseData, ERROR> OnReceiveConnectedOtherUser;
     private Action<ResponseData, ERROR> OnReceiveChatInfoCallback;
     private Action<ResponseData, ERROR> OnReceiveMoveOtherPlayer;
@@ -72,6 +73,7 @@ public partial class CNetworkManager : MonoBehaviour {
                 CLogManager.log("disconnected");
                 this.received_msg += "disconnected\n";
                 user_state = USER_STATE.NOT_CONNECTED;
+                OnReceivedDisconnectedServer?.Invoke();
                 break;
             }
         }
@@ -193,7 +195,7 @@ public partial class CNetworkManager : MonoBehaviour {
         
         return data;
     }
-    
+
     // 유저 패킷 패키징.
     public void PushPlayerData(Unit unit, CPacket msg)
     {
@@ -205,14 +207,5 @@ public partial class CNetworkManager : MonoBehaviour {
         msg.push(player.PlayerData.currentPosY);
         msg.push(player.PlayerData.direction);
         msg.push(player.PlayerData.playerState);
-    }
-
-    public void PushPlayerStateData(PlayerStateData stateData, CPacket msg)
-    {
-        msg.push(stateData.ownerUserId);
-        msg.push(stateData.playerState);
-        msg.push(stateData.direction);
-        msg.push(stateData.receiveUserId);
-        msg.push(stateData.resultData);
     }
 }

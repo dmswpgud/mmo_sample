@@ -47,6 +47,11 @@ public partial class CNetworkManager : MonoBehaviour
         send(msg);
         OnNetworkCallback = onRes;
     }
+
+    public void RegisterDisconnectedServer(Action onRes)
+    {
+        OnReceivedDisconnectedServer = onRes;
+    }
     
     public void RegisterChatEvent(Action<ResponseData, ERROR> onRes)
     {
