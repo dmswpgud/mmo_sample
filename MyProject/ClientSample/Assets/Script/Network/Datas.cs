@@ -38,5 +38,6 @@ public class PlayerStateData : ResponseData
     public Int32 playerState;
     public Int32 direction;
     public Int32 receiveUserId;
+    public Int32 receiveUserPlayerState;
     public Int32 resultData;
 }

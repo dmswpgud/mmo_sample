@@ -140,13 +140,18 @@ namespace CSampleServer
             // 다른 플레이어들에겐 상태값과 어태커, 디펜더 아이디를 보낸다.
             else
             {
+                var hp = GameUtils.DamageCalculator(attacker.player, defender.player);
+                defender.player.playerState = hp <= 0 ? (Int32)PlayerState.DEATH : (Int32)PlayerState.DAMAGE;
+                
                 // 공격자.
                 {
+                    
                     CPacket response = CPacket.create((short)PROTOCOL.PLAYER_STATE_RES);
                     response.push(attacker.player.UserId);
                     response.push((int)PlayerState.ATTACK);
                     response.push(attacker.player.unitDirection);
                     response.push(defender.player.UserId); // 공격받는 자의 아이디도 보냄.
+                    response.push(defender.player.playerState); // 피격자의 상태값 보냄.
                     response.push(GameUtils.DamageCalculator(attacker.player, defender.player)); // 공격 받는자의 HP보냄
                     attacker.send(response);
                 }
@@ -154,10 +159,11 @@ namespace CSampleServer
                 {
                     CPacket response = CPacket.create((short)PROTOCOL.PLAYER_STATE_RES);
                     response.push(attacker.player.UserId);
-                    response.push((int)PlayerState.DAMAGE);
+                    response.push(attacker.player.playerState);
                     response.push(attacker.player.unitDirection);
                     response.push(defender.player.UserId); // 공격한 자의 아이디도 보냄.
-                    response.push(GameUtils.DamageCalculator(attacker.player, defender.player)); // 공격 받는자의 HP보냄
+                    response.push(defender.player.playerState); // 피격자의 상태값 보냄.
+                    response.push(hp); // 공격 받는자의 HP보냄
                     defender.send(response);
                 }
                 // 방관자.
@@ -180,7 +186,8 @@ namespace CSampleServer
                         response.push(attacker.player.UserId);
                         response.push(attacker.player.playerState);
                         response.push(attacker.player.unitDirection);
-                        response.push(defender.player.UserId); // 타겟이 없기에 0 보냄.
+                        response.push(defender.player.UserId);
+                        response.push(defender.player.playerState); // 피격자의 상태값 보냄.
                         response.push(GameUtils.DamageCalculator(attacker.player, defender.player)); // 공격 받는자의 HP보냄
                         user.send(response);
                     }

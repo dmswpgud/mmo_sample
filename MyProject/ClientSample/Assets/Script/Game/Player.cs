@@ -29,7 +29,7 @@ public class Player : Unit
         userId = data.userId;
         SetPosition(data.currentPosX, data.currentPosY);
         SetDirection((UnitDirection)data.direction);
-        SetState(PlayerState.IDLE);
+        SetState((PlayerState)data.playerState);
     }
 
     public void MovePlayerNextPosition(PlayerData playerData = null)

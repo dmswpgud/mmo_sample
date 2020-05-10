@@ -191,6 +191,7 @@ public partial class CNetworkManager : MonoBehaviour {
         data.playerState = msg.pop_int32();
         data.direction = msg.pop_int32();
         data.receiveUserId = msg.pop_int32();
+        data.receiveUserPlayerState = msg.pop_int32();
         data.resultData = msg.pop_int32();
         
         return data;
