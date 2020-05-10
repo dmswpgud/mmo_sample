@@ -6,8 +6,8 @@ public class TileInfo : MonoBehaviour
 {
     public GridPoint GridPoint;
     public bool isBlock;
-    public bool HasObject => listObject.Count != 0;
-    private List<Unit> listObject = new List<Unit>();
+    public bool HasObject => listUnit.Count != 0;
+    private List<Unit> listUnit = new List<Unit>();
 
     public void Init(int x, int y)
     {
@@ -16,16 +16,24 @@ public class TileInfo : MonoBehaviour
 
     public void AddObjectBase(Unit target)
     {
-        listObject.Add(target);
+        listUnit.Add(target);
     }
 
     public void RemoveObjectBase(Unit target)
     {
-        listObject.Remove(target);
+        listUnit.Remove(target);
     }
 
     public bool HasTargetObject(Unit target)
     {
-        return listObject.Contains(target);
+        return listUnit.Contains(target);
+    }
+
+    public Unit GetTileUnit()
+    {
+        if (listUnit.Count == 0)
+            return null;
+
+        return listUnit[0];
     }
 }

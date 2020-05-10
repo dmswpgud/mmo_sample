@@ -1,13 +1,18 @@
 ﻿namespace GameServer
 {
-    public enum ObjectDirection
+    public enum UnitDirection
     {
         UP, UP_LEFT, LEFT, DOWN_LEFT, DOWN, DOWN_RIGHT, RIGHT, UP_RIGHT
     }
 
-    public enum ObjectType
+    public enum UnitType
     {
         PLAYER, ENEMY, MAP_OBJECT 
+    }
+
+    public enum PlayerState
+    {
+        IDLE, WARK, ATTACK, DAMAGE, CHANGED_DIRECTION, DEATH,
     }
     
     public enum PROTOCOL : short
@@ -27,6 +32,9 @@
         PLAYER_MOVE_RES,
         ADD_NEAR_PLAYER_RES,
         REMOVE_NEAR_PLAYER_RES,
+        
+        PLAYER_STATE_REQ,
+        PLAYER_STATE_RES,
 
         END
     }

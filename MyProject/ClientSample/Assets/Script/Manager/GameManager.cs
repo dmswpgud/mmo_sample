@@ -28,32 +28,31 @@ public partial class GameManager : MonoBehaviour
         
         MakeMap();
 
+        CNetworkManager.Inst.RegisterDisconnectedServer(OnDisconnectServer);
         CNetworkManager.Inst.RegisterDisconnectedPlayer(DisconnectedPlayer);
-
         CNetworkManager.Inst.RequsetGetMyPlayer(MakeMyPlayer);
-        
         CNetworkManager.Inst.RegisterAddNearPlayer(MakePlayer);
-        
         CNetworkManager.Inst.RegisterRemoveNearPlayer(DestroyPlayer);
-
         CNetworkManager.Inst.RegisterOtherPlayerMove(ResponseMovePlayer);
+        CNetworkManager.Inst.RegisterChangedOtherPlayerstate(OnReceivedChangedPlayerState);
     }
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown (0))
-        {
-            var target = GetClickedObject();
-
-            if (target != null && target.isBlock == false)
-            {
-                target.GetComponent<MeshRenderer>().material.color = Color.green;
-                
-                SetPath(myPlayer, target.GridPoint);
-            }
-        }
+        UpdateGameManagerMap();
+        UpdateGameManagerPlayer();
     }
-    
+
+    private void OnDisconnectServer()
+    {
+        AnnounceDialog.Show("서버가 종료되었습니다.", () =>
+            {
+                Application.Quit();
+                AnnounceDialog.Close();
+            });
+                
+    }
+
     private TileInfo GetClickedObject()
     {
         RaycastHit hit;

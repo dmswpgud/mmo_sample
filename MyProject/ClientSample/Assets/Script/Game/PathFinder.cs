@@ -143,8 +143,10 @@ namespace Client.Game.Map
             if (y < 0 || y >= matrix.GetLength(1))
                 return false;
 
-            return matrix[x, y].isBlock == false && // 벽이 있는가?
-                   matrix[x, y].HasObject == false; // 다른 오브젝트가 있는가?
+            return matrix[x, y].isBlock == false;
+
+            // return matrix[x, y].isBlock == false && // 벽이 있는가?
+            //        matrix[x, y].HasObject == false; // 다른 오브젝트가 있는가?
         }
 
         private List<GridPoint> Reconstruct(GridPoint current) 

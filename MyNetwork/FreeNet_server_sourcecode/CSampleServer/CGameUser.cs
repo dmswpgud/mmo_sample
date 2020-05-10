@@ -62,19 +62,18 @@ namespace CSampleServer
 				// 내 케릭정보를 보내달라고 요청이 옴.
 				case PROTOCOL.GET_MY_PLAYER_REQ:
 				{
-					player.MoveSpeed = 5;
+					player.MoveSpeed = 2;
 					player.NearRange = 5;
 					player.CurrentPosX = 10;
 					player.CurrentPosY = 10;
-					player.Direction = 4; // DOWN
+					player.unitDirection = 4; // DOWN
 					Program.gameServer.ResponseGetMyPlayer(this);
-					player.SetPosition(player.CurrentPosX, player.CurrentPosY, player.Direction);
+					player.SetPosition(player.CurrentPosX, player.CurrentPosY, player.unitDirection);
 					break;
 				}
 				// 케릭을 이동시키겠다고 요청이 옴.
 				case PROTOCOL.PLAYER_MOVE_REQ:
 				{
-					var userId = msg.pop_int32();
 					var x = msg.pop_int32();
 					var y = msg.pop_int32();
 					var dir = msg.pop_int32();
@@ -85,13 +84,22 @@ namespace CSampleServer
 					// 뭐가 있으면 이동 불허. (포지션 셋팅 안하고 그냥 패킷 보냄)
 					if (nearObjects.Count != 0)
 					{
-						Program.gameServer.RequestPlayerMove(this);
+						player.RequestPlayerMove(this);
 						return;
 					}
 
 					// 뭐가 없으면 이동 허가. (포지션 셋팅 후 패킷 전송)
 					player.SetPosition(x, y, dir);
-					Program.gameServer.RequestPlayerMove(this);
+					player.RequestPlayerMove(this);
+					break;
+				}
+				// 플레이어가 상태를 보내옴.
+				case PROTOCOL.PLAYER_STATE_REQ:
+				{
+					player.playerState = msg.pop_int32();
+					player.unitDirection = msg.pop_int32();
+					var receiveUserId = msg.pop_int32();
+					player.RequestPlayerState(this, receiveUserId);
 					break;
 				}
 			}

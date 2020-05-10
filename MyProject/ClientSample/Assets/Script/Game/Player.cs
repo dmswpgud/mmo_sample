@@ -5,36 +5,45 @@ using UnityEngine;
 public class Player : Unit
 {
     public PlayerData PlayerData { private set; get; }
-    
     private TileInfo nextTile;
-    
-    public TextMesh textMesh;
-
     public Action<Player> OnArrivePoint;
-
     public bool IsMyPlayer;
+    public Animator animator;
+    private PlayerState playerState = PlayerState.IDLE;
+
+    [SerializeField]
+    private GameObject model;
+    
+    PlayerAnimationController animController;
+
+    void Awake()
+    {
+        animator = GetComponent<Animator>();
+        animController = gameObject.AddComponent<PlayerAnimationController>();
+        animController.Set(model, animator);
+    }
 
     public void InitPlayer(PlayerData data)
     {
         PlayerData = data;
-
+        userId = data.userId;
         SetPosition(data.currentPosX, data.currentPosY);
-
         SetDirection((UnitDirection)data.direction);
-
-        textMesh.text = data.userId.ToString();
+        SetState(PlayerState.IDLE);
     }
 
     public void MovePlayerNextPosition(PlayerData playerData = null)
     {
         PlayerData = playerData;
-
+        userId = playerData.userId;
         nextTile = GameManager.Inst.GetTileInfo(PlayerData.currentPosX, PlayerData.currentPosY);
+        ChangeDirectionByTargetPoint(PlayerData.currentPosX, PlayerData.currentPosY);
     }
 
     private void Update()
     {
         PlayerMoving();
+        Attack();
     }
 
     private void PlayerMoving()
@@ -43,6 +52,8 @@ public class Player : Unit
         {
             return;
         }
+        
+        SetState(PlayerState.WARK);
         
         transform.position = Vector3.MoveTowards(transform.position, nextTile.transform.position, PlayerData.MoveSpeed * Time.deltaTime);
 
@@ -54,5 +65,20 @@ public class Player : Unit
             
             nextTile = null;
         }
+    }
+
+    private void Attack()
+    {
+
+    }
+
+    protected override void ChangedDirection(UnitDirection dir)
+    {
+        animController.SetDirection(dir);
+    }
+
+    public void SetState(PlayerState state)
+    {
+        animController.SetState(state);
     }
 }

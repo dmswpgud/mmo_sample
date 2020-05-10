@@ -13,7 +13,7 @@ namespace CSampleServer
         {
             return userList.Exists(user => user.player.UserId == userId);
         }
-        
+
         // 서버 접속.
         public void UserEntedServer(CGameUser user)
         {
@@ -54,44 +54,12 @@ namespace CSampleServer
         public void ResponseGetMyPlayer(CGameUser user)
         {
             CPacket response = CPacket.create((short)PROTOCOL.GET_MY_PLAYER_RES);
-            PushPlayerrData(user, response);
+            PushPlayerData(user, response);
             user.send(response);
         }
         
-        // 플레이어가 범위내에 있을 시 알리기.
-        public void ResponseAddNearPlayer(CGameUser user, CGameUser user2)
-        {
-            CPacket response = CPacket.create((short)PROTOCOL.ADD_NEAR_PLAYER_RES);
-            PushPlayerrData(user2, response);
-            user.send(response);
-        }
-
-        // 플레이어가 범위내를 벚어났을 때 알리기.
-        public void ResponseRemoveNearPlayer(CGameUser user, CGameUser user2)
-        {
-            CPacket response = CPacket.create((short)PROTOCOL.REMOVE_NEAR_PLAYER_RES);
-            PushPlayerrData(user2, response);
-            user.send(response);
-        }
-
-        // 플레이어 이동.
-        public void RequestPlayerMove(CGameUser user)
-        {
-            // 이동한 플레이어에게 서버에 이동한거 등록했다고 답장
-            CPacket response = CPacket.create((short)PROTOCOL.PLAYER_MOVE_RES);
-            PushPlayerrData(user, response);
-            user.send(response);
-            
-            // 이동한 녀석의 좌표를 다른 플레이어들에게 보내기
-            foreach (var userData in user.player.listNearbyUser)
-            {
-                PushPlayerrData(user, response);
-                userData.send(response);
-            }
-        }
-
         // 여러명에게 보내기.
-        public void ResponsePacketUsers(List<CGameUser> listUsers, CPacket response)
+        public static void ResponsePacketToUsers(List<CGameUser> listUsers, CPacket response)
         {
             foreach (var user in listUsers)
             {
@@ -100,14 +68,15 @@ namespace CSampleServer
         }
 
         // 유저 패킷 패키징.
-        public void PushPlayerrData(CGameUser user, CPacket response)
+        public static void PushPlayerData(CGameUser user, CPacket response)
         {
             response.push(user.player.UserId);
             response.push(user.player.MoveSpeed);
             response.push(user.player.NearRange);
             response.push(user.player.CurrentPosX);
             response.push(user.player.CurrentPosY);
-            response.push(user.player.Direction);
+            response.push(user.player.unitDirection);
+            response.push(user.player.playerState);
         }
     }
 }

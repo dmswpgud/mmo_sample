@@ -6,8 +6,9 @@ using UnityEngine;
 /// 유닛 포지션
 /// 유닛이 속해있는 타일
 /// </summary>
-public class Unit : MonoBehaviour
+public abstract class Unit : MonoBehaviour
 {
+    public int userId;
     public UnitDirection Direction;
     private TileInfo currentTile;
     public TileInfo GetCurrentTile => currentTile;
@@ -23,45 +24,50 @@ public class Unit : MonoBehaviour
     public void SetDirection(UnitDirection dir)
     {
         Direction = dir;
+        ChangedDirection(dir);
     }
 
+    protected abstract void ChangedDirection(UnitDirection dir);
+
     // 이동할 곳에 대한 오브트의 방향을 셋팅.
-    public void MoveSetDirection(int destX, int destY)
+    public void ChangeDirectionByTargetPoint(int destX, int destY)
     {
         var pos = currentTile.GridPoint;
 
         if (pos.X > destX && pos.Y > destY)
         {
-            Direction = UnitDirection.UP;
+            Direction = UnitDirection.DOWN_LEFT; //
         }
         else if (pos.X > destX && pos.Y == destY)
         {
-            Direction = UnitDirection.UP_RIGHT;
+            Direction = UnitDirection.LEFT; //
         }
         else if (pos.X > destX && pos.Y < destY)
         {
-            Direction = UnitDirection.RIGHT;
+            Direction = UnitDirection.UP_LEFT; //
         }
         else if (pos.X == destX && pos.Y < destY)
         {
-            Direction = UnitDirection.DOWN_RIGHT;
+            Direction = UnitDirection.UP; //
         }
         else if (pos.X < destX && pos.Y < destY)
         {
-            Direction = UnitDirection.DOWN;
+            Direction = UnitDirection.UP_RIGHT; //
         }
         else if (pos.X < destX && pos.Y == destY)
         {
-            Direction = UnitDirection.DOWN_LEFT;
+            Direction = UnitDirection.RIGHT; //
         }
         else if (pos.X < destX && pos.Y > destY)
         {
-            Direction = UnitDirection.LEFT;
+            Direction = UnitDirection.DOWN_LEFT;
         }
         else if (pos.X == destX && pos.Y > destY)
         {
-            Direction = UnitDirection.UP_LEFT;
+            Direction = UnitDirection.DOWN; //
         }
+
+        SetDirection(Direction);
     }
 
     // 오브젝트가 바라보는 전방의 타일을 반환.

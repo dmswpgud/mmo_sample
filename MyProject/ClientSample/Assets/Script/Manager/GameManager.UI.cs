@@ -7,6 +7,8 @@ public partial class GameManager : MonoBehaviour
     public LoginDialog LoginDialog;
 
     public ChatDialog ChatDialog;
+
+    public AnnounceDialog AnnounceDialog;
     
     public void PrintSystemLog(string text)
     {
