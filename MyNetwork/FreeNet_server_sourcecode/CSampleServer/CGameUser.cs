@@ -84,13 +84,13 @@ namespace CSampleServer
 					// 뭐가 있으면 이동 불허. (포지션 셋팅 안하고 그냥 패킷 보냄)
 					if (nearObjects.Count != 0)
 					{
-						Program.gameServer.RequestPlayerMove(this);
+						player.RequestPlayerMove(this);
 						return;
 					}
 
 					// 뭐가 없으면 이동 허가. (포지션 셋팅 후 패킷 전송)
 					player.SetPosition(x, y, dir);
-					Program.gameServer.RequestPlayerMove(this);
+					player.RequestPlayerMove(this);
 					break;
 				}
 				// 플레이어가 상태를 보내옴.
@@ -99,7 +99,7 @@ namespace CSampleServer
 					player.playerState = msg.pop_int32();
 					player.unitDirection = msg.pop_int32();
 					var receiveUserId = msg.pop_int32();
-					Program.gameServer.RequestPlayerState(this, receiveUserId);
+					player.RequestPlayerState(this, receiveUserId);
 					break;
 				}
 			}

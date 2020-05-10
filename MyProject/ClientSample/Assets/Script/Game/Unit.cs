@@ -1,6 +1,5 @@
 ﻿using GameServer;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 /// <summary>
 /// 유닛 방향

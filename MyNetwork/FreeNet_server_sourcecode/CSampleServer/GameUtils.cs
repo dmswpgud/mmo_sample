@@ -3,6 +3,12 @@ using GameServer;
 
 namespace CSampleServer
 {
+    public class GridPoint 
+    {
+        public int X, Y;
+        public GridPoint(int x, int y) { X = x; Y = y; }
+    }
+    
     public class GameUtils
     {
         public static List<CGameUser> GetNearbyUsers(CGameUser targetPlayer, List<CGameUser> listUSer)
@@ -64,6 +70,20 @@ namespace CSampleServer
         public static int DamageCalculator(CPlayer attacker, CPlayer deffender)
         {
             return 1;
+        }
+        
+        public CGameUser GetFrontPositionTarget(CGameUser user, List<CGameUser> nearUsers)
+        {
+            var frontPosition = GetFrontPositionUnit((UnitDirection)user.player.unitDirection, user.player.CurrentPosX, user.player.CurrentPosY);
+
+            var target = nearUsers.Find(p => p.player.CurrentPosX == frontPosition.X && p.player.CurrentPosY == frontPosition.Y);
+
+            return target;
+        }
+        
+        public CGameUser GetTargetUserFromUserId(int targetUserId, List<CGameUser> userList)
+        {
+            return userList.Find(p => p.player.UserId == targetUserId);
         }
     }
 }
