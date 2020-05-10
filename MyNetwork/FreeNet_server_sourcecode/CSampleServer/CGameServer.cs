@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using FreeNet;
 using GameServer;
 
@@ -11,7 +10,7 @@ namespace CSampleServer
 
         public bool ExistsUser(int userId)
         {
-            return userList.Exists(user => user.player.UserId == userId);
+            return userList.Exists(user => user.player.playerData.playerId == userId);
         }
 
         // 서버 접속.
@@ -21,7 +20,7 @@ namespace CSampleServer
             userList.Add(user);
 
             CPacket response = CPacket.create((short)PROTOCOL.ENTER_GAME_ROOM_RES);
-            response.push(user.player.UserId);
+            response.push(user.player.playerData.playerId);
             user.send(response);
         }
         
@@ -33,7 +32,7 @@ namespace CSampleServer
             foreach (var otherUser in userList)
             {
                 CPacket response = CPacket.create((short)PROTOCOL.DISCONECTED_PLAYER_RES);
-                response.push(user.player.UserId);
+                response.push(user.player.playerData.playerId);
                 otherUser.send(response);
             }
         }
@@ -44,7 +43,7 @@ namespace CSampleServer
             foreach (var user in userList)
             {
                 CPacket response = CPacket.create((short)PROTOCOL.CHAT_MSG_ACK);
-                response.push(owner.player.UserId);
+                response.push(owner.player.playerData.playerId);
                 response.push(text);
                 user.send(response);
             }
@@ -54,7 +53,9 @@ namespace CSampleServer
         public void ResponseGetMyPlayer(CGameUser user)
         {
             CPacket response = CPacket.create((short)PROTOCOL.GET_MY_PLAYER_RES);
-            PushPlayerData(user, response);
+            user.player.playerData.PushData(response);
+            user.player.stateData.PushData(response);
+            user.player.HpMp.PushData(response);
             user.send(response);
         }
         
@@ -65,18 +66,6 @@ namespace CSampleServer
             {
                 user.send(response);
             }
-        }
-
-        // 유저 패킷 패키징.
-        public static void PushPlayerData(CGameUser user, CPacket response)
-        {
-            response.push(user.player.UserId);
-            response.push(user.player.MoveSpeed);
-            response.push(user.player.NearRange);
-            response.push(user.player.CurrentPosX);
-            response.push(user.player.CurrentPosY);
-            response.push(user.player.unitDirection);
-            response.push(user.player.playerState);
         }
     }
 }

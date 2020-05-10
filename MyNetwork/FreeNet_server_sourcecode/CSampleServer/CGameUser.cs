@@ -45,8 +45,10 @@ namespace CSampleServer
 						return;
 					}
 					
-					player = new CPlayer(this, userId);
-
+					player = new CPlayer(this);
+					player.playerData = new PlayerData() {playerId = userId, moveSpeed = 2, nearRange = 5};
+					player.stateData = new PlayerStateData() {playerId = userId, posX = 10, posY = 10, direction = 4};
+					player.HpMp = new HpMp() {Hp = 50, Mp = 10};
 					Console.WriteLine($"user id {userId}");
 					Program.gameServer.UserEntedServer(this);
 					break;
@@ -62,13 +64,8 @@ namespace CSampleServer
 				// 내 케릭정보를 보내달라고 요청이 옴.
 				case PROTOCOL.GET_MY_PLAYER_REQ:
 				{
-					player.MoveSpeed = 2;
-					player.NearRange = 5;
-					player.CurrentPosX = 10;
-					player.CurrentPosY = 10;
-					player.unitDirection = 4; // DOWN
 					Program.gameServer.ResponseGetMyPlayer(this);
-					player.SetPosition(player.CurrentPosX, player.CurrentPosY, player.unitDirection);
+					player.SetPosition(player.stateData.posX, player.stateData.posY, player.stateData.direction);
 					break;
 				}
 				// 케릭을 이동시키겠다고 요청이 옴.
@@ -76,7 +73,7 @@ namespace CSampleServer
 				{
 					var x = msg.pop_int32();
 					var y = msg.pop_int32();
-					var dir = msg.pop_int32();
+					var dir = msg.pop_byte();
 					
 					// 이동할 좌표에 뭐가 있는지 체크.
 					var nearObjects = GameUtils.GetNearUserFromPosition(x, y, player.listNearbyUser);
@@ -96,9 +93,9 @@ namespace CSampleServer
 				// 플레이어가 상태를 보내옴.
 				case PROTOCOL.PLAYER_STATE_REQ:
 				{
-					player.playerState = msg.pop_int32();
-					player.unitDirection = msg.pop_int32();
+					player.stateData = new PlayerStateData(msg);
 					var receiveUserId = msg.pop_int32();
+					
 					player.RequestPlayerState(this, receiveUserId);
 					break;
 				}

@@ -28,7 +28,7 @@ public partial class CNetworkManager : MonoBehaviour
         OnNetworkCallback = onRes;
     }
 
-    public void RequestPlayerMove(Int32 x, Int32 y, Int32 dir, Action<ResponseData, ERROR> onRes = null)
+    public void RequestPlayerMove(Int32 x, Int32 y, byte dir, Action<ResponseData, ERROR> onRes = null)
     {
         CPacket msg = CPacket.create((short)PROTOCOL.PLAYER_MOVE_REQ);
         msg.push(x);
@@ -38,12 +38,11 @@ public partial class CNetworkManager : MonoBehaviour
         OnMovePlayer = onRes;
     }
     
-    public void RequestPlayerState(Int32 PlayerState,  Int32 unitDirection, Int32 targetUserId, Action<ResponseData, ERROR> onRes)
+    public void RequestPlayerState(PlayerStateData stateData, Int32 receiverUserId, Action<ResponseData, ERROR> onRes)
     {
         CPacket msg = CPacket.create((short)PROTOCOL.PLAYER_STATE_REQ);
-        msg.push(PlayerState);
-        msg.push(unitDirection);
-        msg.push(targetUserId);
+        stateData.PushData(msg);
+        msg.push(receiverUserId);
         send(msg);
         OnNetworkCallback = onRes;
     }

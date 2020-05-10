@@ -8,13 +8,14 @@ using UnityEngine;
 /// </summary>
 public abstract class Unit : MonoBehaviour
 {
-    public int userId;
+    public PlayerData DATA { protected set; get; }
     public UnitDirection Direction;
     private TileInfo currentTile;
     public TileInfo GetCurrentTile => currentTile;
 
     protected void SetPosition(int x, int y)
     {
+        ChangedPosition(x, y);
         var tile = GameManager.Inst.GetTileInfo(x, y);
         currentTile = tile;
         transform.position = tile.transform.position;
@@ -28,6 +29,8 @@ public abstract class Unit : MonoBehaviour
     }
 
     protected abstract void ChangedDirection(UnitDirection dir);
+
+    protected abstract void ChangedPosition(int x, int y);
 
     // 이동할 곳에 대한 오브트의 방향을 셋팅.
     public void ChangeDirectionByTargetPoint(int destX, int destY)

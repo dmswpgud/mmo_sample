@@ -9,27 +9,21 @@ namespace CSampleServer
     public class CPlayer
     {
         CGameUser owner;
-        public Int32 UserId;
-        public Int32 MoveSpeed;
-        public Int32 NearRange;
-        public Int32 CurrentPosX {get; set;}
-        public Int32 CurrentPosY {get; set;}
-        public Int32 unitDirection {get; set;}
-        public Int32 playerState;
         public List<CGameUser> listNearbyUser = new List<CGameUser>();
-        public Int32 HP = 50;
+        public PlayerData playerData = new PlayerData();
+        public PlayerStateData stateData = new PlayerStateData();
+        public HpMp HpMp = new HpMp();
         
-        public CPlayer(CGameUser user, int userId)
+        public CPlayer(CGameUser user)
         {
             owner = user;
-            UserId = userId;
         }
 
         public void SetPosition(int x, int y, int dir)
         {
-            CurrentPosX = x;
-            CurrentPosY = y;
-            unitDirection = dir;
+            stateData.posX = (short)x;
+            stateData.posY = (short)y;
+            stateData.direction = (byte)dir;
             
            var updateNearPlayers = GameUtils.GetNearbyUsers(owner, Program.gameServer.userList);
            var list1 = listNearbyUser.Where(i => !updateNearPlayers.Contains(i)).ToList(); // 삭제된 플레이어 리스트
@@ -72,7 +66,9 @@ namespace CSampleServer
         public void ResponseAddNearPlayer(CGameUser user, CGameUser user2)
         {
             CPacket response = CPacket.create((short)PROTOCOL.ADD_NEAR_PLAYER_RES);
-            CGameServer.PushPlayerData(user2, response);
+            user2.player.playerData.PushData(response);
+            user2.player.stateData.PushData(response);
+            user2.player.HpMp.PushData(response);
             user.send(response);
         }
 
@@ -80,7 +76,7 @@ namespace CSampleServer
         public void ResponseRemoveNearPlayer(CGameUser user, CGameUser user2)
         {
             CPacket response = CPacket.create((short)PROTOCOL.REMOVE_NEAR_PLAYER_RES);
-            CGameServer.PushPlayerData(user2, response);
+            user2.player.playerData.PushData(response);
             user.send(response);
         }
         
@@ -89,13 +85,13 @@ namespace CSampleServer
         {
             // 이동한 플레이어에게 서버에 이동한거 등록했다고 답장
             CPacket response = CPacket.create((short)PROTOCOL.PLAYER_MOVE_RES);
-            CGameServer.PushPlayerData(user, response);
+            user.player.stateData.PushData(response);
             user.send(response);
             
             // 이동한 녀석의 좌표를 다른 플레이어들에게 보내기
             foreach (var userData in user.player.listNearbyUser)
             {
-                CGameServer.PushPlayerData(user, response);
+                user.player.stateData.PushData(response);
                 userData.send(response);
             }
         }
@@ -103,92 +99,61 @@ namespace CSampleServer
         // 플레이어 상태 변경.
         public void RequestPlayerState(CGameUser user, int receiveUserId)
         {
-            switch ((PlayerState)user.player.playerState)
+            switch ((PlayerState)user.player.stateData.state)
             {
                 case PlayerState.ATTACK:
                     PlayerStateAttack(user, receiveUserId);
                     break;
             }
         }
-        
+
         private void PlayerStateAttack(CGameUser attacker, int defenderUserId)
         {
-            var defender = attacker.player.listNearbyUser.Find(p => p.player.UserId == defenderUserId);
+            var defender = attacker.player.listNearbyUser.Find(p => p.player.playerData.playerId == defenderUserId);
+            CPacket response = CPacket.create((short)PROTOCOL.PLAYER_STATE_RES);
             
-            // 패킷 구성.
-            // 상태를 요청한 유저 아이디.
-            // 요청 유저의 상태 값.
-            // 요청 유저의 방향.
-            // 요청 유저의 타겟 (타겟이 없으면 0)
-            // 요청 유저의 결과 값.
-            
-            // 타겟이 없으면 플레이어 상태만 전 플레이어에게 보낸다.
             if (defender == null)
             {
-                CPacket response = CPacket.create((short)PROTOCOL.PLAYER_STATE_RES);
-                response.push(attacker.player.UserId);
-                response.push(attacker.player.playerState);
-                response.push(attacker.player.unitDirection);
-                response.push(0); // 타겟이 없기에 0 보냄.
-                response.push(0); // 타겟이 없기에 0 보냄. // 공격 받는자의 HP보냄 // 사실 보낼 필욘 없음;
-                
+                attacker.player.stateData.PushData(response);
+                //defender?.player.stateData.PushData(response);
+                //defender.player.HpMp.PushData(response);
                 CGameServer.ResponsePacketToUsers(attacker.player.listNearbyUser, response);
-                
                 attacker.send(response); // TODO: <= 로그 확인용.. 나한테 보낼 필요는 없기에 나중에 삭제
             }
-            // 타겟이 있으면 서버에서 HP계산 후 어태커와 디펜더에게 결과 전송,
-            // 다른 플레이어들에겐 상태값과 어태커, 디펜더 아이디를 보낸다.
             else
             {
-                var hp = GameUtils.DamageCalculator(attacker.player, defender.player);
-                defender.player.playerState = hp <= 0 ? (Int32)PlayerState.DEATH : (Int32)PlayerState.DAMAGE;
-                
-                // 공격자.
-                {
-                    
-                    CPacket response = CPacket.create((short)PROTOCOL.PLAYER_STATE_RES);
-                    response.push(attacker.player.UserId);
-                    response.push((int)PlayerState.ATTACK);
-                    response.push(attacker.player.unitDirection);
-                    response.push(defender.player.UserId); // 공격받는 자의 아이디도 보냄.
-                    response.push(defender.player.playerState); // 피격자의 상태값 보냄.
-                    response.push(GameUtils.DamageCalculator(attacker.player, defender.player)); // 공격 받는자의 HP보냄
+                var defenderHp = GameUtils.DamageCalculator(attacker.player, defender.player);
+                defender.player.HpMp.Hp = defenderHp;
+                defender.player.stateData.state = defenderHp <= 0 ? (byte)PlayerState.DEATH : (byte)PlayerState.DAMAGE;
+
+                { // 공격 > 서버 > 공격
+                    attacker.player.stateData.PushData(response);
+                    defender.player.stateData.PushData(response);
+                    defender.player.HpMp.PushData(response);
                     attacker.send(response);
                 }
-                // 피격자.
-                {
-                    CPacket response = CPacket.create((short)PROTOCOL.PLAYER_STATE_RES);
-                    response.push(attacker.player.UserId);
-                    response.push(attacker.player.playerState);
-                    response.push(attacker.player.unitDirection);
-                    response.push(defender.player.UserId); // 공격한 자의 아이디도 보냄.
-                    response.push(defender.player.playerState); // 피격자의 상태값 보냄.
-                    response.push(hp); // 공격 받는자의 HP보냄
+
+                { // 공격 > 서버 > 피격자
+                    attacker.player.stateData.PushData(response);
+                    defender.player.stateData.PushData(response);
+                    defender.player.HpMp.PushData(response);
                     defender.send(response);
                 }
-                // 방관자.
-                {
-                    List<CGameUser> attackerDefenderNearUserList = new List<CGameUser>();
-                    // 어태커에 없는 디펜더의 범위 유저 리스트.
-                    var defenderList = defender.player.listNearbyUser.Where(i => !attacker.player.listNearbyUser.Contains(i)).ToList();
-                    attackerDefenderNearUserList.AddRange(attacker.player.listNearbyUser);
-                    attackerDefenderNearUserList.AddRange(defenderList);
+
+                { // 공격 > 서버 > 브로드캐스트
+                    var attackerDefenderNearUserList = GameUtils.GetTotlNearUserList(attacker.player.listNearbyUser, defender.player.listNearbyUser);
                     
-                    CPacket response = CPacket.create((short)PROTOCOL.PLAYER_STATE_RES);
                     foreach (var user in attackerDefenderNearUserList)
                     {
-                        if (attacker.player.UserId == user.player.UserId)
+                        if (attacker.player.playerData.playerId == user.player.playerData.playerId)
                             continue;
 
-                        if (defender.player.UserId == user.player.UserId)
+                        if (defender.player.playerData.playerId == user.player.playerData.playerId)
                             continue;
                         
-                        response.push(attacker.player.UserId);
-                        response.push(attacker.player.playerState);
-                        response.push(attacker.player.unitDirection);
-                        response.push(defender.player.UserId);
-                        response.push(defender.player.playerState); // 피격자의 상태값 보냄.
-                        response.push(GameUtils.DamageCalculator(attacker.player, defender.player)); // 공격 받는자의 HP보냄
+                        attacker.player.stateData.PushData(response);
+                        defender.player.stateData.PushData(response);
+                        defender.player.HpMp.PushData(response);
                         user.send(response);
                     }
                 }
