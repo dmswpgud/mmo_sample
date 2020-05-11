@@ -160,7 +160,7 @@ public partial class CNetworkManager : MonoBehaviour {
                 var statePackage = new PlayerStatePackage();
                 statePackage.senderPlayerData = new PlayerStateData(msg);
                 statePackage.receiverPlayerData = new PlayerStateData(msg);
-                statePackage.receiverPlayerHpMp = CreateHpMp(msg);
+                statePackage.receiverPlayerHpMp = new HpMp(msg);
 
                 OnReceivedOtherPlayerChangedState?.Invoke(statePackage, ERROR.NONE);
                 break;
@@ -177,14 +177,5 @@ public partial class CNetworkManager : MonoBehaviour {
         }
         
         this.gameserver.send(msg);
-    }
-
-    public HpMp CreateHpMp(CPacket msg)
-    {
-        HpMp data = new HpMp();
-        data.Hp = msg.pop_int32();
-        data.Mp = msg.pop_int32();
-        
-        return data;
     }
 }
