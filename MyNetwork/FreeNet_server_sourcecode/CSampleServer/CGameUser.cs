@@ -48,7 +48,7 @@ namespace CSampleServer
 					player = new CPlayer(this);
 					player.playerData = new PlayerData() {playerId = userId, moveSpeed = 2, nearRange = 5};
 					player.stateData = new PlayerStateData() {playerId = userId, posX = 10, posY = 10, direction = 4};
-					player.HpMp = new HpMp() {Hp = 50, Mp = 10};
+					player.HpMp = new HpMp() {Hp = 500, Mp = 10};
 					Console.WriteLine($"user id {userId}");
 					Program.gameServer.UserEntedServer(this);
 					break;
