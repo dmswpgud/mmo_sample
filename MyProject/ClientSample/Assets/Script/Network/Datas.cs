@@ -1,8 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using FreeNet;
 
 public class ResponseData {}
+
+public class PlayerDataPackage : ResponseData
+{
+    public PlayerData data;
+    public PlayerStateData state;
+    public HpMp hpMp;
+}
+
+public class PlayerStatePackage : ResponseData
+{
+    public PlayerStateData senderPlayerData;
+    public PlayerStateData receiverPlayerData;
+    public HpMp receiverPlayerHpMp;
+}
 
 public class ChatData : ResponseData
 {
@@ -39,20 +52,6 @@ public class PlayerData : ResponseData
         response.push(moveSpeed);
         response.push(nearRange);
     }
-}
-
-public class PlayerDataPackage : ResponseData
-{
-    public PlayerData data;
-    public PlayerStateData state;
-    public HpMp hpMp;
-}
-
-public class PlayerStatePackage : ResponseData
-{
-    public PlayerStateData senderPlayerData;
-    public PlayerStateData receiverPlayerData;
-    public HpMp receiverPlayerHpMp;
 }
 
 public class PlayerStateData : ResponseData
@@ -100,4 +99,3 @@ public class HpMp : ResponseData
         response.push(Mp);
     }
 }
-
