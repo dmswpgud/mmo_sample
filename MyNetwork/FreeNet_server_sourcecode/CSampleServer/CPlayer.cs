@@ -118,7 +118,6 @@ namespace CSampleServer
                 //defender?.player.stateData.PushData(response);
                 //defender.player.HpMp.PushData(response);
                 CGameServer.ResponsePacketToUsers(attacker.player.listNearbyUser, response);
-                attacker.send(response); // TODO: <= 로그 확인용.. 나한테 보낼 필요는 없기에 나중에 삭제
             }
             else
             {

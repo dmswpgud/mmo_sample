@@ -193,7 +193,12 @@ public partial class GameManager
             var unit = targetTile.GetTileUnit();
             int targetUserId = unit ? unit.DATA.playerId : 0;
 
-            myPlayer.SetAnim(PlayerState.ATTACK);
+            if (unit == null)
+            {
+                myPlayer.SetPlayerState(PlayerState.ATTACK);
+            }
+
+            myPlayer.SetPlayerState(PlayerState.ATTACK, false);
             myPlayer.ChangeDirectionByTargetPoint(targetTile.GridPoint.X, targetTile.GridPoint.Y);
             CNetworkManager.Inst.RequestPlayerState(myPlayer.STATE, targetUserId, OnReceivedChangedPlayerState);
         }
@@ -210,70 +215,17 @@ public partial class GameManager
         PlayerStatePackage data = (PlayerStatePackage) res;
 
         var senderPlayer = GetPlayerByUserId(data.senderPlayerData.playerId);
-        senderPlayer?.SetStateData(data.senderPlayerData);
-        
         var receiverPlayer = GetPlayerByUserId(data.receiverPlayerData.playerId);
+        
+        if (senderPlayer)
+        {
+            senderPlayer.SetStateData(data.senderPlayerData);
+            senderPlayer.OnFinishedAnim((state) =>
+            {
+                receiverPlayer?.SetStateData(data.receiverPlayerData);
+            });
+        }
+        
         receiverPlayer?.SetStateData(data.receiverPlayerData);
     }
-
-    // private void OnReceivedChangedPlayerState(ResponseData res, ERROR error)
-    // {
-    //     if (error != ERROR.NONE)
-    //     {
-    //         PrintSystemLog(error.ToString());
-    //         return;
-    //     }
-    //
-    //     PlayerStateData data = (PlayerStateData) res;
-    //
-    //     switch ((PlayerState)data.playerState)
-    //     {
-    //         case PlayerState.ATTACK:
-    //         {
-    //             // 어택 요청을 보내고 어택 결과를 받는다.
-    //             if (data.ownerUserId == UserId)
-    //             {
-    //                 var defecderPlayer = GetPlayerByUserId(data.receiveUserId);
-    //                 defecderPlayer?.SetState((PlayerState)data.receiveUserPlayerState);
-    //                 var str = $"내가 {data.receiveUserId}님에게 {(PlayerState)data.playerState}하고 있습니다.";
-    //                 PrintSystemLog(str);
-    //             }
-    //             // 다른 유저가 싸우는거 브로드캐스트 받음.
-    //             // 공격자, 피격자의 상태 애니메이션 재생 셔켜야댐.
-    //             else
-    //             {
-    //                 var ownerPlayer = GetPlayerByUserId(data.ownerUserId);
-    //                 ownerPlayer?.SetDirection((UnitDirection)data.direction);
-    //                 ownerPlayer?.SetState(PlayerState.ATTACK);
-    //                 var defecderPlayer = GetPlayerByUserId(data.receiveUserId);
-    //                 defecderPlayer?.SetState((PlayerState)data.receiveUserPlayerState);
-    //                 var str = $"{data.ownerUserId}님이 {data.receiveUserId}님에게 {(PlayerState)data.playerState}하고 있습니다.";
-    //                 PrintSystemLog(str);
-    //             }
-    //             break;
-    //         }
-    //         case PlayerState.DAMAGE:
-    //         {
-    //             var str = $"{data.ownerUserId}님이 나에게 {(PlayerState)data.playerState}했습니다.";
-    //             var attacker = GetPlayerByUserId(data.ownerUserId);
-    //             attacker.SetState(PlayerState.ATTACK);
-    //             attacker.SetDirection((UnitDirection)data.direction);
-    //             myPlayer.SetState(PlayerState.DAMAGE);
-    //             break;
-    //         }
-    //         case PlayerState.DEATH:
-    //         {
-    //             myPlayer.SetState(PlayerState.DEATH);
-    //             break;
-    //         }
-    //         case PlayerState.CHANGED_DIRECTION:
-    //         {
-    //             var ownerPlayer = GetPlayerByUserId(data.ownerUserId);
-    //             ownerPlayer.SetDirection((UnitDirection)data.direction);
-    //             var str = $"{data.ownerUserId}님이 {(UnitDirection)data.direction}로 방향을 돌렸습니다.";
-    //             PrintSystemLog(str);
-    //             break;
-    //         }
-    //     }
-    //}
 }

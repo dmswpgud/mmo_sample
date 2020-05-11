@@ -52,7 +52,7 @@ public class Player : Unit
             return;
         }
         
-        SetAnim(PlayerState.WARK);
+        SetPlayerState(PlayerState.WARK);
         
         transform.position = Vector3.MoveTowards(transform.position, nextTile.transform.position, DATA.moveSpeed * Time.deltaTime);
 
@@ -68,7 +68,7 @@ public class Player : Unit
     
     public void SetStateData(PlayerStateData state)
     {
-        SetAnim((PlayerState)state.state);
+        SetPlayerState((PlayerState)state.state);
         SetDirection((UnitDirection) state.direction);
         SetPosition(state.posX, state.posY);
     }
@@ -85,9 +85,18 @@ public class Player : Unit
         STATE.posY = (short) y;
     }
 
-    public void SetAnim(PlayerState state)
+    public void SetPlayerState(PlayerState state, bool playAnim = true)
     {
         this.STATE.state = (byte)state;
-        animController.SetState(state);
+
+        if (playAnim)
+        {
+            animController.SetState(state);
+        }
+    }
+
+    public void OnFinishedAnim(Action<PlayerState> onFinished)
+    {
+        animController.OnFinishedAnim = onFinished;
     }
 }

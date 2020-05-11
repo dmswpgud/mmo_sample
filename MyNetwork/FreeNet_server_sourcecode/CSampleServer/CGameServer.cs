@@ -27,13 +27,16 @@ namespace CSampleServer
         // 서버 접속 종료.
         public void DisconnectedUser(CGameUser user)
         {
-            userList.Remove(user);
-            
-            foreach (var otherUser in userList)
+            lock (user)
             {
-                CPacket response = CPacket.create((short)PROTOCOL.DISCONECTED_PLAYER_RES);
-                response.push(user.player.playerData.playerId);
-                otherUser.send(response);
+                userList.Remove(user);
+            
+                foreach (var otherUser in userList)
+                {
+                    CPacket response = CPacket.create((short)PROTOCOL.DISCONECTED_PLAYER_RES);
+                    response.push(user.player.playerData.playerId);
+                    otherUser.send(response);
+                }
             }
         }
 
