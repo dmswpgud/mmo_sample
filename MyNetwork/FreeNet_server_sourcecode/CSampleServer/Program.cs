@@ -9,6 +9,9 @@ namespace CSampleServer
         public static List<CGameUser> userlist;
         public static CGameServer gameServer = new CGameServer();
 
+        public delegate void Loop();
+        public static Loop Tick;
+
         static void Main(string[] args)
         {
             CPacketBufferManager.initialize(2000);
@@ -25,6 +28,7 @@ namespace CSampleServer
             Console.WriteLine("Started!");
             while (true)
             {
+                Tick();
                 //Console.Write(".");
                 System.Threading.Thread.Sleep(1000);
             }

@@ -1,5 +1,4 @@
-﻿using Client.Game.Map;
-using GameServer;
+﻿using GameServer;
 using UnityEngine;
 using DG.Tweening;
 
@@ -15,7 +14,7 @@ public abstract class Unit : MonoBehaviour
     public int Y { private set; get; }
     public UnitDirection Direction  { private set; get; }
     
-    GameObject Renderer;
+    public GameObject Renderer { private set; get; }
 
     public void Initialized(int id, int x, int y, UnitDirection direction, GameObject renderer = null)
     {

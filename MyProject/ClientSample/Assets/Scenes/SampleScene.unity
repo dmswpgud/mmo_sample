@@ -2688,6 +2688,8 @@ MonoBehaviour:
   LoginDialog: {fileID: 1028406321}
   ChatDialog: {fileID: 188059185}
   AnnounceDialog: {fileID: 208006351}
+  TargetClicker: {fileID: 1976927306769780584, guid: 43467ec3957834aa0b71ec83fb464bdc,
+    type: 3}
   UserId: 0
 --- !u!4 &1987498059
 Transform:

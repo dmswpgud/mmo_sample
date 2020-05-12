@@ -100,10 +100,16 @@ namespace CSampleServer
         public void RequestPlayerState(CGameUser user, int receiveUserId)
         {
             PlayerStateAttack(user, receiveUserId);
+            
             // switch ((PlayerState)user.player.stateData.state)
             // {
             //     case PlayerState.ATTACK:
-            //         PlayerStateAttack(user, receiveUserId);
+            //         while (stateData.state == (byte)PlayerState.ATTACK)
+            //         {
+            //             PlayerStateAttack(user, receiveUserId);
+            //             //Console.Write(".");
+            //             System.Threading.Thread.Sleep(2000);
+            //         }
             //         break;
             // }
         }

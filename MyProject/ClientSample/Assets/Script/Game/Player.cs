@@ -14,6 +14,8 @@ public class Player : Unit
     
     [SerializeField]
     private GameObject model;
+    [SerializeField]
+    public GameObject modelHead;
     PlayerAnimationController animController;
 
     void Awake()
@@ -105,6 +107,7 @@ public class Player : Unit
 
     public void OnFinishedAnim(Action<PlayerState> onFinished)
     {
-        animController.OnFinishedAnim = onFinished;
+        Debug.Log("오냐?");
+        animController.OnFinishedAnim += onFinished;
     }
 }

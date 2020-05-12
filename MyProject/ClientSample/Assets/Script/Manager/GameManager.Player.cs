@@ -10,6 +10,12 @@ public partial class GameManager
     public List<Player> players = new List<Player>();
     public Player myPlayer;
     private List<GridPoint> path;
+    private Unit TargetUnit;
+
+    private void OnSetTargetUnit(Unit target)
+    {
+        TargetUnit = target;
+    }
 
     private void UpdateGameManagerPlayer()
     {
@@ -102,6 +108,8 @@ public partial class GameManager
 
         player.InitPlayer(data.data, data.state, data.hpMp);
 
+        CreateTargetClicker(player, player.modelHead.transform);
+
         return player;
     }
 
@@ -179,6 +187,7 @@ public partial class GameManager
         if (myPlayer == null)
             return;
 
+        #region ATTACK
         if (InputKey.InputAttack)
         {
             var targetTile = GetClickedObject();
@@ -186,19 +195,18 @@ public partial class GameManager
                 targetTile.GridPoint.Y == myPlayer.STATE.posY)
                 return;
             
-            var unit = (Player)targetTile.GetTileUnit();
-            int targetUserId = unit ? unit.DATA.playerId : 0;
-
-            if (unit == null)
-            {
-                myPlayer.SetPlayerAnim(PlayerState.ATTACK);
-            }
-
             myPlayer.SetDirectionByPosition(targetTile.GridPoint.X, targetTile.GridPoint.Y);
-            myPlayer.SetPlayerAnim(PlayerState.ATTACK, false);
-            CNetworkManager.Inst.RequestPlayerState(myPlayer.STATE, targetUserId, OnReceivedChangedPlayerState);
+            myPlayer.SetPlayerAnim(PlayerState.ATTACK);
+            
+            myPlayer.OnFinishedAnim((s) =>
+            {
+                CNetworkManager.Inst.RequestPlayerState(myPlayer.STATE, receiverUserId: TargetUnit?.ID ?? 0, OnReceivedChangedPlayerState);    
+            });
+            
         }
+        #endregion
 
+        #region CHANGE DIRECTION
         if (InputKey.InputChangeDirection)
         {
             var targetTile = GetClickedObject();
@@ -212,8 +220,9 @@ public partial class GameManager
                 CNetworkManager.Inst.RequestPlayerState(myPlayer.STATE, 0, OnReceivedChangedPlayerState);
             }
         }
+        #endregion
     }
-    
+
     private void OnReceivedChangedPlayerState(ResponseData res, ERROR error)
     {
         if (error != ERROR.NONE)

@@ -16,8 +16,9 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void OnFinishedAttackAnim()
     {
+        var a = OnFinishedAnim == null ? "없" : "있";
+        Debug.Log(a);
         OnFinishedAnim?.Invoke(PlayerState.ATTACK);
-        OnFinishedAnim = null;
     }
 
     public void SetState(PlayerState state)
@@ -40,8 +41,5 @@ public class PlayerAnimationController : MonoBehaviour
                 animator.Play("ShieldWarrior@Death01");
                 break;
         }
-        
-        OnFinishedAnim?.Invoke(state);
-        OnFinishedAnim = null;
     }
 }
