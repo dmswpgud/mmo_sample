@@ -24,11 +24,15 @@ namespace CSampleServer
             service.initialize();
             service.listen("0.0.0.0", 7979, 100);
 
+            Tick = gameServer.Tick;
 
             Console.WriteLine("Started!");
             while (true)
             {
-                Tick();
+                if (Tick != null)
+                {
+                    Tick();    
+                }
                 //Console.Write(".");
                 System.Threading.Thread.Sleep(1000);
             }

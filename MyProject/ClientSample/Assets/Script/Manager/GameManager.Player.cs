@@ -197,11 +197,7 @@ public partial class GameManager
             
             myPlayer.SetDirectionByPosition(targetTile.GridPoint.X, targetTile.GridPoint.Y);
             myPlayer.SetPlayerAnim(PlayerState.ATTACK);
-            
-            myPlayer.OnFinishedAnim((s) =>
-            {
-                CNetworkManager.Inst.RequestPlayerState(myPlayer.STATE, receiverUserId: TargetUnit?.ID ?? 0, OnReceivedChangedPlayerState);    
-            });
+            CNetworkManager.Inst.RequestPlayerState(myPlayer.STATE, receiverUserId: TargetUnit?.ID ?? 0, OnReceivedChangedPlayerState);
             
         }
         #endregion

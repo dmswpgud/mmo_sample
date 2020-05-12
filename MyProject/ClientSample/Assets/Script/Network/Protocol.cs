@@ -10,7 +10,7 @@ namespace GameServer
 
     public enum UnitType
     {
-        PLAYER, ENEMY, MAP_OBJECT 
+        PLAYER, MONSTER, MAP_OBJECT 
     }
 
     public enum PlayerState
@@ -43,6 +43,8 @@ namespace GameServer
         
         PLAYER_STATE_REQ,
         PLAYER_STATE_RES,
+        
+        MONSTER_SPONE_RES,
 
         END
     }
@@ -88,6 +90,7 @@ public class PlayerIdData : ResponseData
 public class PlayerData : ResponseData
 {
     public Int32 playerId;
+    public byte unitType;
     public byte moveSpeed;
     public byte nearRange;
         
@@ -95,6 +98,7 @@ public class PlayerData : ResponseData
     public PlayerData(CPacket response)
     {
         playerId = response.pop_int32();
+        unitType = response.pop_byte();
         moveSpeed = response.pop_byte();
         nearRange = response.pop_byte();
     }
@@ -102,6 +106,7 @@ public class PlayerData : ResponseData
     public void PushData(CPacket response)
     {
         response.push(playerId);
+        response.push(unitType);
         response.push(moveSpeed);
         response.push(nearRange);
     }
@@ -110,6 +115,7 @@ public class PlayerData : ResponseData
 public class PlayerStateData : ResponseData
 {
     public Int32 playerId;
+    public byte unitType;
     public byte state;
     public byte direction;
     public short posX;
@@ -119,6 +125,7 @@ public class PlayerStateData : ResponseData
     public PlayerStateData(CPacket msg)
     {
         playerId = msg.pop_int32();
+        unitType = msg.pop_byte();
         state = msg.pop_byte();
         direction = msg.pop_byte();
         posX = msg.pop_int16();
@@ -128,6 +135,7 @@ public class PlayerStateData : ResponseData
     public void PushData(CPacket response)
     {
         response.push(playerId);
+        response.push(unitType);
         response.push(state);
         response.push(direction);
         response.push(posX);

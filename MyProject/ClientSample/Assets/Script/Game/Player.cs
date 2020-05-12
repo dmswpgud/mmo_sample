@@ -107,7 +107,6 @@ public class Player : Unit
 
     public void OnFinishedAnim(Action<PlayerState> onFinished)
     {
-        Debug.Log("오냐?");
         animController.OnFinishedAnim += onFinished;
     }
 }

@@ -46,11 +46,11 @@ namespace CSampleServer
 					}
 					
 					player = new CPlayer(this);
-					player.playerData = new PlayerData() {playerId = userId, moveSpeed = 2, nearRange = 5};
+					player.playerData = new PlayerData() {playerId = userId, unitType = 0, moveSpeed = 2, nearRange = 5};
 					player.stateData = new PlayerStateData() {playerId = userId, posX = 10, posY = 10, direction = 4};
 					player.HpMp = new HpMp() {Hp = 500, Mp = 10};
 					Console.WriteLine($"user id {userId}");
-					Program.gameServer.UserEntedServer(this);
+					Program.gameServer.UserEntedServer(player);
 					break;
 				}
 				// 채팅 보내달라고 요청이 옴.
@@ -81,13 +81,14 @@ namespace CSampleServer
 					// 뭐가 있으면 이동 불허. (포지션 셋팅 안하고 그냥 패킷 보냄)
 					if (nearObjects.Count != 0)
 					{
-						player.RequestPlayerMove(this);
+						player.RequestPlayerMove();
 						return;
 					}
-
+					Console.WriteLine($"아이디 {player.stateData.playerId} 이동 이전좌표 {player.stateData.posX} {player.stateData.posY} {(UnitDirection)player.stateData.direction}  좌표 :{x} {y} {(UnitDirection)dir}");
+					
 					// 뭐가 없으면 이동 허가. (포지션 셋팅 후 패킷 전송)
 					player.SetPosition(x, y, dir);
-					player.RequestPlayerMove(this);
+					player.RequestPlayerMove();
 					break;
 				}
 				// 플레이어가 상태를 보내옴.
@@ -95,8 +96,8 @@ namespace CSampleServer
 				{
 					player.stateData = new PlayerStateData(msg);
 					var receiveUserId = msg.pop_int32();
-					
-					player.RequestPlayerState(this, receiveUserId);
+					Console.WriteLine($"공격자 {player.stateData.playerId} 타겟 :{receiveUserId} 상태:{(PlayerState)player.stateData.state}");
+					player.RequestPlayerState(receiveUserId);
 					break;
 				}
 			}
@@ -112,13 +113,16 @@ namespace CSampleServer
 				player.DisconnectedPlayer();
 			}
 
-			Program.gameServer.DisconnectedUser(this);
+			Program.gameServer.DisconnectedUser(player);
 
 			Program.remove_user(this);
 		}
 
 		public void send(CPacket msg)
 		{
+			if (player.IsMonster())
+				return;
+			
 			this.token.send(msg);
 		}
 

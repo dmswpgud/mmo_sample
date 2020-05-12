@@ -43,7 +43,9 @@
   <ItemGroup>
     <Compile Include="CGameServer.cs" />
     <Compile Include="CGameUser.cs" />
+    <Compile Include="CMonster.cs" />
     <Compile Include="CPlayer.cs" />
+    <Compile Include="CUnit.cs" />
     <Compile Include="GameUtils.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

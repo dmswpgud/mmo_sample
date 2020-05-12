@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using FreeNet;
 using GameServer;
@@ -6,26 +7,31 @@ namespace CSampleServer
 {
     public class CGameServer
     {
-        public List<CGameUser> userList = new List<CGameUser>();
+        public List<CUnit> userList = new List<CUnit>();
+
+        public void Tick()
+        {
+            
+        }
 
         public bool ExistsUser(int userId)
         {
-            return userList.Exists(user => user.player.playerData.playerId == userId);
+            return userList.Exists(user => user.playerData.playerId == userId);
         }
 
         // 서버 접속.
-        public void UserEntedServer(CGameUser user)
+        public void UserEntedServer(CUnit user)
         {
             // 서버에 유저 추가.
             userList.Add(user);
 
             CPacket response = CPacket.create((short)PROTOCOL.ENTER_GAME_ROOM_RES);
-            response.push(user.player.playerData.playerId);
-            user.send(response);
+            response.push(user.playerData.playerId);
+            user.owner?.send(response);
         }
         
         // 서버 접속 종료.
-        public void DisconnectedUser(CGameUser user)
+        public void DisconnectedUser(CUnit user)
         {
             lock (user)
             {
@@ -34,8 +40,8 @@ namespace CSampleServer
                 foreach (var otherUser in userList)
                 {
                     CPacket response = CPacket.create((short)PROTOCOL.DISCONECTED_PLAYER_RES);
-                    response.push(user.player.playerData.playerId);
-                    otherUser.send(response);
+                    response.push(user.playerData.playerId);
+                    otherUser?.owner?.send(response);
                 }
             }
         }
@@ -48,7 +54,7 @@ namespace CSampleServer
                 CPacket response = CPacket.create((short)PROTOCOL.CHAT_MSG_ACK);
                 response.push(owner.player.playerData.playerId);
                 response.push(text);
-                user.send(response);
+                user?.owner?.send(response);
             }
         }
 
@@ -63,11 +69,12 @@ namespace CSampleServer
         }
         
         // 여러명에게 보내기.
-        public static void ResponsePacketToUsers(List<CGameUser> listUsers, CPacket response)
+        public static void ResponsePacketToUsers(List<CUnit> listUsers, CPacket response)
         {
+            Console.WriteLine((PROTOCOL)response.protocol_id);
             foreach (var user in listUsers)
             {
-                user.send(response);
+                user?.owner?.send(response);
             }
         }
     }

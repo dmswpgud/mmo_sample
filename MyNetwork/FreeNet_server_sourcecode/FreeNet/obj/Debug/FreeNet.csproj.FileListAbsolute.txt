@@ -23,3 +23,8 @@
 /Users/jaehyung.eun/Desktop/SampleMMO 2 2/MyNetwork/FreeNet_server_sourcecode/FreeNet/obj/Debug/FreeNet.csprojAssemblyReference.cache
 /Users/jaehyung.eun/Desktop/SampleMMO 2 2/MyNetwork/FreeNet_server_sourcecode/FreeNet/obj/Debug/FreeNet.dll
 /Users/jaehyung.eun/Desktop/SampleMMO 2 2/MyNetwork/FreeNet_server_sourcecode/FreeNet/obj/Debug/FreeNet.pdb
+/Users/jaehyung.eun/mmo_sample/MyNetwork/FreeNet_server_sourcecode/FreeNet/bin/Debug/FreeNet.dll
+/Users/jaehyung.eun/mmo_sample/MyNetwork/FreeNet_server_sourcecode/FreeNet/bin/Debug/FreeNet.pdb
+/Users/jaehyung.eun/mmo_sample/MyNetwork/FreeNet_server_sourcecode/FreeNet/obj/Debug/FreeNet.csprojAssemblyReference.cache
+/Users/jaehyung.eun/mmo_sample/MyNetwork/FreeNet_server_sourcecode/FreeNet/obj/Debug/FreeNet.dll
+/Users/jaehyung.eun/mmo_sample/MyNetwork/FreeNet_server_sourcecode/FreeNet/obj/Debug/FreeNet.pdb

@@ -13,20 +13,19 @@ namespace CSampleServer
     
     public class GameUtils
     {
-        public static List<CGameUser> GetNearbyUsers(CGameUser targetPlayer, List<CGameUser> listUSer)
+        public static List<CUnit> GetNearbyUnit(int id, int x, int y, int range, List<CUnit> listUSer)
         {
-            int range = targetPlayer.player.playerData.nearRange;
-            List<CGameUser> listNearUsers = new List<CGameUser>();
+            List<CUnit> listNearUsers = new List<CUnit>();
             
             for (int i = 0; i < listUSer.Count; ++i)
             {
-                if (targetPlayer.player.playerData.playerId == listUSer[i].player.playerData.playerId)
+                if (id == listUSer[i].playerData.playerId)
                     continue;
                 
-                if ((targetPlayer.player.stateData.posX + range >= listUSer[i].player.stateData.posX &&
-                     targetPlayer.player.stateData.posX - range <= listUSer[i].player.stateData.posX) &&
-                    (targetPlayer.player.stateData.posY + range >= listUSer[i].player.stateData.posY &&
-                     targetPlayer.player.stateData.posY - range <= listUSer[i].player.stateData.posY))
+                if ((x + range >= listUSer[i].stateData.posX &&
+                     x - range <= listUSer[i].stateData.posX) &&
+                    (y + range >= listUSer[i].stateData.posY &&
+                     y - range <= listUSer[i].stateData.posY))
                 {
                     listNearUsers.Add(listUSer[i]);
                 }
@@ -34,12 +33,12 @@ namespace CSampleServer
 
             return listNearUsers;
         }
-        
-        public static List<CGameUser> GetNearUserFromPosition(int x, int y, List<CGameUser> listUSer)
+
+        public static List<CUnit> GetNearUserFromPosition(int x, int y, List<CUnit> listUSer)
         {
-            List<CGameUser> listNearUsers = listUSer.FindAll(p =>
-                p.player.stateData.posX == x &&
-                p.player.stateData.posY == y);
+            List<CUnit> listNearUsers = listUSer.FindAll(p =>
+                p.stateData.posX == x &&
+                p.stateData.posY == y);
 
             return listNearUsers;
         }
@@ -69,7 +68,7 @@ namespace CSampleServer
             return null;
         }
 
-        public static Int32 DamageCalculator(CPlayer attacker, CPlayer deffender)
+        public static Int32 DamageCalculator(CUnit attacker, CUnit deffender)
         {
             return deffender.HpMp.Hp -= 10;
         }
@@ -88,9 +87,9 @@ namespace CSampleServer
             return userList.Find(p => p.player.playerData.playerId == targetUserId);
         }
 
-        public static List<CGameUser> GetTotlNearUserList(List<CGameUser> listA, List<CGameUser> listB)
+        public static List<CUnit> GetTotlNearUserList(List<CUnit> listA, List<CUnit> listB)
         {
-            List<CGameUser> listResult = new List<CGameUser>();
+            List<CUnit> listResult = new List<CUnit>();
             // A에 없는 B의 유저 리스트.
             var defenderList = listB.Where(i => !listA.Contains(i)).ToList();
             listResult.AddRange(listA);
