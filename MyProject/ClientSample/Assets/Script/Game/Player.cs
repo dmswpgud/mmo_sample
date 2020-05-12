@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : Unit
 {
-    
+    public PlayerData DATA { protected set; get; }
     public PlayerStateData STATE { private set; get; }
     public HpMp HPMP  { private set; get; }
     private TileInfo nextTile;
@@ -12,10 +12,8 @@ public class Player : Unit
     public bool IsMyPlayer;
     public Animator animator;
     
-
     [SerializeField]
     private GameObject model;
-    
     PlayerAnimationController animController;
 
     void Awake()
@@ -27,17 +25,24 @@ public class Player : Unit
 
     public void InitPlayer(PlayerData data, PlayerStateData state, HpMp hpMp)
     {
+        base.Initialized(data.playerId, state.posX, state.posY, (UnitDirection) state.direction, model);
         this.DATA = data;
         this.STATE = state;
-        HPMP = hpMp;
-        SetStateData(this.STATE);
+        this.HPMP = hpMp;
+    }
+    
+    public void SetStateData(PlayerStateData state)
+    {
+        SetPlayerAnim((PlayerState)state.state);
+        SetDirection((UnitDirection) state.direction);
+        SetPosition(state.posX, state.posY);
     }
 
     public void MovePlayerNextPosition(PlayerStateData playerData = null)
     {
         STATE = playerData;
         nextTile = GameManager.Inst.GetTileInfo(STATE.posX, STATE.posY);
-        ChangeDirectionByTargetPoint(STATE.posX, STATE.posY);
+        SetDirectionByPosition(STATE.posX, STATE.posY, DATA.moveSpeed / 4f);
     }
 
     private void Update()
@@ -52,7 +57,7 @@ public class Player : Unit
             return;
         }
         
-        SetPlayerState(PlayerState.WARK);
+        SetPlayerAnim(PlayerState.WARK);
         
         transform.position = Vector3.MoveTowards(transform.position, nextTile.transform.position, DATA.moveSpeed * Time.deltaTime);
 
@@ -65,27 +70,21 @@ public class Player : Unit
             nextTile = null;
         }
     }
-    
-    public void SetStateData(PlayerStateData state)
-    {
-        SetPlayerState((PlayerState)state.state);
-        SetDirection((UnitDirection) state.direction);
-        SetPosition(state.posX, state.posY);
-    }
 
-    protected override void ChangedDirection(UnitDirection dir)
+    public void SetDirection(UnitDirection dir)
     {
         STATE.direction = (byte) dir;
-        animController.SetDirection(dir);
+        base.SetDirection(dir, 0.2f);
     }
 
-    protected override void ChangedPosition(int x, int y)
+    public void SetDirectionByPosition(int destX, int destY)
     {
-        STATE.posX = (short) x;
-        STATE.posY = (short) y;
+        var dir = GameUtils.SetDirectionByPosition(X, Y, destX, destY);
+        STATE.direction = (byte) dir;
+        base.SetDirectionByPosition(destX, destY, 0.3f);
     }
 
-    public void SetPlayerState(PlayerState state, bool playAnim = true)
+    public void SetPlayerAnim(PlayerState state, bool playAnim = true)
     {
         this.STATE.state = (byte)state;
 

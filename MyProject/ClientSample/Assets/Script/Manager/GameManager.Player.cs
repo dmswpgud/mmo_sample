@@ -114,7 +114,7 @@ public partial class GameManager
     {
         DrawWall();
 
-        var start = new GridPoint(player.GetCurrentTile.GridPoint.X, player.GetCurrentTile.GridPoint.Y);
+        var start = new GridPoint(player.X, player.Y);
 
         var end = destPoint;
 
@@ -127,7 +127,7 @@ public partial class GameManager
             return;
         
         // 방향 설정.
-        player.ChangeDirectionByTargetPoint(path[0].X, path[0].Y);
+        player.SetDirectionByPosition(path[0].X, path[0].Y);
         
         // 서버에 이동할 경로를 보냄.
         CNetworkManager.Inst.RequestPlayerMove(path[0].X, path[0].Y, player.STATE.direction, ResponseMovePlayer);
@@ -190,16 +190,16 @@ public partial class GameManager
                 return;
             }
             
-            var unit = targetTile.GetTileUnit();
+            var unit = (Player)targetTile.GetTileUnit();
             int targetUserId = unit ? unit.DATA.playerId : 0;
 
             if (unit == null)
             {
-                myPlayer.SetPlayerState(PlayerState.ATTACK);
+                myPlayer.SetPlayerAnim(PlayerState.ATTACK);
             }
 
-            myPlayer.SetPlayerState(PlayerState.ATTACK, false);
-            myPlayer.ChangeDirectionByTargetPoint(targetTile.GridPoint.X, targetTile.GridPoint.Y);
+            myPlayer.SetPlayerAnim(PlayerState.ATTACK, false);
+            myPlayer.SetDirectionByPosition(targetTile.GridPoint.X, targetTile.GridPoint.Y);
             CNetworkManager.Inst.RequestPlayerState(myPlayer.STATE, targetUserId, OnReceivedChangedPlayerState);
         }
     }
