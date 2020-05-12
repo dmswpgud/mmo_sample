@@ -182,13 +182,9 @@ public partial class GameManager
         if (InputKey.InputAttack)
         {
             var targetTile = GetClickedObject();
-
-            // 내가 나를 클릭하면 리턴.
             if (targetTile.GridPoint.X == myPlayer.STATE.posX &&
                 targetTile.GridPoint.Y == myPlayer.STATE.posY)
-            {
                 return;
-            }
             
             var unit = (Player)targetTile.GetTileUnit();
             int targetUserId = unit ? unit.DATA.playerId : 0;
@@ -198,9 +194,23 @@ public partial class GameManager
                 myPlayer.SetPlayerAnim(PlayerState.ATTACK);
             }
 
-            myPlayer.SetPlayerAnim(PlayerState.ATTACK, false);
             myPlayer.SetDirectionByPosition(targetTile.GridPoint.X, targetTile.GridPoint.Y);
+            myPlayer.SetPlayerAnim(PlayerState.ATTACK, false);
             CNetworkManager.Inst.RequestPlayerState(myPlayer.STATE, targetUserId, OnReceivedChangedPlayerState);
+        }
+
+        if (InputKey.InputChangeDirection)
+        {
+            var targetTile = GetClickedObject();
+            if (targetTile.GridPoint.X == myPlayer.STATE.posX &&
+                targetTile.GridPoint.Y == myPlayer.STATE.posY)
+                return;
+
+            if (myPlayer.SetDirectionByPosition(targetTile.GridPoint.X, targetTile.GridPoint.Y))
+            {
+                myPlayer.SetPlayerAnim(PlayerState.CHANGED_DIRECTION);
+                CNetworkManager.Inst.RequestPlayerState(myPlayer.STATE, 0, OnReceivedChangedPlayerState);
+            }
         }
     }
     
@@ -225,7 +235,9 @@ public partial class GameManager
                 receiverPlayer?.SetStateData(data.receiverPlayerData);
             });
         }
-        
-        receiverPlayer?.SetStateData(data.receiverPlayerData);
+        else
+        {
+            receiverPlayer?.SetStateData(data.receiverPlayerData);    
+        }
     }
 }

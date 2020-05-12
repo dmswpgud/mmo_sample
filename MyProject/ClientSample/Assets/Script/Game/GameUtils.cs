@@ -37,31 +37,31 @@ public class GameUtils : MonoBehaviour
         {
             return UnitDirection.DOWN_LEFT; //
         }
-        else if (currentX > destX && currentY == destY)
+        if (currentX > destX && currentY == destY)
         {
             return UnitDirection.LEFT; //
         }
-        else if (currentX > destX && currentY < destY)
+        if (currentX > destX && currentY < destY)
         {
             return UnitDirection.UP_LEFT; //
         }
-        else if (currentX == destX && currentY < destY)
+        if (currentX == destX && currentY < destY)
         {
             return UnitDirection.UP; //
         }
-        else if (currentX < destX && currentY < destY)
+        if (currentX < destX && currentY < destY)
         {
             return UnitDirection.UP_RIGHT; //
         }
-        else if (currentX < destX && currentY == destY)
+        if (currentX < destX && currentY == destY)
         {
             return UnitDirection.RIGHT; //
         }
-        else if (currentX < destX && currentY > destY)
+        if (currentX < destX && currentY > destY)
         {
-            return UnitDirection.DOWN_LEFT;
+            return UnitDirection.DOWN_RIGHT;
         }
-        else if (currentX == destX && currentY > destY)
+        if (currentX == destX && currentY > destY)
         {
             return UnitDirection.DOWN; //
         }

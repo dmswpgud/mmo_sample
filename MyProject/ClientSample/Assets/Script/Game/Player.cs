@@ -73,15 +73,24 @@ public class Player : Unit
 
     public void SetDirection(UnitDirection dir)
     {
+        if (STATE.direction == (byte)dir)
+            return;
+        
         STATE.direction = (byte) dir;
         base.SetDirection(dir, 0.2f);
     }
 
-    public void SetDirectionByPosition(int destX, int destY)
+    public bool SetDirectionByPosition(int destX, int destY)
     {
         var dir = GameUtils.SetDirectionByPosition(X, Y, destX, destY);
-        STATE.direction = (byte) dir;
-        base.SetDirectionByPosition(destX, destY, 0.3f);
+        if (STATE.direction != (byte) dir)
+        {
+            STATE.direction = (byte) dir;
+            base.SetDirectionByPosition(destX, destY, 0.3f);
+            return true;
+        }
+
+        return false;
     }
 
     public void SetPlayerAnim(PlayerState state, bool playAnim = true)

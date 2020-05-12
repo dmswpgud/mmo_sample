@@ -99,12 +99,13 @@ namespace CSampleServer
         // 플레이어 상태 변경.
         public void RequestPlayerState(CGameUser user, int receiveUserId)
         {
-            switch ((PlayerState)user.player.stateData.state)
-            {
-                case PlayerState.ATTACK:
-                    PlayerStateAttack(user, receiveUserId);
-                    break;
-            }
+            PlayerStateAttack(user, receiveUserId);
+            // switch ((PlayerState)user.player.stateData.state)
+            // {
+            //     case PlayerState.ATTACK:
+            //         PlayerStateAttack(user, receiveUserId);
+            //         break;
+            // }
         }
 
         private void PlayerStateAttack(CGameUser attacker, int defenderUserId)
