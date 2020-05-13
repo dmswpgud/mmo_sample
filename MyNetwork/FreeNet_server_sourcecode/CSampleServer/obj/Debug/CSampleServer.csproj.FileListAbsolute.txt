@@ -52,3 +52,5 @@
 /Users/jaehyung.eun/mmo_sample/MyNetwork/FreeNet_server_sourcecode/CSampleServer/obj/Debug/CSampleServer.csproj.CopyComplete
 /Users/jaehyung.eun/mmo_sample/MyNetwork/FreeNet_server_sourcecode/CSampleServer/obj/Debug/CSampleServer.exe
 /Users/jaehyung.eun/mmo_sample/MyNetwork/FreeNet_server_sourcecode/CSampleServer/obj/Debug/CSampleServer.pdb
+/Users/jaehyung.eun/mmo_sample/MyNetwork/FreeNet_server_sourcecode/CSampleServer/bin/Debug/Newtonsoft.Json.dll
+/Users/jaehyung.eun/mmo_sample/MyNetwork/FreeNet_server_sourcecode/CSampleServer/bin/Debug/Newtonsoft.Json.xml
