@@ -22,7 +22,7 @@ namespace CSampleServer
         // 서버 접속.
         public void UserEntedServer(CUnit user)
         {
-            userList.Add(new CMonster(user.playerData.playerId + 13));
+            //userList.Add(new CMonster(user.playerData.playerId + 13));
             
             // 서버에 유저 추가.
             userList.Add(user);
@@ -68,6 +68,8 @@ namespace CSampleServer
             user.player.stateData.PushData(response);
             user.player.HpMp.PushData(response);
             user.send(response);
+            
+            Program.PrintLog($"{user.player.playerData.playerId} 케릭 생성.");
         }
         
         // 여러명에게 보내기.

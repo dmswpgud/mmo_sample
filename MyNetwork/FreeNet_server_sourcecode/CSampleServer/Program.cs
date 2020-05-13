@@ -61,5 +61,10 @@ namespace CSampleServer
                 userlist.Remove(user);
             }
         }
+
+        public static void PrintLog(string log)
+        {
+            Console.WriteLine(log);
+        }
     }
 }

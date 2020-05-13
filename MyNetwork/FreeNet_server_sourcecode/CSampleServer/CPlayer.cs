@@ -62,24 +62,37 @@ namespace CSampleServer
         // 플레이어가 범위내에 있을 시 알리기.
         public override void ResponseAddNearUnit(CUnit user, CUnit user2)
         {
+            if (!user.IsPlayer())
+                return;
+                
             CPacket response = CPacket.create((short)PROTOCOL.ADD_NEAR_PLAYER_RES);
             user2.playerData.PushData(response);
             user2.stateData.PushData(response);
             user2.HpMp.PushData(response);
             user.owner?.send(response);
+            
+            Program.PrintLog($"{user}범위내에 {user2}가 들어옴.");
         }
 
         // 플레이어가 범위내를 벚어났을 때 알리기.
         public override void ResponseRemoveNearUnit(CUnit user, CUnit user2)
         {
+            if (!user.IsPlayer())
+                return;
+            
             CPacket response = CPacket.create((short)PROTOCOL.REMOVE_NEAR_PLAYER_RES);
             user2.playerData.PushData(response);
             user.owner?.send(response);
+            
+            Program.PrintLog($"{user}범위내에서 {user2}가 벚어남.");
         }
         
         // 플레이어 이동.
         public override void RequestPlayerMove()
         {
+            if (!IsPlayer())
+                return;
+            
             // 이동한 플레이어에게 서버에 이동한거 등록했다고 답장
             CPacket response = CPacket.create((short)PROTOCOL.PLAYER_MOVE_RES);
             stateData.PushData(response);
@@ -118,8 +131,7 @@ namespace CSampleServer
                 defender.HpMp.Hp = defenderHp;
                 defender.stateData.state = defenderHp <= 0 ? (byte)PlayerState.DEATH : (byte)PlayerState.DAMAGE;
 
-                var log = $"공격자:{playerData.playerId} hm{HpMp.Hp}/{HpMp.Mp} 피격자:{defender.playerData.playerId} hm{defender.HpMp.Hp}/{defender.HpMp.Mp}";
-                Console.WriteLine(log);
+                Program.PrintLog($"공격자:{playerData.playerId} hm{HpMp.Hp}/{HpMp.Mp} 피격자:{defender.playerData.playerId} hm{defender.HpMp.Hp}/{defender.HpMp.Mp}");
                 
                 { // 공격 > 서버 > 공격
                     attacker.stateData.PushData(response);

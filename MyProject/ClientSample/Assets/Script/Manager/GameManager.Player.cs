@@ -6,8 +6,7 @@ using UnityEngine;
 public partial class GameManager
 {
     public GameObject PlayerObj;
-    public GameObject OtherPlayerObj;
-    public List<Player> players = new List<Player>();
+    public List<Unit> players = new List<Unit>();
     public Player myPlayer;
     private List<GridPoint> path;
     private Unit TargetUnit;
@@ -22,46 +21,13 @@ public partial class GameManager
         RequestPlayerState();
     }
     
-    private void MakeMyPlayer(ResponseData res, ERROR error)
+    private Player CreatePlayer(PlayerDataPackage data, GameObject model)
     {
-        if (error != ERROR.NONE)
-        {
-            PrintSystemLog(error.ToString());
-            return;
-        }
-        
-        var data = (PlayerDataPackage) res;
-        
-        myPlayer = CreatePlayer(data, PlayerObj);
-        
-        players.Add(myPlayer);
-        
-        myPlayer.IsMyPlayer = true;
-
-        Camera.main.transform.parent = myPlayer.transform;
-                
-        Camera.main.transform.localPosition = new Vector3(0f, 8f, -6.7f);
-
-        mapCollider.transform.parent = myPlayer.transform;
-                
-        mapCollider.transform.position = Vector3.zero;
-                
-        mapCollider.SetActive(true);
-    }
-    
-    private void MakePlayer(ResponseData res, ERROR error)
-    {
-        if (error != ERROR.NONE)
-        {
-            PrintSystemLog(error.ToString());
-            return;
-        }
-        
-        var data = (PlayerDataPackage) res;
-        
-        var player = CreatePlayer(data, OtherPlayerObj);
-        
-        players.Add(player);
+        GameObject ins = Instantiate(model);
+        var player = ins.GetComponent<Player>();
+        player.InitPlayer(data.data, data.state, data.hpMp);
+        CreateTargetClicker(player, player.modelHead.transform);
+        return player;
     }
 
     private void DisconnectedPlayer(ResponseData res, ERROR error)
@@ -73,47 +39,11 @@ public partial class GameManager
         }
         
         var data = (PlayerData) res;
-
-        DestroyPlayer(data, ERROR.NONE);
-
+        DestroyUnit(data, ERROR.NONE);
         PrintSystemLog($"{data.playerId}님이 서버를 종료했습니다.");
     }
-    
-    private void DestroyPlayer(ResponseData res, ERROR error)
-    {
-        if (error != ERROR.NONE)
-        {
-            PrintSystemLog(error.ToString());
-            return;
-        }
-        
-        var data = (PlayerData) res;
-        
-        var player = players.Find(p => p.DATA.playerId == data.playerId);
 
-        var index = players.FindIndex(p => p.DATA.playerId == data.playerId);
-
-        RemoveUnitTile(players[index]);
-        
-        players.RemoveAt(index);
-        
-        Destroy(player.gameObject);
-    }
-    
-    private Player CreatePlayer(PlayerDataPackage data, GameObject model)
-    {
-        GameObject ins = Instantiate(model);
-
-        var player = ins.GetComponent<Player>();
-
-        player.InitPlayer(data.data, data.state, data.hpMp);
-
-        CreateTargetClicker(player, player.modelHead.transform);
-
-        return player;
-    }
-
-    public Player GetPlayerByUserId(int id)
+    public Unit GetPlayerByUserId(int id)
     {
         return players.Find(p => p.DATA.playerId == id);
     }
@@ -133,10 +63,9 @@ public partial class GameManager
         // 경로가 없다면 리턴.
         if (path.Count <= 0)
             return;
-        
+
         // 방향 설정.
         player.SetDirectionByPosition(path[0].X, path[0].Y);
-        
         // 서버에 이동할 경로를 보냄.
         CNetworkManager.Inst.RequestPlayerMove(path[0].X, path[0].Y, player.STATE.direction, ResponseMovePlayer);
         
@@ -149,7 +78,10 @@ public partial class GameManager
             }
             
             if (path.Count != 0)
-            {
+            {        
+                // 방향 설정.
+                //player.SetDirectionByPosition(path[0].X, path[0].Y);
+                // 서버에 이동할 경로를 보냄.
                 CNetworkManager.Inst.RequestPlayerMove(path[0].X, path[0].Y, player.STATE.direction, ResponseMovePlayer);
             }
         };

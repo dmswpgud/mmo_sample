@@ -1,4 +1,5 @@
-﻿using GameServer;
+﻿using System;
+using GameServer;
 using UnityEngine;
 using DG.Tweening;
 
@@ -9,29 +10,33 @@ using DG.Tweening;
 /// </summary>
 public abstract class Unit : MonoBehaviour
 {
-    public int ID { private set; get; }
-    public int X { private set; get; }
-    public int Y { private set; get; }
-    public UnitDirection Direction  { private set; get; }
+    public PlayerData DATA { protected set; get; }
+    public PlayerStateData STATE { protected set; get; }
+
+    public int ID => DATA.playerId;
+    public int X => STATE.posX;
+    public int Y => STATE.posY;
+    public UnitDirection Direction => (UnitDirection)STATE.direction;
     
     public GameObject Renderer { private set; get; }
 
-    public void Initialized(int id, int x, int y, UnitDirection direction, GameObject renderer = null)
+    public void Initialized(GameObject renderer = null)
     {
-        ID = id;
-        X = x;
-        Y = y;
-        Direction = direction;
         Renderer = renderer;
         
         //
-        SetPosition(x, y);
+        SetPosition(X, Y);
         SetDirection(Direction);
     }
-    
+
+    public abstract void MovePlayerNextPosition(PlayerStateData stateData);
+    public abstract void SetStateData(PlayerStateData stateData);
+    public abstract void OnFinishedAnim(Action<PlayerState> onFinished);
+
     protected void SetPosition(int x, int y)
     {
-        X = x; Y = y;
+        STATE.posX = (short)x;
+        STATE.posY = (short)y;
         var tile = GameManager.Inst.GetTileInfo(x, y);
         transform.position = tile.transform.position;
         GameManager.Inst.SetUnitTile(tile, this);
@@ -39,15 +44,18 @@ public abstract class Unit : MonoBehaviour
 
     protected void SetDirection(UnitDirection dir, float speed = 0f)
     {
-        Direction = dir;
+        STATE.direction = (byte) dir;
         var dirPos = GameUtils.GetUnitFrontTile(X, Y, Direction);
         SetUnitDirectionByPosition(dirPos.X, dirPos.Y, speed);
     }
 
-    protected void SetDirectionByPosition(int destX, int destY, float speed)
+    protected bool SetDirectionByPosition(int destX, int destY, float speed)
     {
-        Direction = GameUtils.SetDirectionByPosition(X, Y, destX, destY);
+        var dir = GameUtils.SetDirectionByPosition(X, Y, destX, destY);
+        STATE.direction = (byte) dir;
         SetUnitDirectionByPosition(destX, destY, speed);
+        
+        return true;
     }
 
     private void SetUnitDirectionByPosition(int destX, int destY, float speed)

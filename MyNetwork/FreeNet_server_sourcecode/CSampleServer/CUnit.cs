@@ -16,9 +16,9 @@ namespace CSampleServer
             owner = user;
         }
 
-        public bool IsMonster()
+        public bool IsPlayer()
         {
-            return playerData.unitType == (byte) UnitType.MONSTER;
+            return playerData.unitType == (byte) UnitType.PLAYER;
         }
         
         public CUnit() {}

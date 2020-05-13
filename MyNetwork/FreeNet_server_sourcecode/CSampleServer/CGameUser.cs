@@ -120,7 +120,7 @@ namespace CSampleServer
 
 		public void send(CPacket msg)
 		{
-			if (player.IsMonster())
+			if (!player.IsPlayer())
 				return;
 			
 			this.token.send(msg);
