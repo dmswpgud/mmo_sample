@@ -14,6 +14,7 @@ namespace CSampleServer
         public CMonster() : base()
         {
             playerData.playerId = 100;
+            playerData.name = "몬스터" + playerData.playerId.ToString();
             playerData.unitType = 1;
             playerData.moveSpeed = 1;
 
@@ -38,13 +39,14 @@ namespace CSampleServer
         private void SpawnMonster(int id)
         {
             playerData.playerId = id;
+            playerData.name = $"몬스터{id}";
             playerData.unitType = 1;
             playerData.moveSpeed = 1;
 
             stateData.playerId = id;
             stateData.direction = 2;
-            stateData.posX = (short) id;
-            stateData.posY = (short) id;
+            stateData.posX = (short) 15;
+            stateData.posY = (short) 15;
 
             HpMp.Hp = 100;
             HpMp.Mp = 200;

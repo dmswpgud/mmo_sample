@@ -11,6 +11,7 @@ namespace CSampleServer
 
         public delegate void Loop();
         public static Loop Tick;
+        public static string  userInfoJsonPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/userInfo.txt";
 
         static void Main(string[] args)
         {

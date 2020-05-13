@@ -1,6 +1,5 @@
 using UnityEngine;
 using System;
-using System.Collections.Generic;
 using FreeNet;
 using FreeNetUnity;
 using GameServer;
@@ -94,7 +93,12 @@ public partial class CNetworkManager : MonoBehaviour {
                 OnNetworkCallback(null, errorCode);
                 break;
             }
-            
+            case PROTOCOL.CREATE_ACCOUNT_RES:
+            {
+                var data = new StringResponseData(msg);
+                OnNetworkCallback?.Invoke(data, ERROR.NONE);
+                break;
+            }
             case PROTOCOL.ENTER_GAME_ROOM_RES: // 게임 접속 요청 후 접속 됬다고 알려옴.
             {
                 var data = new PlayerIdData(msg);

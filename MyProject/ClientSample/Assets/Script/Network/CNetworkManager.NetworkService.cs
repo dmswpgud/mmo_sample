@@ -5,10 +5,20 @@ using UnityEngine;
 
 public partial class CNetworkManager : MonoBehaviour
 {
-    public void RequestEnterGameServer(Int32 userId, Action<ResponseData, ERROR> onRes = null)
+    public void RequestCreateAccount(string account, string password, string characterName, Action<ResponseData, ERROR> onRes = null)
+    {
+        CPacket msg = CPacket.create((short)PROTOCOL.CREATE_ACCOUNT_REQ);
+        msg.push(account);
+        msg.push(password);
+        msg.push(characterName);
+        send(msg);
+        OnNetworkCallback = onRes;
+    }
+    public void RequestEnterGameServer(string account, string password, Action<ResponseData, ERROR> onRes = null)
     {
         CPacket msg = CPacket.create((short)PROTOCOL.ENTER_GAME_ROOM_REQ);
-        msg.push(userId);
+        msg.push(account);
+        msg.push(password);
         send(msg);
         OnReceiveConnectedOtherUser = onRes;
     }

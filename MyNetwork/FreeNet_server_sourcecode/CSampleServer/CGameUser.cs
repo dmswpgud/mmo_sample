@@ -1,6 +1,5 @@
 ﻿using System;
 using FreeNet;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace CSampleServer
@@ -15,6 +14,7 @@ namespace CSampleServer
 		CUserToken token;
 		
 		public CPlayer player {private set; get;}
+		private UserDataPackage userDataPackage;
 
 		public CGameUser(CUserToken token)
 		{
@@ -31,53 +31,57 @@ namespace CSampleServer
 			Console.WriteLine("protocol id " + protocol);
 			switch (protocol)
 			{
-				// 서버 접속 요청이 옴.
-				case PROTOCOL.ENTER_GAME_ROOM_REQ:
+				case PROTOCOL.CREATE_ACCOUNT_REQ:
 				{
-					var userId = msg.pop_int32();
-					
-					// 유저 중복 체크
-					if (Program.gameServer.ExistsUser(userId))
+					var account = msg.pop_string();
+					var password = msg.pop_string();
+					var name = msg.pop_string();
+					var newUserId = account.GetHashCode();
+					var userDataPackage = SystemUtils.CreateAccount(account, password, name, newUserId);
+
+					if (userDataPackage != null)
+					{
+						CPacket response = CPacket.create((short)PROTOCOL.CREATE_ACCOUNT_RES);
+						response.push(name);
+						send(response);
+						return;
+					}
+					else
 					{
 						CPacket response = CPacket.create((short)PROTOCOL.ERROR);
 						var errorCode = (short) ERROR.DUPLICATE_USERS;
 						response.push(errorCode);
 						Console.WriteLine($"error code {errorCode}");
 						send(response);
-						return;
 					}
-
+					break;
+				}
+				// 서버 접속 요청이 옴.
+				case PROTOCOL.ENTER_GAME_ROOM_REQ:
+				{
+					var account = msg.pop_string();
+					var password = msg.pop_string();
+					var userId = account.GetHashCode();
+					var accountData = SystemUtils.GetUserInfo(userId, password);
 					
-					// TODO: JSON 불러오기 임시 (정리 해야댐.)
-					var readJson = SystemUtils.Leader();
+					if (Program.gameServer.userList.Exists(p => p.playerData.playerId == accountData.userId))
+					{
+							CPacket response = CPacket.create((short)PROTOCOL.ERROR);
+                    		var errorCode = (short) ERROR.DUPLICATE_USERS;
+                    		response.push(errorCode);
+                    		Console.WriteLine($"error code {errorCode}");
+                    		send(response);
+                    		return;
+					}
 					
-					JToken token = null;
-
-					if (readJson != null)
-					{
-						token = readJson.SelectToken(userId.ToString());    
-					}
-
-					if (token != null)
-					{
-						player = new CPlayer(this);
-						UserDataPackage parckage = new UserDataPackage();
-						parckage = token.ToObject<UserDataPackage>();
-						player.playerData = parckage.data;
-						player.stateData = parckage.state;
-						player.HpMp = parckage.hpMp;
-						Console.WriteLine($"user id {userId}");
-						Program.gameServer.UserEntedServer(player);
-					}
-					else
-					{
-						player = new CPlayer(this);
-						player.playerData = new PlayerData() {playerId = userId, unitType = 0, moveSpeed = 2, nearRange = 5};
-						player.stateData = new PlayerStateData() {playerId = userId, posX = 10, posY = 10, direction = 4};
-						player.HpMp = new HpMp() {Hp = 500, Mp = 10};
-						Console.WriteLine($"user id {userId}");
-						Program.gameServer.UserEntedServer(player);
-					}
+					userDataPackage = accountData;
+					player = new CPlayer(this);
+					player.playerData = accountData.data;
+					player.stateData = accountData.state;
+					player.HpMp = accountData.hpMp;
+					
+					Console.WriteLine($"user id {account}");
+					Program.gameServer.UserEntedServer(player);
 					break;
 				}
 				// 채팅 보내달라고 요청이 옴.
@@ -133,18 +137,9 @@ namespace CSampleServer
 		// 접속 종료 이벤트.
 		void IPeer.on_removed()
 		{
-			// TODO: JSON 저장하기 임시 (정리 해야댐.)
-			Console.WriteLine("The client disconnected.");
-
 			if (player != null)
 			{
-				var userPackage = new UserDataPackage();
-				userPackage.data = player.playerData;
-				userPackage.state = player.stateData;
-				userPackage.hpMp = player.HpMp;
-				userPackage.userId = player.playerData.playerId;
-				var save = JToken.FromObject(userPackage);
-				SystemUtils.Save(userPackage.userId, save);
+				SaveUserData();
 				
 				player.DisconnectedPlayer();
 			}
@@ -156,7 +151,7 @@ namespace CSampleServer
 
 		public void send(CPacket msg)
 		{
-			if (!player.IsPlayer())
+			if (player != null && !player.IsPlayer())
 				return;
 			
 			this.token.send(msg);
@@ -169,6 +164,20 @@ namespace CSampleServer
 
 		void IPeer.process_user_operation(CPacket msg)
 		{
+		}
+
+		private void SaveUserData()
+		{
+			var userPackage = new UserDataPackage();
+			userPackage.userId = userDataPackage.userId;
+        	userPackage.account = userDataPackage.account;
+        	userPackage.password = userDataPackage.password;
+        	userPackage.name = userDataPackage.name;
+			userPackage.data = player.playerData;
+			userPackage.state = player.stateData;
+			userPackage.hpMp = player.HpMp;
+			var save = JObject.FromObject(userPackage);
+			SystemUtils.SaveUserInfo(userPackage.userId.ToString(), save);
 		}
 	}
 }

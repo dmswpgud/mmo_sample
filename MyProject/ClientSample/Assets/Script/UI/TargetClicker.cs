@@ -18,7 +18,7 @@ public class TargetClicker : MonoBehaviour
         transform.SetParent(canvas.transform);
         Unit = unit;
         TargetTrf = targetTransform;
-        PlayerName.text = unit.ID.ToString();
+        PlayerName.text = unit.DATA.name;
         OnSetTargetUnit = onSetTarget;
     }
 

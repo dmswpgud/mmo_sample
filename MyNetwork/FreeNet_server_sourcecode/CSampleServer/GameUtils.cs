@@ -108,41 +108,27 @@ namespace CSampleServer
 {
     public class SystemUtils
     {
-        private static string path = "/Users/jaehyung.eun/Desktop/json.txt";
-
-        public static void Save(int id, JToken json)
+        public static void SaveUserInfo(string account, JObject json)
         {
-            var readJson = Leader();
+            var path = $"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/userInfo.txt";
+            // 기존껄 읽어 옴.
+            var readJson = LoadJson(path);
+            // 어카운트 목록을 취득.
+            var token = readJson?.SelectToken(account);
             
-            JToken token = null;
-
-            if (readJson != null)
-            {
-                token = readJson.SelectToken(id.ToString());    
-            }
-
-            if (token != null)
-            {
-                token.Replace(json);
-            }
-
-            if (readJson == null)
-            {
-                readJson = new JObject();
-                readJson.Add(id.ToString(), json);
-            }
-
+            readJson?.Remove(account);
+            
+            readJson = readJson ?? new JObject();
+            readJson.Add(account, json);
             using (StreamWriter sw = new StreamWriter(path, false, Encoding.UTF8))
             {
                 sw.Write(readJson);
             }
         }
 
-        public static JObject Leader()
+        public static JObject LoadJson(string path)
         {
-            string strFile = path;
-
-            FileInfo fileInfo = new FileInfo(strFile);
+            FileInfo fileInfo = new FileInfo(path);
 
             if (fileInfo.Exists)
             {
@@ -157,6 +143,53 @@ namespace CSampleServer
             }
 
             return null;
+        }
+
+        public static UserDataPackage GetUserInfo(int userId, string password)
+        {
+            var readJson = LoadJson(Program.userInfoJsonPath);
+            
+            var userInfo = readJson?.SelectToken(userId.ToString());
+            
+            if (userInfo == null)
+                return null;
+
+            var pw = userInfo["password"];
+            
+            if (password != pw.ToString())
+                return null;
+
+            return userInfo.ToObject<UserDataPackage>();
+        }
+
+
+        public static UserDataPackage CreateAccount(string account, string password, string name, int id)
+        {
+            var path = $"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/userInfo.txt";
+
+            var userPackage = new UserDataPackage();
+            userPackage.account = account;
+            userPackage.password = password;
+            userPackage.name = name;
+            userPackage.userId = id;
+            userPackage.data = new PlayerData() {playerId = id, name = name, unitType = 0, moveSpeed = 2, nearRange = 5};
+            userPackage.state = new PlayerStateData() {playerId = id, posX = 10, posY = 10, direction = 4};
+            userPackage.hpMp = new HpMp() {Hp = 500, Mp = 10};
+            
+            var loadJObj = LoadJson(path);
+            var jObj = JObject.FromObject(userPackage);
+
+            JObject obj = loadJObj == null ? jObj : loadJObj;
+            
+            var userId = account.GetHashCode();
+            obj.Add(userId.ToString(), jObj);
+            
+            using (StreamWriter sw = new StreamWriter(path, false, Encoding.UTF8))
+            {
+                sw.Write(obj);
+            }
+
+            return userPackage;
         }
     }
 }

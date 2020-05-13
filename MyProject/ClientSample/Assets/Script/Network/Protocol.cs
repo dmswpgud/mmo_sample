@@ -27,6 +27,9 @@ namespace GameServer
         CHAT_MSG_REQ,
         CHAT_MSG_ACK,
         
+        CREATE_ACCOUNT_REQ,
+        CREATE_ACCOUNT_RES,
+        
         ENTER_GAME_ROOM_REQ,
         ENTER_GAME_ROOM_RES,
         
@@ -64,19 +67,34 @@ namespace GameServer
 
 
 
-
+[Serializable]
 public class ResponseData {}
 
-public class AccountInfo : ResponseData
+public class StringResponseData : ResponseData
 {
+    public string str;
+    
+    public StringResponseData(CPacket response)
+    {
+        str = response.pop_string();
+    }
+    
+    public void PushData(CPacket response)
+    {
+        response.push(str);
+    }
+}
+
+[Serializable]
+public class UserDataPackage : ResponseData
+{
+    public int userId;
     public string account;
     public string password;
-    
-    public AccountInfo(CPacket response)
-    {
-        account = response.pop_string();
-        password = response.pop_string();
-    }
+    public string name;
+    public PlayerData data;
+    public PlayerStateData state;
+    public HpMp hpMp;
 }
 
 public class PlayerDataPackage : ResponseData
@@ -113,6 +131,7 @@ public class PlayerIdData : ResponseData
 public class PlayerData : ResponseData
 {
     public Int32 playerId;
+    public string name;
     public byte unitType;
     public byte moveSpeed;
     public byte nearRange;
@@ -121,6 +140,7 @@ public class PlayerData : ResponseData
     public PlayerData(CPacket response)
     {
         playerId = response.pop_int32();
+        name = response.pop_string();
         unitType = response.pop_byte();
         moveSpeed = response.pop_byte();
         nearRange = response.pop_byte();
@@ -129,6 +149,7 @@ public class PlayerData : ResponseData
     public void PushData(CPacket response)
     {
         response.push(playerId);
+        response.push(name);
         response.push(unitType);
         response.push(moveSpeed);
         response.push(nearRange);
