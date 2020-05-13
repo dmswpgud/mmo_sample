@@ -40,6 +40,7 @@ public partial class CNetworkManager : MonoBehaviour
     
     public void RequestPlayerState(PlayerStateData stateData, Int32 receiverUserId, Action<ResponseData, ERROR> onRes)
     {
+        Debug.Log($"{receiverUserId}님이 타겟임");
         CPacket msg = CPacket.create((short)PROTOCOL.PLAYER_STATE_REQ);
         stateData.PushData(msg);
         msg.push(receiverUserId);

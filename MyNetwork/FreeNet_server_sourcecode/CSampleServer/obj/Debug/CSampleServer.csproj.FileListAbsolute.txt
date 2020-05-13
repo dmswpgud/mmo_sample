@@ -43,3 +43,14 @@
 /Users/jaehyung.eun/Desktop/SampleMMO 2 2/MyNetwork/FreeNet_server_sourcecode/CSampleServer/obj/Debug/CSampleServer.csproj.CopyComplete
 /Users/jaehyung.eun/Desktop/SampleMMO 2 2/MyNetwork/FreeNet_server_sourcecode/CSampleServer/obj/Debug/CSampleServer.exe
 /Users/jaehyung.eun/Desktop/SampleMMO 2 2/MyNetwork/FreeNet_server_sourcecode/CSampleServer/obj/Debug/CSampleServer.pdb
+/Users/jaehyung.eun/mmo_sample/MyNetwork/FreeNet_server_sourcecode/CSampleServer/bin/Debug/CSampleServer.exe.config
+/Users/jaehyung.eun/mmo_sample/MyNetwork/FreeNet_server_sourcecode/CSampleServer/bin/Debug/CSampleServer.exe
+/Users/jaehyung.eun/mmo_sample/MyNetwork/FreeNet_server_sourcecode/CSampleServer/bin/Debug/CSampleServer.pdb
+/Users/jaehyung.eun/mmo_sample/MyNetwork/FreeNet_server_sourcecode/CSampleServer/bin/Debug/FreeNet.dll
+/Users/jaehyung.eun/mmo_sample/MyNetwork/FreeNet_server_sourcecode/CSampleServer/bin/Debug/FreeNet.pdb
+/Users/jaehyung.eun/mmo_sample/MyNetwork/FreeNet_server_sourcecode/CSampleServer/obj/Debug/CSampleServer.csprojAssemblyReference.cache
+/Users/jaehyung.eun/mmo_sample/MyNetwork/FreeNet_server_sourcecode/CSampleServer/obj/Debug/CSampleServer.csproj.CopyComplete
+/Users/jaehyung.eun/mmo_sample/MyNetwork/FreeNet_server_sourcecode/CSampleServer/obj/Debug/CSampleServer.exe
+/Users/jaehyung.eun/mmo_sample/MyNetwork/FreeNet_server_sourcecode/CSampleServer/obj/Debug/CSampleServer.pdb
+/Users/jaehyung.eun/mmo_sample/MyNetwork/FreeNet_server_sourcecode/CSampleServer/bin/Debug/Newtonsoft.Json.dll
+/Users/jaehyung.eun/mmo_sample/MyNetwork/FreeNet_server_sourcecode/CSampleServer/bin/Debug/Newtonsoft.Json.xml

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Client.Game.Map;
-using GameServer;
+﻿using GameServer;
 using UnityEngine;
 
 public partial class GameManager : MonoBehaviour
@@ -30,9 +27,9 @@ public partial class GameManager : MonoBehaviour
 
         CNetworkManager.Inst.RegisterDisconnectedServer(OnDisconnectServer);
         CNetworkManager.Inst.RegisterDisconnectedPlayer(DisconnectedPlayer);
-        CNetworkManager.Inst.RequsetGetMyPlayer(MakeMyPlayer);
-        CNetworkManager.Inst.RegisterAddNearPlayer(MakePlayer);
-        CNetworkManager.Inst.RegisterRemoveNearPlayer(DestroyPlayer);
+        CNetworkManager.Inst.RequsetGetMyPlayer(SpawnUnit);
+        CNetworkManager.Inst.RegisterAddNearPlayer(SpawnUnit);
+        CNetworkManager.Inst.RegisterRemoveNearPlayer(DestroyUnit);
         CNetworkManager.Inst.RegisterOtherPlayerMove(ResponseMovePlayer);
         CNetworkManager.Inst.RegisterChangedOtherPlayerstate(OnReceivedChangedPlayerState);
     }
@@ -70,5 +67,55 @@ public partial class GameManager : MonoBehaviour
         }
 
         return null; 
+    }
+    
+    private void SpawnUnit(ResponseData res, ERROR error)
+    {
+        if (error != ERROR.NONE)
+        {
+            PrintSystemLog(error.ToString());
+            return;
+        }
+        
+        var data = (PlayerDataPackage) res;
+
+        switch ((UnitType)data.data.unitType)
+        {
+            case UnitType.PLAYER:
+                var player = CreatePlayer(data, PlayerObj);
+                players.Add(player);
+
+                if (player.ID == UserId)
+                {
+                    myPlayer = player;
+                    myPlayer.IsMyPlayer = true;
+                    Camera.main.transform.parent = myPlayer.transform;
+                    Camera.main.transform.localPosition = new Vector3(0f, 8f, -6.7f);
+                    mapCollider.transform.parent = myPlayer.transform;
+                    mapCollider.transform.localPosition = Vector3.zero;
+                    mapCollider.SetActive(true);
+                }
+                break;
+            case UnitType.MONSTER:
+                var moster = CreatePlayer(data, PlayerObj);
+                players.Add(moster);
+                break;
+        }
+    }
+    
+    private void DestroyUnit(ResponseData res, ERROR error)
+    {
+        if (error != ERROR.NONE)
+        {
+            PrintSystemLog(error.ToString());
+            return;
+        }
+        
+        var data = (PlayerData) res;
+        var player = players.Find(p => p.DATA.playerId == data.playerId);
+        var index = players.FindIndex(p => p.DATA.playerId == data.playerId);
+        RemoveUnitTile(players[index]);
+        players.RemoveAt(index);
+        Destroy(player.gameObject);
     }
 }

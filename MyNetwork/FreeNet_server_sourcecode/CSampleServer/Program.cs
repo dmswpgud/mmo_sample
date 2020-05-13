@@ -9,6 +9,9 @@ namespace CSampleServer
         public static List<CGameUser> userlist;
         public static CGameServer gameServer = new CGameServer();
 
+        public delegate void Loop();
+        public static Loop Tick;
+
         static void Main(string[] args)
         {
             CPacketBufferManager.initialize(2000);
@@ -20,11 +23,16 @@ namespace CSampleServer
             // 초기화.
             service.initialize();
             service.listen("0.0.0.0", 7979, 100);
-
+            
+            Tick = gameServer.Tick;
 
             Console.WriteLine("Started!");
             while (true)
             {
+                if (Tick != null)
+                {
+                    Tick();    
+                }
                 //Console.Write(".");
                 System.Threading.Thread.Sleep(1000);
             }
@@ -52,6 +60,11 @@ namespace CSampleServer
             {
                 userlist.Remove(user);
             }
+        }
+
+        public static void PrintLog(string log)
+        {
+            Console.WriteLine(log);
         }
     }
 }

@@ -18,6 +18,7 @@
       <Path>Library</Path>
       <Path>Logs</Path>
       <Path>Temp</Path>
+      <Path>build2.app</Path>
       <Path>obj</Path>
     </explicitExcludes>
   </component>

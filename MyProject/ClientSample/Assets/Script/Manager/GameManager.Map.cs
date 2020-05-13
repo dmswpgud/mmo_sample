@@ -13,7 +13,7 @@ public partial class GameManager : MonoBehaviour
 
     private void UpdateGameManagerMap()
     {
-        if (InputKey.InputAttack)
+        if (InputKey.InputAttack || InputKey.InputChangeDirection)
             return;
         
         if (Input.GetMouseButtonDown (0))
@@ -66,7 +66,7 @@ public partial class GameManager : MonoBehaviour
         var panelX = Math.Round(x);
         var panelY = Math.Round(z);
         
-        Debug.Log($"{(int) panelX} {(int) panelY}");
+//        Debug.Log($"{(int) panelX} {(int) panelY}");
 
         return GetTileInfo((int) panelX, (int) panelY);
     }

@@ -1,4 +1,7 @@
-﻿namespace GameServer
+﻿using System;
+using FreeNet;
+
+namespace GameServer
 {
     public enum UnitDirection
     {
@@ -7,7 +10,7 @@
 
     public enum UnitType
     {
-        PLAYER, ENEMY, MAP_OBJECT 
+        PLAYER, MONSTER, MAP_OBJECT 
     }
 
     public enum PlayerState
@@ -40,6 +43,8 @@
         
         PLAYER_STATE_REQ,
         PLAYER_STATE_RES,
+        
+        MONSTER_SPONE_RES,
 
         END
     }
@@ -48,5 +53,135 @@
     {
         NONE = 0,
         DUPLICATE_USERS = 1,
+    }
+}
+
+
+
+
+
+
+
+
+
+
+public class ResponseData {}
+
+public class AccountInfo : ResponseData
+{
+    public string account;
+    public string password;
+    
+    public AccountInfo(CPacket response)
+    {
+        account = response.pop_string();
+        password = response.pop_string();
+    }
+}
+
+public class PlayerDataPackage : ResponseData
+{
+    public PlayerData data;
+    public PlayerStateData state;
+    public HpMp hpMp;
+}
+
+[Serializable]
+public class PlayerStatePackage : ResponseData
+{
+    public PlayerStateData senderPlayerData;
+    public PlayerStateData receiverPlayerData;
+    public HpMp receiverPlayerHpMp;
+}
+
+public class ChatData : ResponseData
+{
+    public Int32 userId;
+    public string message;
+}
+
+public class PlayerIdData : ResponseData
+{
+    public Int32 playerId;
+    public PlayerIdData(CPacket response)
+    {
+        playerId = response.pop_int32();
+    }
+}
+
+[Serializable]
+public class PlayerData : ResponseData
+{
+    public Int32 playerId;
+    public byte unitType;
+    public byte moveSpeed;
+    public byte nearRange;
+        
+    public PlayerData(){}
+    public PlayerData(CPacket response)
+    {
+        playerId = response.pop_int32();
+        unitType = response.pop_byte();
+        moveSpeed = response.pop_byte();
+        nearRange = response.pop_byte();
+    }
+        
+    public void PushData(CPacket response)
+    {
+        response.push(playerId);
+        response.push(unitType);
+        response.push(moveSpeed);
+        response.push(nearRange);
+    }
+}
+
+[Serializable]
+public class PlayerStateData : ResponseData
+{
+    public Int32 playerId;
+    public byte unitType;
+    public byte state;
+    public byte direction;
+    public short posX;
+    public short posY;
+    
+    public PlayerStateData() {}
+    public PlayerStateData(CPacket msg)
+    {
+        playerId = msg.pop_int32();
+        unitType = msg.pop_byte();
+        state = msg.pop_byte();
+        direction = msg.pop_byte();
+        posX = msg.pop_int16();
+        posY = msg.pop_int16();
+    }
+
+    public void PushData(CPacket response)
+    {
+        response.push(playerId);
+        response.push(unitType);
+        response.push(state);
+        response.push(direction);
+        response.push(posX);
+        response.push(posY);
+    }
+}
+
+[Serializable]
+public class HpMp : ResponseData
+{
+    public Int32 Hp;
+    public Int32 Mp;
+
+    public HpMp() {}
+    public HpMp(CPacket msg)
+    {
+        Hp = msg.pop_int32();
+        Mp = msg.pop_int32();
+    }
+    public void PushData(CPacket response)
+    {
+        response.push(Hp);
+        response.push(Mp);
     }
 }

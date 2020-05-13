@@ -4,18 +4,16 @@ using UnityEngine;
 
 public class Player : Unit
 {
-    
-    public PlayerStateData STATE { private set; get; }
     public HpMp HPMP  { private set; get; }
     private TileInfo nextTile;
     public Action<Player> OnArrivePoint;
     public bool IsMyPlayer;
     public Animator animator;
     
-
     [SerializeField]
     private GameObject model;
-    
+    [SerializeField]
+    public GameObject modelHead;
     PlayerAnimationController animController;
 
     void Awake()
@@ -29,15 +27,22 @@ public class Player : Unit
     {
         this.DATA = data;
         this.STATE = state;
-        HPMP = hpMp;
-        SetStateData(this.STATE);
+        this.HPMP = hpMp;
+        base.Initialized(model);
+    }
+    
+    public override void SetStateData(PlayerStateData state)
+    {
+        SetPlayerAnim((PlayerState)state.state);
+        base.SetDirection((UnitDirection) state.direction, 0.2f);
+        base.SetPosition(state.posX, state.posY);
     }
 
-    public void MovePlayerNextPosition(PlayerStateData playerData = null)
+    public override void MovePlayerNextPosition(PlayerStateData playerData = null)
     {
         STATE = playerData;
         nextTile = GameManager.Inst.GetTileInfo(STATE.posX, STATE.posY);
-        ChangeDirectionByTargetPoint(STATE.posX, STATE.posY);
+        SetDirection((UnitDirection)STATE.direction, DATA.moveSpeed / 4f);
     }
 
     private void Update()
@@ -52,42 +57,37 @@ public class Player : Unit
             return;
         }
         
-        SetAnim(PlayerState.WARK);
+        SetPlayerAnim(PlayerState.WARK);
         
         transform.position = Vector3.MoveTowards(transform.position, nextTile.transform.position, DATA.moveSpeed * Time.deltaTime);
 
         if (Vector3.Distance(transform.position, nextTile.transform.position) < 0.01f)
         {
-            SetPosition(nextTile.GridPoint.X, nextTile.GridPoint.Y);
+            base.SetPosition(nextTile.GridPoint.X, nextTile.GridPoint.Y);
             
             OnArrivePoint?.Invoke(this);
             
             nextTile = null;
         }
     }
-    
-    public void SetStateData(PlayerStateData state)
+
+    public bool SetDirectionByPosition(int destX, int destY)
     {
-        SetAnim((PlayerState)state.state);
-        SetDirection((UnitDirection) state.direction);
-        SetPosition(state.posX, state.posY);
+        return base.SetDirectionByPosition(destX, destY, 0.3f);
     }
 
-    protected override void ChangedDirection(UnitDirection dir)
-    {
-        STATE.direction = (byte) dir;
-        animController.SetDirection(dir);
-    }
-
-    protected override void ChangedPosition(int x, int y)
-    {
-        STATE.posX = (short) x;
-        STATE.posY = (short) y;
-    }
-
-    public void SetAnim(PlayerState state)
+    public void SetPlayerAnim(PlayerState state, bool playAnim = true)
     {
         this.STATE.state = (byte)state;
-        animController.SetState(state);
+
+        if (playAnim)
+        {
+            animController.SetState(state);
+        }
+    }
+
+    public override void OnFinishedAnim(Action<PlayerState> onFinished)
+    {
+        animController.OnFinishedAnim += onFinished;
     }
 }

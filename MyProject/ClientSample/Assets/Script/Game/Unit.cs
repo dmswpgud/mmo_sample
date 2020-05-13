@@ -1,5 +1,7 @@
-﻿using GameServer;
+﻿using System;
+using GameServer;
 using UnityEngine;
+using DG.Tweening;
 
 /// <summary>
 /// 유닛 방향
@@ -9,96 +11,56 @@ using UnityEngine;
 public abstract class Unit : MonoBehaviour
 {
     public PlayerData DATA { protected set; get; }
-    public UnitDirection Direction;
-    private TileInfo currentTile;
-    public TileInfo GetCurrentTile => currentTile;
+    public PlayerStateData STATE { protected set; get; }
 
-    protected void SetPosition(int x, int y)
-    {
-        ChangedPosition(x, y);
-        var tile = GameManager.Inst.GetTileInfo(x, y);
-        currentTile = tile;
-        transform.position = tile.transform.position;
-        GameManager.Inst.SetUnitTile(tile, this);
-    }
+    public int ID => DATA.playerId;
+    public int X => STATE.posX;
+    public int Y => STATE.posY;
+    public UnitDirection Direction => (UnitDirection)STATE.direction;
     
-    public void SetDirection(UnitDirection dir)
+    public GameObject Renderer { private set; get; }
+
+    public void Initialized(GameObject renderer = null)
     {
-        Direction = dir;
-        ChangedDirection(dir);
-    }
-
-    protected abstract void ChangedDirection(UnitDirection dir);
-
-    protected abstract void ChangedPosition(int x, int y);
-
-    // 이동할 곳에 대한 오브트의 방향을 셋팅.
-    public void ChangeDirectionByTargetPoint(int destX, int destY)
-    {
-        var pos = currentTile.GridPoint;
-
-        if (pos.X > destX && pos.Y > destY)
-        {
-            Direction = UnitDirection.DOWN_LEFT; //
-        }
-        else if (pos.X > destX && pos.Y == destY)
-        {
-            Direction = UnitDirection.LEFT; //
-        }
-        else if (pos.X > destX && pos.Y < destY)
-        {
-            Direction = UnitDirection.UP_LEFT; //
-        }
-        else if (pos.X == destX && pos.Y < destY)
-        {
-            Direction = UnitDirection.UP; //
-        }
-        else if (pos.X < destX && pos.Y < destY)
-        {
-            Direction = UnitDirection.UP_RIGHT; //
-        }
-        else if (pos.X < destX && pos.Y == destY)
-        {
-            Direction = UnitDirection.RIGHT; //
-        }
-        else if (pos.X < destX && pos.Y > destY)
-        {
-            Direction = UnitDirection.DOWN_LEFT;
-        }
-        else if (pos.X == destX && pos.Y > destY)
-        {
-            Direction = UnitDirection.DOWN; //
-        }
-
+        Renderer = renderer;
+        
+        //
+        SetPosition(X, Y);
         SetDirection(Direction);
     }
 
-    // 오브젝트가 바라보는 전방의 타일을 반환.
-    public TileInfo GetUnitFrontTile()
+    public abstract void MovePlayerNextPosition(PlayerStateData stateData);
+    public abstract void SetStateData(PlayerStateData stateData);
+    public abstract void OnFinishedAnim(Action<PlayerState> onFinished);
+
+    protected void SetPosition(int x, int y)
     {
-        var pos = currentTile.GridPoint;
+        STATE.posX = (short)x;
+        STATE.posY = (short)y;
+        var tile = GameManager.Inst.GetTileInfo(x, y);
+        transform.position = tile.transform.position;
+        GameManager.Inst.SetUnitTile(tile, this);
+    }
+
+    protected void SetDirection(UnitDirection dir, float speed = 0f)
+    {
+        STATE.direction = (byte) dir;
+        var dirPos = GameUtils.GetUnitFrontTile(X, Y, Direction);
+        SetUnitDirectionByPosition(dirPos.X, dirPos.Y, speed);
+    }
+
+    protected bool SetDirectionByPosition(int destX, int destY, float speed)
+    {
+        var dir = GameUtils.SetDirectionByPosition(X, Y, destX, destY);
+        STATE.direction = (byte) dir;
+        SetUnitDirectionByPosition(destX, destY, speed);
         
-        switch (Direction)
-        {
-            case UnitDirection.UP:
-                return GameManager.Inst.GetTileInfo(pos.X - 1, pos.Y - 1);
-            case UnitDirection.UP_RIGHT:
-                return GameManager.Inst.GetTileInfo(pos.X - 1, pos.Y);
-            case UnitDirection.RIGHT:
-                return GameManager.Inst.GetTileInfo(pos.X - 1, pos.Y + 1);
-            case UnitDirection.DOWN_RIGHT:
-                return GameManager.Inst.GetTileInfo(pos.X, pos.Y + 1);
-            case UnitDirection.DOWN:
-                return GameManager.Inst.GetTileInfo(pos.X + 1, pos.Y + 1);
-            case UnitDirection.DOWN_LEFT:
-                return GameManager.Inst.GetTileInfo(pos.X + 1, pos.Y);
-            case UnitDirection.LEFT:
-                return GameManager.Inst.GetTileInfo(pos.X + 1, pos.Y - 1);
-            case UnitDirection.UP_LEFT:
-                return GameManager.Inst.GetTileInfo(pos.X, pos.Y - 1);
-        }
-        
-        return null;
+        return true;
+    }
+
+    private void SetUnitDirectionByPosition(int destX, int destY, float speed)
+    {
+        Renderer.transform.DOLookAt(new Vector3(destX, 0, destY), speed);
     }
 }
 
