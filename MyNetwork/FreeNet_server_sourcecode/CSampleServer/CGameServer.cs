@@ -22,7 +22,7 @@ namespace CSampleServer
         // 서버 접속.
         public void UserEntedServer(CUnit user)
         {
-            //userList.Add(new CMonster(user.playerData.playerId + 13));
+            userList.Add(new CMonster(user.playerData.playerId + 13));
             
             // 서버에 유저 추가.
             userList.Add(user);

@@ -92,7 +92,7 @@ public partial class GameManager : MonoBehaviour
                     Camera.main.transform.parent = myPlayer.transform;
                     Camera.main.transform.localPosition = new Vector3(0f, 8f, -6.7f);
                     mapCollider.transform.parent = myPlayer.transform;
-                    mapCollider.transform.position = Vector3.zero;
+                    mapCollider.transform.localPosition = Vector3.zero;
                     mapCollider.SetActive(true);
                 }
                 break;

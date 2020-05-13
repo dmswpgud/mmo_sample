@@ -56,7 +56,25 @@ namespace GameServer
     }
 }
 
+
+
+
+
+
+
+
+
+[Serializable]
 public class ResponseData {}
+
+[Serializable]
+public class UserDataPackage : ResponseData
+{
+    public int userId;
+    public PlayerData data;
+    public PlayerStateData state;
+    public HpMp hpMp;
+}
 
 public class PlayerDataPackage : ResponseData
 {

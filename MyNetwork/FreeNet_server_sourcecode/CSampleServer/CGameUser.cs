@@ -1,6 +1,7 @@
 ﻿using System;
 using FreeNet;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace CSampleServer
 {
@@ -45,13 +46,38 @@ namespace CSampleServer
 						send(response);
 						return;
 					}
+
 					
-					player = new CPlayer(this);
-					player.playerData = new PlayerData() {playerId = userId, unitType = 0, moveSpeed = 2, nearRange = 5};
-					player.stateData = new PlayerStateData() {playerId = userId, posX = 10, posY = 10, direction = 4};
-					player.HpMp = new HpMp() {Hp = 500, Mp = 10};
-					Console.WriteLine($"user id {userId}");
-					Program.gameServer.UserEntedServer(player);
+					// TODO: JSON 불러오기 임시 (정리 해야댐.)
+					var readJson = SystemUtils.Leader();
+					
+					JToken token = null;
+
+					if (readJson != null)
+					{
+						token = readJson.SelectToken(userId.ToString());    
+					}
+
+					if (token != null)
+					{
+						player = new CPlayer(this);
+						UserDataPackage parckage = new UserDataPackage();
+						parckage = token.ToObject<UserDataPackage>();
+						player.playerData = parckage.data;
+						player.stateData = parckage.state;
+						player.HpMp = parckage.hpMp;
+						Console.WriteLine($"user id {userId}");
+						Program.gameServer.UserEntedServer(player);
+					}
+					else
+					{
+						player = new CPlayer(this);
+						player.playerData = new PlayerData() {playerId = userId, unitType = 0, moveSpeed = 2, nearRange = 5};
+						player.stateData = new PlayerStateData() {playerId = userId, posX = 10, posY = 10, direction = 4};
+						player.HpMp = new HpMp() {Hp = 500, Mp = 10};
+						Console.WriteLine($"user id {userId}");
+						Program.gameServer.UserEntedServer(player);
+					}
 					break;
 				}
 				// 채팅 보내달라고 요청이 옴.
@@ -107,13 +133,19 @@ namespace CSampleServer
 		// 접속 종료 이벤트.
 		void IPeer.on_removed()
 		{
+			// TODO: JSON 저장하기 임시 (정리 해야댐.)
 			Console.WriteLine("The client disconnected.");
 
 			if (player != null)
 			{
-				Program.PrintLog(JsonConvert.SerializeObject(player.playerData));
-				Program.PrintLog(JsonConvert.SerializeObject(player.stateData));
-				Program.PrintLog(JsonConvert.SerializeObject(player.HpMp));
+				var userPackage = new UserDataPackage();
+				userPackage.data = player.playerData;
+				userPackage.state = player.stateData;
+				userPackage.hpMp = player.HpMp;
+				userPackage.userId = player.playerData.playerId;
+				var save = JToken.FromObject(userPackage);
+				SystemUtils.Save(userPackage.userId, save);
+				
 				player.DisconnectedPlayer();
 			}
 
