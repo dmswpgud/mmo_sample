@@ -80,7 +80,7 @@ public partial class GameManager
             if (path.Count != 0)
             {        
                 // 방향 설정.
-                //player.SetDirectionByPosition(path[0].X, path[0].Y);
+                player.SetDirectionByPosition(path[0].X, path[0].Y);
                 // 서버에 이동할 경로를 보냄.
                 CNetworkManager.Inst.RequestPlayerMove(path[0].X, path[0].Y, player.STATE.direction, ResponseMovePlayer);
             }

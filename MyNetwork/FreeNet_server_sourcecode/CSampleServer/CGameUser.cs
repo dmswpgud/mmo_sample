@@ -1,5 +1,6 @@
 ﻿using System;
 using FreeNet;
+using Newtonsoft.Json;
 
 namespace CSampleServer
 {
@@ -110,6 +111,9 @@ namespace CSampleServer
 
 			if (player != null)
 			{
+				Program.PrintLog(JsonConvert.SerializeObject(player.playerData));
+				Program.PrintLog(JsonConvert.SerializeObject(player.stateData));
+				Program.PrintLog(JsonConvert.SerializeObject(player.HpMp));
 				player.DisconnectedPlayer();
 			}
 

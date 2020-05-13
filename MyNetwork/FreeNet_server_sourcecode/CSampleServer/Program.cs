@@ -23,7 +23,7 @@ namespace CSampleServer
             // 초기화.
             service.initialize();
             service.listen("0.0.0.0", 7979, 100);
-
+            
             Tick = gameServer.Tick;
 
             Console.WriteLine("Started!");

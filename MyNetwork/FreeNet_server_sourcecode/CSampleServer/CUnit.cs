@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using GameServer;
 
 namespace CSampleServer
 {
+    [Serializable]
     public abstract class CUnit
     {
         public CGameUser owner;

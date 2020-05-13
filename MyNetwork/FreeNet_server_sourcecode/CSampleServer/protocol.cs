@@ -65,6 +65,7 @@ public class PlayerDataPackage : ResponseData
     public HpMp hpMp;
 }
 
+[Serializable]
 public class PlayerStatePackage : ResponseData
 {
     public PlayerStateData senderPlayerData;
@@ -87,6 +88,7 @@ public class PlayerIdData : ResponseData
     }
 }
 
+[Serializable]
 public class PlayerData : ResponseData
 {
     public Int32 playerId;
@@ -112,6 +114,7 @@ public class PlayerData : ResponseData
     }
 }
 
+[Serializable]
 public class PlayerStateData : ResponseData
 {
     public Int32 playerId;
@@ -143,6 +146,7 @@ public class PlayerStateData : ResponseData
     }
 }
 
+[Serializable]
 public class HpMp : ResponseData
 {
     public Int32 Hp;
