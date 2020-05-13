@@ -6,6 +6,11 @@ namespace CSampleServer
 {
     public class CMonster : CUnit
     {
+        public CMonster(int id)
+        {
+            SpawnMonster(id);
+        }
+        
         public CMonster() : base()
         {
             playerData.playerId = 100;
@@ -16,6 +21,30 @@ namespace CSampleServer
             stateData.direction = 0;
             stateData.posX = 13;
             stateData.posY = 13;
+
+            HpMp.Hp = 100;
+            HpMp.Mp = 200;
+            
+            listNearbyUser = GameUtils.GetNearbyUnit(playerData.playerId, stateData.posX, stateData.posY, playerData.nearRange, Program.gameServer.userList);
+            
+            CPacket response = CPacket.create((short)PROTOCOL.MONSTER_SPONE_RES);
+            playerData.PushData(response);
+            stateData.PushData(response);
+            CGameServer.ResponsePacketToUsers(listNearbyUser, response);
+
+            SetPosition(stateData.posX, stateData.posY, stateData.direction);
+        }
+
+        private void SpawnMonster(int id)
+        {
+            playerData.playerId = id;
+            playerData.unitType = 1;
+            playerData.moveSpeed = 1;
+
+            stateData.playerId = id;
+            stateData.direction = 2;
+            stateData.posX = (short) id;
+            stateData.posY = (short) id;
 
             HpMp.Hp = 100;
             HpMp.Mp = 200;
