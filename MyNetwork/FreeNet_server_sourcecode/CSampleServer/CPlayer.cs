@@ -71,7 +71,7 @@ namespace CSampleServer
             user2.HpMp.PushData(response);
             user.owner?.send(response);
             
-            Program.PrintLog($"{user}범위내에 {user2}가 들어옴.");
+            Program.PrintLog($"[{user.playerData.name}]의 범위내에 [{user2.playerData.name}]가 들어옴.");
         }
 
         // 플레이어가 범위내를 벚어났을 때 알리기.
@@ -84,7 +84,7 @@ namespace CSampleServer
             user2.playerData.PushData(response);
             user.owner?.send(response);
             
-            Program.PrintLog($"{user}범위내에서 {user2}가 벚어남.");
+            Program.PrintLog($"[{user.playerData.name}]의 범위내에서[{user2.playerData.name}]가 벚어남.");
         }
         
         // 플레이어 이동.
@@ -131,7 +131,7 @@ namespace CSampleServer
                 defender.HpMp.Hp = defenderHp;
                 defender.stateData.state = defenderHp <= 0 ? (byte)PlayerState.DEATH : (byte)PlayerState.DAMAGE;
 
-                Program.PrintLog($"공격자:{playerData.playerId} hm{HpMp.Hp}/{HpMp.Mp} 피격자:{defender.playerData.playerId} hm{defender.HpMp.Hp}/{defender.HpMp.Mp}");
+                Program.PrintLog($"[공격자 {playerData.name}] hm{HpMp.Hp}/{HpMp.Mp}  [피격자 {defender.playerData.name}] hm{defender.HpMp.Hp}/{defender.HpMp.Mp}");
                 
                 { // 공격 > 서버 > 공격
                     attacker.stateData.PushData(response);

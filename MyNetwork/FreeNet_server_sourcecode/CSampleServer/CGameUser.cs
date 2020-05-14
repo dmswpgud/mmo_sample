@@ -44,6 +44,7 @@ namespace CSampleServer
 						CPacket response = CPacket.create((short)PROTOCOL.CREATE_ACCOUNT_RES);
 						response.push(name);
 						send(response);
+						Program.PrintLog($"[{name}] 계정생성");
 					}
 					else
 					{
@@ -51,6 +52,7 @@ namespace CSampleServer
 						var errorCode = (short) ERROR.DUPLICATE_USERS;
 						response.push(errorCode);
 						Console.WriteLine($"error code {errorCode}");
+						Program.PrintLog($"[ERROR] [{name}] 중복 계정 ");
 						send(response);
 					}
 					break;
@@ -90,6 +92,8 @@ namespace CSampleServer
 					player.stateData = accountData.state;
 					player.HpMp = accountData.hpMp;
 					
+					Program.PrintLog($"[{account}] [{player.playerData.name}] 게임접속 성공");
+					
 					Console.WriteLine($"user id {account}");
 					Program.gameServer.UserEntedServer(player);
 					break;
@@ -125,7 +129,7 @@ namespace CSampleServer
 						player.RequestPlayerMove();
 						return;
 					}
-					Console.WriteLine($"아이디 {player.stateData.playerId} 이동 이전좌표 {player.stateData.posX} {player.stateData.posY} {(UnitDirection)player.stateData.direction}  좌표 :{x} {y} {(UnitDirection)dir}");
+					Console.WriteLine($"[{player.playerData.name}] 이동 이전좌표 {player.stateData.posX} {player.stateData.posY} {(UnitDirection)player.stateData.direction}  좌표 :{x} {y} {(UnitDirection)dir}");
 					
 					// 뭐가 없으면 이동 허가. (포지션 셋팅 후 패킷 전송)
 					player.SetPosition(x, y, dir);
@@ -137,7 +141,7 @@ namespace CSampleServer
 				{
 					player.stateData = new PlayerStateData(msg);
 					var receiveUserId = msg.pop_int32();
-					Console.WriteLine($"공격자 {player.stateData.playerId} 타겟 :{receiveUserId} 상태:{(PlayerState)player.stateData.state}");
+					Console.WriteLine($"[{player.playerData.name}] -> [{receiveUserId}] 상태:{(PlayerState)player.stateData.state}");
 					player.RequestPlayerState(receiveUserId);
 					break;
 				}
