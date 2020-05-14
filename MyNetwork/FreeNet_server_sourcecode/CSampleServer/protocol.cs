@@ -55,7 +55,8 @@ namespace GameServer
     public enum ERROR : short
     {
         NONE = 0,
-        DUPLICATE_USERS = 1,
+        NO_ACCOUNT,
+        DUPLICATE_USERS,
     }
 }
 

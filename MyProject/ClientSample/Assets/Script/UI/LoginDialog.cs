@@ -41,9 +41,8 @@ public class LoginDialog : MonoBehaviour
             var data = (PlayerIdData) res;
             GameManager.Inst.UserId = data.playerId;
             GameManager.Inst.PrintSystemLog($"{data.playerId}님이 서버에 접속하였습니다.");
+            StartGame();
         });
-        
-        StartGame();
     }
     
     public void OnClickCreateAccount()

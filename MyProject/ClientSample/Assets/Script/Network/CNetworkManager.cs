@@ -23,7 +23,6 @@ public partial class CNetworkManager : MonoBehaviour {
     private Action<ResponseData, ERROR> OnMovePlayer;
 
     public Action OnReceivedDisconnectedServer;
-    private Action<ResponseData, ERROR> OnReceiveConnectedOtherUser;
     private Action<ResponseData, ERROR> OnReceiveChatInfoCallback;
     private Action<ResponseData, ERROR> OnReceiveMoveOtherPlayer;
     private Action<ResponseData, ERROR> OnReceivedAddNearPlayer;
@@ -90,7 +89,7 @@ public partial class CNetworkManager : MonoBehaviour {
             {
                 var error = msg.pop_int32();
                 var errorCode = (ERROR)error;
-                OnNetworkCallback(null, errorCode);
+                OnNetworkCallback?.Invoke(null, errorCode);
                 break;
             }
             case PROTOCOL.CREATE_ACCOUNT_RES:
@@ -102,7 +101,7 @@ public partial class CNetworkManager : MonoBehaviour {
             case PROTOCOL.ENTER_GAME_ROOM_RES: // 게임 접속 요청 후 접속 됬다고 알려옴.
             {
                 var data = new PlayerIdData(msg);
-                OnReceiveConnectedOtherUser?.Invoke(data, ERROR.NONE);
+                OnNetworkCallback?.Invoke(data, ERROR.NONE);
                 break;
             }
             case PROTOCOL.CHAT_MSG_ACK: // 채팅 정보 받음.

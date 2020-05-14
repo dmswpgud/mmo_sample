@@ -44,7 +44,6 @@ namespace CSampleServer
 						CPacket response = CPacket.create((short)PROTOCOL.CREATE_ACCOUNT_RES);
 						response.push(name);
 						send(response);
-						return;
 					}
 					else
 					{
@@ -63,17 +62,28 @@ namespace CSampleServer
 					var password = msg.pop_string();
 					var userId = account.GetHashCode();
 					var accountData = SystemUtils.GetUserInfo(userId, password);
-					
+
+					// 계정이 없거나, 패스워드가 틀림.
+					if (accountData == null)
+					{
+						CPacket response = CPacket.create((short)PROTOCOL.ERROR);
+						var errorCode = (short) ERROR.NO_ACCOUNT;
+						response.push(errorCode);
+						Console.WriteLine($"error code {errorCode}");
+						send(response);
+						return;
+					}
+					// 중복된 계정.
 					if (Program.gameServer.userList.Exists(p => p.playerData.playerId == accountData.userId))
 					{
-							CPacket response = CPacket.create((short)PROTOCOL.ERROR);
-                    		var errorCode = (short) ERROR.DUPLICATE_USERS;
-                    		response.push(errorCode);
-                    		Console.WriteLine($"error code {errorCode}");
-                    		send(response);
-                    		return;
+						CPacket response = CPacket.create((short)PROTOCOL.ERROR);
+                    	var errorCode = (short) ERROR.DUPLICATE_USERS;
+                    	response.push(errorCode);
+                    	Console.WriteLine($"error code {errorCode}");
+                    	send(response);
+                    	return;
 					}
-					
+					// 플레이어 생성.
 					userDataPackage = accountData;
 					player = new CPlayer(this);
 					player.playerData = accountData.data;
@@ -142,9 +152,9 @@ namespace CSampleServer
 				SaveUserData();
 				
 				player.DisconnectedPlayer();
+				
+				Program.gameServer.DisconnectedUser(player);
 			}
-
-			Program.gameServer.DisconnectedUser(player);
 
 			Program.remove_user(this);
 		}

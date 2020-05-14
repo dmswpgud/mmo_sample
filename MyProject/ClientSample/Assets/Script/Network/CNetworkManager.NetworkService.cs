@@ -20,7 +20,7 @@ public partial class CNetworkManager : MonoBehaviour
         msg.push(account);
         msg.push(password);
         send(msg);
-        OnReceiveConnectedOtherUser = onRes;
+        OnNetworkCallback = onRes;
     }
     
     public void RequestChatMessage(string message, Action<ResponseData, ERROR> onRes)
