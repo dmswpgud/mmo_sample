@@ -121,11 +121,8 @@ namespace CSampleServer
 					var y = msg.pop_int32();
 					var dir = msg.pop_byte();
 					
-					// 이동할 좌표에 뭐가 있는지 체크.
-					var nearObjects = GameUtils.GetNearUserFromPosition(x, y, player.GetNearRangeUnit());
-					
 					// 뭐가 있으면 이동 불허. (포지션 셋팅 안하고 그냥 패킷 보냄)
-					if (nearObjects.Count != 0)
+					if (MapManager.I.HasUnit(x, y))
 					{
 						player.RequestPlayerMove();
 						return;

@@ -162,12 +162,17 @@ namespace CSampleServer
             return units;
         }
 
-        // center유저의 머위에 target이 있는지 체크.
+        // center유저의 범위에 target이 있는지 체크.
         public bool HasRangeInUnit(CUnit center, CUnit target)
         {
             var targets = GetAllOtherUnit(center);
             
             return targets.Contains(target);
+        }
+
+        public bool HasUnit(int x, int y)
+        {
+            return mapInfos[x, y].stayUnit.Count != 0;
         }
 
         // 맵 배열 널 체크

@@ -23,8 +23,8 @@ namespace CSampleServer
 
             MapManager.I.Initialized();
 
-            //MonsterSpawnDummyData();
-            //MonsterDummyData();
+            MonsterSpawnDummyData();
+            MonsterDummyData();
             
             //
             // InitializedMonsterDatas();

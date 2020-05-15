@@ -11,9 +11,9 @@ namespace CSampleServer
 
         public delegate void Loop();
         public static Loop Tick;
-        public static string  userInfoJsonPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/userInfo.txt";
-        public static string  monsterSpawnInfoJsonPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/monsterSpawnInfo.txt";
-        public static string  monsterInfoJsonPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/monsterInfo.txt";
+        public static string  userInfoJsonPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/mmo_table/userInfo.txt";
+        public static string  monsterSpawnInfoJsonPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/mmo_table/monsterSpawnInfo.txt";
+        public static string  monsterInfoJsonPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/mmo_table/monsterInfo.txt";
 
         static void Main(string[] args)
         {
