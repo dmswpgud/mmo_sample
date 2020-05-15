@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using FreeNet;
 
 namespace GameServer
@@ -131,11 +132,11 @@ public class PlayerIdData : ResponseData
 [Serializable]
 public class PlayerData : ResponseData
 {
+    public int tableId;
     public Int32 playerId;
     public string name;
     public byte unitType;
     public byte moveSpeed;
-    public byte nearRange;
         
     public PlayerData(){}
     public PlayerData(CPacket response)
@@ -144,7 +145,6 @@ public class PlayerData : ResponseData
         name = response.pop_string();
         unitType = response.pop_byte();
         moveSpeed = response.pop_byte();
-        nearRange = response.pop_byte();
     }
         
     public void PushData(CPacket response)
@@ -153,7 +153,6 @@ public class PlayerData : ResponseData
         response.push(name);
         response.push(unitType);
         response.push(moveSpeed);
-        response.push(nearRange);
     }
 }
 
@@ -206,4 +205,39 @@ public class HpMp : ResponseData
         response.push(Hp);
         response.push(Mp);
     }
+}
+
+public class UnitInfosPackage : ResponseData
+{
+    public List<PlayerDataPackage> datas = new List<PlayerDataPackage>();
+}
+
+public class MonsterSpawnDatas : ResponseData
+{
+    public List<MonsterSawnData> datas = new List<MonsterSawnData>();
+}
+
+public class UnitsDataPackate : ResponseData
+{
+    public List<PlayerDataPackage> datas = new List<PlayerDataPackage>();
+}
+
+public class PlayerDataPackages : ResponseData
+{
+    public List<PlayerData> datas = new List<PlayerData>();
+}
+
+[Serializable]
+public class MonsterSawnData : ResponseData
+{
+    public int SpawnId;
+    public int MonsterId = 1;
+    public short SpawnZonePosX = 15;
+    public short SpawnZonePosY = 15;
+    public int currentSpawnCount;
+    public int SpawnZoneRange;
+    public int SpawnMaxCount;
+    public int SpawnRemainSec;
+    public long LastSpawnTime;
+    public long NextSpawnTime;
 }

@@ -13,6 +13,7 @@ public abstract class Unit : MonoBehaviour
     public PlayerData DATA { protected set; get; }
     public PlayerStateData STATE { protected set; get; }
 
+    [SerializeField] private int InspectorView_unitId;
     public int ID => DATA.playerId;
     public int X => STATE.posX;
     public int Y => STATE.posY;
@@ -24,6 +25,7 @@ public abstract class Unit : MonoBehaviour
     {
         Renderer = renderer;
         
+        InspectorView_unitId = ID;
         //
         SetPosition(X, Y);
         SetDirection(Direction);

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using FreeNet;
 using GameServer;
@@ -6,57 +7,12 @@ namespace CSampleServer
 {
     public class CMonster : CUnit
     {
-        public CMonster(int id)
+        public CMonster(PlayerDataPackage userPack)  : base(userPack)
         {
-            SpawnMonster(id);
-        }
-        
-        public CMonster() : base()
-        {
-            playerData.playerId = 100;
-            playerData.name = "몬스터" + playerData.playerId.ToString();
-            playerData.unitType = 1;
-            playerData.moveSpeed = 1;
-
-            stateData.playerId = 100;
-            stateData.direction = 0;
-            stateData.posX = 13;
-            stateData.posY = 13;
-
-            HpMp.Hp = 100;
-            HpMp.Mp = 200;
-            
-            listNearbyUser = GameUtils.GetNearbyUnit(playerData.playerId, stateData.posX, stateData.posY, playerData.nearRange, Program.gameServer.userList);
-            
             CPacket response = CPacket.create((short)PROTOCOL.MONSTER_SPONE_RES);
             playerData.PushData(response);
             stateData.PushData(response);
-            CGameServer.ResponsePacketToUsers(listNearbyUser, response);
-
-            SetPosition(stateData.posX, stateData.posY, stateData.direction);
-        }
-
-        private void SpawnMonster(int id)
-        {
-            playerData.playerId = id;
-            playerData.name = $"몬스터{id}";
-            playerData.unitType = 1;
-            playerData.moveSpeed = 1;
-
-            stateData.playerId = id;
-            stateData.direction = 2;
-            stateData.posX = (short) 15;
-            stateData.posY = (short) 15;
-
-            HpMp.Hp = 100;
-            HpMp.Mp = 200;
-            
-            listNearbyUser = GameUtils.GetNearbyUnit(playerData.playerId, stateData.posX, stateData.posY, playerData.nearRange, Program.gameServer.userList);
-            
-            CPacket response = CPacket.create((short)PROTOCOL.MONSTER_SPONE_RES);
-            playerData.PushData(response);
-            stateData.PushData(response);
-            CGameServer.ResponsePacketToUsers(listNearbyUser, response);
+            HpMp.PushData(response);
 
             SetPosition(stateData.posX, stateData.posY, stateData.direction);
         }
@@ -67,53 +23,38 @@ namespace CSampleServer
             stateData.posY = (short)y;
             stateData.direction = (byte)dir;
 
-            UpdateNearUnit();
+            MapManager.I.AddUnitTile(this, x, y);
         }
 
-        public override void UpdateNearUnit()
+        // 플레이어가 범위내에 있을 시 알리기.
+        public override void ResponseAddNearUnit(List<CUnit> units)
         {
-            var updateNearUnit = GameUtils.GetNearbyUnit(playerData.playerId, stateData.posX, stateData.posY, playerData.nearRange, Program.gameServer.userList);
-            var list1 = listNearbyUser.Where(i => !updateNearUnit.Contains(i)).ToList(); // 삭제된 플레이어 리스트
-            var list2 = updateNearUnit.Where(i => !listNearbyUser.Contains(i)).ToList(); // 새로 추가된 플레이어 리스트
-            
-            // 범위내 케릭터 삭제 요청.
-            foreach (var user in list1)
-            {
-                user.RemoveNearUnit(this);
-                ResponseRemoveNearUnit(user, this);
-                ResponseRemoveNearUnit(this, user);
-            }
-
-            // 범위내 케릭터 추가 요청.
-            foreach (var user in list2)
-            {
-                user.AddNearUnit(this);
-                ResponseAddNearUnit(user, this);
-                ResponseAddNearUnit(this, user);
-            }
-           
-            // 범위내 케릭터 갱신.
-            listNearbyUser.Clear();
-            listNearbyUser.AddRange(updateNearUnit);
+            // if (base.IsPlayer() == false)
+            //     return;
+            //
+            // CPacket response = CPacket.create((short)PROTOCOL.ADD_NEAR_PLAYER_RES);
+            // user.playerData.PushData(response);
+            // user.stateData.PushData(response);
+            // user.HpMp.PushData(response);
+            // owner?.send(response);
+            //
+            // Program.PrintLog($"[{playerData.name}]의 범위내에 [{user.playerData.name}]가 들어옴.");
         }
 
-        public override void RemoveNearUnit(CUnit unit)
+        // 플레이어가 범위내를 벚어났을 때 알리기.
+        public override void ResponseRemoveNearUnit(List<CUnit> units)
         {
-        }
-
-        public override void AddNearUnit(CUnit unit)
-        {
-        }
-
-        public override void ResponseRemoveNearUnit(CUnit user, CUnit user2)
-        {
+            // if (base.IsPlayer() == false)
+            //     return;
+            //
+            // CPacket response = CPacket.create((short)PROTOCOL.REMOVE_NEAR_PLAYER_RES);
+            // user.playerData.PushData(response);
+            // owner?.send(response);
+            //
+            // Program.PrintLog($"[{playerData.name}]의 범위내에서[{user.playerData.name}]가 벚어남.");
         }
 
         public override void RequestPlayerMove()
-        {
-        }
-
-        public override void ResponseAddNearUnit(CUnit user, CUnit user2)
         {
         }
 

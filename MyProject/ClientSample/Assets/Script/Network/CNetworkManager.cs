@@ -114,11 +114,18 @@ public partial class CNetworkManager : MonoBehaviour {
             }
             case PROTOCOL.GET_MY_PLAYER_RES: // 내 케릭을 달라고 요청하고 정보를 알려옴.
             {
-                var data = new PlayerDataPackage();
-                data.data = new PlayerData(msg);
-                data.state = new PlayerStateData(msg);
-                data.hpMp = new HpMp(msg);
-                OnNetworkCallback(data, ERROR.NONE);
+                var count = msg.pop_int32();
+                var unitPack = new UnitsDataPackate();
+                for (int i = 0; i < count; ++i)
+                {
+                    var data = new PlayerDataPackage();
+                    data.data = new PlayerData(msg);
+                    data.state = new PlayerStateData(msg);
+                    data.hpMp = new HpMp(msg);
+                    unitPack.datas.Add(data);
+                }
+             
+                OnNetworkCallback(unitPack, ERROR.NONE);
                 break;
             }
             case PROTOCOL.DISCONECTED_PLAYER_RES: // 다른 유저가 접속을 끊었다고 알려옴.
@@ -143,18 +150,30 @@ public partial class CNetworkManager : MonoBehaviour {
             }
             case PROTOCOL.ADD_NEAR_PLAYER_RES: // 범위 밖에 유저가 범위 안으로 들어왔다고 알려옴.
             {
-                var data = new PlayerDataPackage();
-                data.data = new PlayerData(msg);
-                data.state = new PlayerStateData(msg);
-                data.hpMp = new HpMp(msg);
-                OnReceivedAddNearPlayer?.Invoke(data, ERROR.NONE);
+                var count = msg.pop_int32();
+                var unitPack = new UnitsDataPackate();
+                for (int i = 0; i < count; ++i)
+                {
+                    var data = new PlayerDataPackage();
+                    data.data = new PlayerData(msg);
+                    data.state = new PlayerStateData(msg);
+                    data.hpMp = new HpMp(msg);
+                    unitPack.datas.Add(data);
+                }
+                OnReceivedAddNearPlayer?.Invoke(unitPack, ERROR.NONE);
                 //GameManager.Inst.PrintSystemLog($"{data.userId}님이 범위내에 들어왔습니다.");
                 break;
             }
             case PROTOCOL.REMOVE_NEAR_PLAYER_RES: // 범위안에 있던 유닛이 범위 밖으로 나갔다고 알려옴.
             {
-                var data = new PlayerData(msg);
-                OnReceivedRemoveNearPlayer?.Invoke(data, ERROR.NONE);
+                var count = msg.pop_int32();
+                var unitPack = new PlayerDataPackages();
+                for (int i = 0; i < count; ++i)
+                {
+                    var data = new PlayerData(msg);
+                    unitPack.datas.Add(data);
+                }
+                OnReceivedRemoveNearPlayer?.Invoke(unitPack, ERROR.NONE);
                 //GameManager.Inst.PrintSystemLog($"{data.userId}님이 범위내에서 사라졌습니다.");
                 break;
             }

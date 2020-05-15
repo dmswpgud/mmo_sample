@@ -113,16 +113,22 @@ namespace CSampleServer
             var path = $"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/userInfo.txt";
             // 기존껄 읽어 옴.
             var readJson = LoadJson(path);
-            // 어카운트 목록을 취득.
-            var token = readJson?.SelectToken(account);
             
+            // 기존꺼 지움. TODO: 지우지 말고 덮어씌우고 싶음.
             readJson?.Remove(account);
-            
             readJson = readJson ?? new JObject();
             readJson.Add(account, json);
             using (StreamWriter sw = new StreamWriter(path, false, Encoding.UTF8))
             {
                 sw.Write(readJson);
+            }
+        }
+        
+        public static void SaveJson(string path, JObject json)
+        {
+            using (StreamWriter sw = new StreamWriter(path, false, Encoding.UTF8))
+            {
+                sw.Write(json);
             }
         }
 
@@ -172,7 +178,7 @@ namespace CSampleServer
             userPackage.password = password;
             userPackage.name = name;
             userPackage.userId = id;
-            userPackage.data = new PlayerData() {playerId = id, name = name, unitType = 0, moveSpeed = 2, nearRange = 5};
+            userPackage.data = new PlayerData() {playerId = id, name = name, unitType = 0, moveSpeed = 2};
             userPackage.state = new PlayerStateData() {playerId = id, posX = 10, posY = 10, direction = 4};
             userPackage.hpMp = new HpMp() {Hp = 500, Mp = 10};
             

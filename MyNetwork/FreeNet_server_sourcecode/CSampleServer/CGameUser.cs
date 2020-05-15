@@ -87,10 +87,11 @@ namespace CSampleServer
 					}
 					// 플레이어 생성.
 					userDataPackage = accountData;
-					player = new CPlayer(this);
-					player.playerData = accountData.data;
-					player.stateData = accountData.state;
-					player.HpMp = accountData.hpMp;
+					var playerDataPack = new PlayerDataPackage();
+					playerDataPack.data = userDataPackage.data;
+					playerDataPack.state = userDataPackage.state;
+					playerDataPack.hpMp = userDataPackage.hpMp;
+					player = new CPlayer(this, playerDataPack);
 					
 					Program.PrintLog($"[{account}] [{player.playerData.name}] 게임접속 성공");
 					
@@ -109,8 +110,8 @@ namespace CSampleServer
 				// 내 케릭정보를 보내달라고 요청이 옴.
 				case PROTOCOL.GET_MY_PLAYER_REQ:
 				{
-					Program.gameServer.ResponseGetMyPlayer(this);
 					player.SetPosition(player.stateData.posX, player.stateData.posY, player.stateData.direction);
+					Program.gameServer.ResponseGetMyPlayer(this);
 					break;
 				}
 				// 케릭을 이동시키겠다고 요청이 옴.
@@ -121,7 +122,7 @@ namespace CSampleServer
 					var dir = msg.pop_byte();
 					
 					// 이동할 좌표에 뭐가 있는지 체크.
-					var nearObjects = GameUtils.GetNearUserFromPosition(x, y, player.listNearbyUser);
+					var nearObjects = GameUtils.GetNearUserFromPosition(x, y, player.GetNearRangeUnit());
 					
 					// 뭐가 있으면 이동 불허. (포지션 셋팅 안하고 그냥 패킷 보냄)
 					if (nearObjects.Count != 0)
@@ -168,6 +169,7 @@ namespace CSampleServer
 			if (player != null && !player.IsPlayer())
 				return;
 			
+			Console.WriteLine((PROTOCOL)msg.protocol_id);
 			this.token.send(msg);
 		}
 

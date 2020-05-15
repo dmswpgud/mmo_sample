@@ -13,6 +13,7 @@
       <e p="CSampleServer.csproj" t="IncludeRecursive" />
       <e p="CUnit.cs" t="Include" />
       <e p="GameUtils.cs" t="Include" />
+      <e p="MapManager.cs" t="Include" />
       <e p="obj" t="ExcludeRecursive" />
       <e p="packages" t="ExcludeRecursive" />
       <e p="packages.config" t="Include" />
@@ -21,6 +22,7 @@
         <e p="AssemblyInfo.cs" t="Include" />
       </e>
       <e p="protocol.cs" t="Include" />
+      <e p="TimeManager.cs" t="Include" />
     </e>
   </component>
 </project>

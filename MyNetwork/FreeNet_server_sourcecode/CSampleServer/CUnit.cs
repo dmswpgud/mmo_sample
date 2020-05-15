@@ -11,26 +11,43 @@ namespace CSampleServer
         public PlayerData playerData = new PlayerData();
         public PlayerStateData stateData = new PlayerStateData();
         public HpMp HpMp = new HpMp();
-        public List<CUnit> listNearbyUser = new List<CUnit>();
-
-        public CUnit(CGameUser user)
-        {
-            owner = user;
-        }
-
-        public bool IsPlayer()
-        {
-            return playerData.unitType == (byte) UnitType.PLAYER;
-        }
+        public List<CUnit> prevNearUnits = new List<CUnit>();
+        public int NearRange = 5;
         
         public CUnit() {}
 
-        public abstract void UpdateNearUnit();
-        public abstract void RemoveNearUnit(CUnit unit);
-        public abstract void AddNearUnit(CUnit unit);
-        public abstract void ResponseRemoveNearUnit(CUnit user, CUnit user2);
+        public CUnit(CGameUser user, PlayerDataPackage userPack)
+        {
+            owner = user;
+            playerData = userPack.data;
+            stateData = userPack.state;
+            HpMp = userPack.hpMp;
+        }
+
+        public CUnit(PlayerDataPackage userPack)
+        {
+            playerData = userPack.data;
+            stateData = userPack.state;
+            HpMp = userPack.hpMp;
+        }
+
+        public bool IsPlayer() => playerData.unitType == (byte) UnitType.PLAYER;
+        
+        public List<CUnit> GetNearRangeUnit()
+        {
+            var list = MapManager.I.GetAllUnitByNearRange(stateData.posX, stateData.posY, NearRange);
+
+            if (list.Contains(this))
+            {
+                var index = list.FindIndex(p => p == this);
+                list.RemoveAt(index);
+            }
+            return list; 
+        }
+
+        public abstract void ResponseRemoveNearUnit(List<CUnit> units);
         public abstract void RequestPlayerMove();
-        public abstract void ResponseAddNearUnit(CUnit user, CUnit user2);
+        public abstract void ResponseAddNearUnit(List<CUnit> units);
         public abstract void SetPosition(int x, int y, int dir);
         public abstract void RequestPlayerState(int receiveUserId);
         public abstract void DisconnectedPlayer();

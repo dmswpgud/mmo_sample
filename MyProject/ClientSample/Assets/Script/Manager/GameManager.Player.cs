@@ -6,7 +6,7 @@ using UnityEngine;
 public partial class GameManager
 {
     public GameObject PlayerObj;
-    public List<Unit> players = new List<Unit>();
+    public List<Unit> listUnit = new List<Unit>();
     public Player myPlayer;
     private List<GridPoint> path;
     private Unit TargetUnit;
@@ -45,7 +45,7 @@ public partial class GameManager
 
     public Unit GetPlayerByUserId(int id)
     {
-        return players.Find(p => p.DATA.playerId == id);
+        return listUnit.Find(p => p.DATA.playerId == id);
     }
     
     private void SetPath(Player player, GridPoint destPoint)
@@ -101,7 +101,7 @@ public partial class GameManager
         
         var data = (PlayerStateData) res;
         
-        var player = players.Find(p => p.DATA.playerId == data.playerId);
+        var player = listUnit.Find(p => p.DATA.playerId == data.playerId);
         
         if (player.STATE.posX == data.posX && player.STATE.posY == data.posY)
         {

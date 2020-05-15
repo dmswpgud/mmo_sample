@@ -12,6 +12,8 @@ namespace CSampleServer
         public delegate void Loop();
         public static Loop Tick;
         public static string  userInfoJsonPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/userInfo.txt";
+        public static string  monsterSpawnInfoJsonPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/monsterSpawnInfo.txt";
+        public static string  monsterInfoJsonPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/monsterInfo.txt";
 
         static void Main(string[] args)
         {
@@ -25,7 +27,8 @@ namespace CSampleServer
             service.initialize();
             service.listen("0.0.0.0", 7979, 100);
             
-            Tick = gameServer.Tick;
+            // 게임서버 초기화.
+            gameServer.Initialized();
 
             Console.WriteLine("Started!");
             while (true)
@@ -57,10 +60,7 @@ namespace CSampleServer
 
         public static void remove_user(CGameUser user)
         {
-            lock (userlist)
-            {
-                userlist.Remove(user);
-            }
+            userlist.Remove(user);
         }
 
         public static void PrintLog(string log)

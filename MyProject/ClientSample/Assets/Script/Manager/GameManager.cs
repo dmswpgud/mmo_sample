@@ -27,9 +27,9 @@ public partial class GameManager : MonoBehaviour
 
         CNetworkManager.Inst.RegisterDisconnectedServer(OnDisconnectServer);
         CNetworkManager.Inst.RegisterDisconnectedPlayer(DisconnectedPlayer);
-        CNetworkManager.Inst.RequsetGetMyPlayer(SpawnUnit);
-        CNetworkManager.Inst.RegisterAddNearPlayer(SpawnUnit);
-        CNetworkManager.Inst.RegisterRemoveNearPlayer(DestroyUnit);
+        CNetworkManager.Inst.RequsetGetMyPlayer(SpawnUnits);
+        CNetworkManager.Inst.RegisterAddNearPlayer(SpawnUnits);
+        CNetworkManager.Inst.RegisterRemoveNearPlayer(DestroyUnits);
         CNetworkManager.Inst.RegisterOtherPlayerMove(ResponseMovePlayer);
         CNetworkManager.Inst.RegisterChangedOtherPlayerstate(OnReceivedChangedPlayerState);
     }
@@ -68,8 +68,24 @@ public partial class GameManager : MonoBehaviour
 
         return null; 
     }
-    
-    private void SpawnUnit(ResponseData res, ERROR error)
+
+    public void SpawnUnits(ResponseData res, ERROR error)
+    {
+        if (error != ERROR.NONE)
+        {
+            PrintSystemLog(error.ToString());
+            return;
+        }
+        
+        var datas = (UnitsDataPackate) res;
+
+        foreach (var unitPack in datas.datas)
+        {
+            SpawnUnit(unitPack);
+        }
+    }
+
+    private void SpawnUnit(ResponseData res, ERROR error = ERROR.NONE)
     {
         if (error != ERROR.NONE)
         {
@@ -83,7 +99,7 @@ public partial class GameManager : MonoBehaviour
         {
             case UnitType.PLAYER:
                 var player = CreatePlayer(data, PlayerObj);
-                players.Add(player);
+                listUnit.Add(player);
 
                 if (player.ID == UserId)
                 {
@@ -98,11 +114,28 @@ public partial class GameManager : MonoBehaviour
                 break;
             case UnitType.MONSTER:
                 var moster = CreatePlayer(data, PlayerObj);
-                players.Add(moster);
+                moster.name = $"몬스터{data.data.playerId}";
+                listUnit.Add(moster);
                 break;
         }
     }
-    
+
+    private void DestroyUnits(ResponseData res, ERROR error)
+    {
+        if (error != ERROR.NONE)
+        {
+            PrintSystemLog(error.ToString());
+            return;
+        }
+        
+        var datas = (PlayerDataPackages) res;
+
+        foreach (var unitPack in datas.datas)
+        {
+            DestroyUnit(unitPack, ERROR.NONE);
+        }
+    }
+
     private void DestroyUnit(ResponseData res, ERROR error)
     {
         if (error != ERROR.NONE)
@@ -112,10 +145,10 @@ public partial class GameManager : MonoBehaviour
         }
         
         var data = (PlayerData) res;
-        var player = players.Find(p => p.DATA.playerId == data.playerId);
-        var index = players.FindIndex(p => p.DATA.playerId == data.playerId);
-        RemoveUnitTile(players[index]);
-        players.RemoveAt(index);
+        var player = listUnit.Find(p => p.DATA.playerId == data.playerId);
+        var index = listUnit.FindIndex(p => p.DATA.playerId == data.playerId);
+        RemoveUnitTile(listUnit[index]);
+        listUnit.RemoveAt(index);
         Destroy(player.gameObject);
     }
 }
