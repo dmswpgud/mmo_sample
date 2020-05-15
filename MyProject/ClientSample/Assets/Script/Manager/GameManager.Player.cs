@@ -18,6 +18,9 @@ public partial class GameManager
 
     private void UpdateGameManagerPlayer()
     {
+        // if (myPlayer.IsDead)
+        //     return;
+        
         RequestPlayerState();
     }
     
@@ -127,7 +130,7 @@ public partial class GameManager
                 targetTile.GridPoint.Y == myPlayer.STATE.posY)
                 return;
             
-            myPlayer.SetDirectionByPosition(targetTile.GridPoint.X, targetTile.GridPoint.Y);
+            myPlayer.SetDirectionByPosition(targetTile.GridPoint.X - 1, targetTile.GridPoint.Y - 1);
             myPlayer.SetPlayerAnim(PlayerState.ATTACK);
             CNetworkManager.Inst.RequestPlayerState(myPlayer.STATE, receiverUserId: TargetUnit?.ID ?? 0, OnReceivedChangedPlayerState);
             
@@ -163,7 +166,7 @@ public partial class GameManager
 
         var senderPlayer = GetPlayerByUserId(data.senderPlayerData.playerId);
         var receiverPlayer = GetPlayerByUserId(data.receiverPlayerData.playerId);
-        
+
         if (senderPlayer)
         {
             senderPlayer.SetStateData(data.senderPlayerData);

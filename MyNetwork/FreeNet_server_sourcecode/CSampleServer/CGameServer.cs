@@ -23,12 +23,12 @@ namespace CSampleServer
 
             MapManager.I.Initialized();
 
-            MonsterSpawnDummyData();
-            MonsterDummyData();
+            // MonsterSpawnDummyData();
+            // MonsterDummyData();
             
             //
-            // InitializedMonsterDatas();
-            // InitializedSpawnMonster();
+            InitializedMonsterDatas();
+            InitializedSpawnMonster();
         }
 
         private void InitializedMonsterDatas()
@@ -155,12 +155,37 @@ namespace CSampleServer
 
                 if (monsterInfo != null)
                 {
-                    monsterInfo.data.playerId = id;
-                    monsterInfo.state.playerId = id;
-                    monsterInfo.state.posX = (short)spawnPosX;
-                    monsterInfo.state.posY = (short)spawnPosY;
-                    userList.Add(new CMonster(monsterInfo));
-                    Program.PrintLog($"{data.MonsterId} 몬스터 생성. {spawnPosX}:{spawnPosY} {data.LastSpawnTime} {data.LastSpawnTime < data.NextSpawnTime} {data.NextSpawnTime}");
+                    Guid uniqueId = Guid.NewGuid();
+                    var hashKey = uniqueId.GetHashCode();
+                    var monster = new PlayerDataPackage();
+                    var monsterdata = new PlayerData();
+                    var monsterState = new PlayerStateData();
+                    var monsterHp = new HpMp();
+                    monsterdata.name = monsterInfo.data.name;
+                    monsterdata.moveSpeed = monsterInfo.data.moveSpeed;
+                    monsterdata.playerId = id;
+                    monsterdata.tableId = monsterInfo.data.tableId;
+                    monsterdata.unitType = monsterInfo.data.unitType;
+
+                    monsterState.direction = monsterInfo.state.direction;
+                    monsterState.state = monsterInfo.state.state;
+                    monsterState.playerId = id;
+                    monsterState.posX = (short)spawnPosX;
+                    monsterState.posY = (short)spawnPosY;
+                    monsterState.unitType = monsterInfo.state.unitType;
+
+                    monsterHp.Hp = monsterInfo.hpMp.Hp;
+                    monsterHp.Mp = monsterInfo.hpMp.Mp;
+
+                    monster.data = monsterdata;
+                    monster.state = monsterState;
+                    monster.hpMp = monsterHp;
+                    
+                    userList.Add(new CMonster(monster));
+
+                    Program.PrintLog($"{data.MonsterId} 몬스터 생성. {spawnPosX}:{spawnPosY} " +
+                                     $"{data.LastSpawnTime} {data.LastSpawnTime < data.NextSpawnTime} {data.NextSpawnTime}" +
+                                     $"ID : {id}");
 
                     id++;
                     data.currentSpawnCount++;

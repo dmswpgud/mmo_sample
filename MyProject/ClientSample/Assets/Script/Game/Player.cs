@@ -15,6 +15,7 @@ public class Player : Unit
     [SerializeField]
     public GameObject modelHead;
     PlayerAnimationController animController;
+    public bool IsDead => STATE == null || STATE?.state == (byte) PlayerState.DEATH;
 
     void Awake()
     {
@@ -89,5 +90,16 @@ public class Player : Unit
     public override void OnFinishedAnim(Action<PlayerState> onFinished)
     {
         animController.OnFinishedAnim += onFinished;
+    }
+
+    public void Dead()
+    {
+        if (IsDead)
+        {
+            GameManager.Inst.AnnounceDialog.Show("디졌습니다.\n다시시작하세요.", () =>
+            {
+
+            });
+        }
     }
 }

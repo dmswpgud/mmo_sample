@@ -127,8 +127,6 @@ namespace CSampleServer
 						player.RequestPlayerMove();
 						return;
 					}
-					Console.WriteLine($"[{player.playerData.name}] 이동 이전좌표 {player.stateData.posX} {player.stateData.posY} {(UnitDirection)player.stateData.direction}  좌표 :{x} {y} {(UnitDirection)dir}");
-					
 					// 뭐가 없으면 이동 허가. (포지션 셋팅 후 패킷 전송)
 					player.SetPosition(x, y, dir);
 					player.RequestPlayerMove();

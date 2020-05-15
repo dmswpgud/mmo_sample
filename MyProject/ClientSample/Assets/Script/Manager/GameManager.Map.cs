@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Client.Game.Map;
+using GameServer;
 using UnityEngine;
 
 public partial class GameManager : MonoBehaviour
@@ -15,6 +16,9 @@ public partial class GameManager : MonoBehaviour
     {
         if (InputKey.InputAttack || InputKey.InputChangeDirection)
             return;
+
+        // if (myPlayer.IsDead)
+        //     return;
         
         if (Input.GetMouseButtonDown (0))
         {

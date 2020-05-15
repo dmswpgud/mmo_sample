@@ -8,11 +8,10 @@ namespace CSampleServer
     {
         public CMonster(PlayerDataPackage userPack)  : base(userPack)
         {
-            CPacket response = CPacket.create((short)PROTOCOL.MONSTER_SPONE_RES);
-            playerData.PushData(response);
-            stateData.PushData(response);
-            HpMp.PushData(response);
-
+            //prevNearUnits = MapManager.I.GetAllOtherUnit(this);
+            playerData = userPack.data;
+            stateData = userPack.state;
+            HpMp = userPack.hpMp;
             SetPosition(stateData.posX, stateData.posY, stateData.direction);
         }
         

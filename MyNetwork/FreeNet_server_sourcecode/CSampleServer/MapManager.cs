@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -65,7 +66,7 @@ namespace CSampleServer
             
             var removedUnits = unit.prevNearUnits.Where(i => !rangeUnits.Contains(i)).ToList(); // 삭제된 플레이어 리스트
             var AddedUnits = rangeUnits.Where(i => !unit.prevNearUnits.Contains(i)).ToList(); // 새로 추가된 플레이어 리스트
-
+            
             // 추가 된 유저를 내 유닛에 알리기
             unit.ResponseAddNearUnit(AddedUnits);
             // 다른 유닛들에게 나를 알리기
@@ -93,7 +94,6 @@ namespace CSampleServer
                     if (mapInfos[x, y].HasTargetObject(unit))
                     {
                         mapInfos[x, y].RemoveObjectBase(unit);
-                        return;
                     }
                 }
             }
@@ -135,7 +135,10 @@ namespace CSampleServer
 
                     if (mapInfos[x, y].stayUnit.Contains(unit))
                         continue;
-                    
+
+                    if (mapInfos[x, y].stayUnit.Count <= 0)
+                        continue;
+
                     units.AddRange(mapInfos[x, y].stayUnit);
                 }
             }

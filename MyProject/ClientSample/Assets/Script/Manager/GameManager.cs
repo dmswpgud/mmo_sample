@@ -78,6 +78,8 @@ public partial class GameManager : MonoBehaviour
         }
         
         var datas = (UnitsDataPackate) res;
+        
+        
 
         foreach (var unitPack in datas.datas)
         {
@@ -114,7 +116,6 @@ public partial class GameManager : MonoBehaviour
                 break;
             case UnitType.MONSTER:
                 var moster = CreatePlayer(data, PlayerObj);
-                moster.name = $"몬스터{data.data.playerId}";
                 listUnit.Add(moster);
                 break;
         }
@@ -147,6 +148,7 @@ public partial class GameManager : MonoBehaviour
         var data = (PlayerData) res;
         var player = listUnit.Find(p => p.DATA.playerId == data.playerId);
         var index = listUnit.FindIndex(p => p.DATA.playerId == data.playerId);
+
         RemoveUnitTile(listUnit[index]);
         listUnit.RemoveAt(index);
         Destroy(player.gameObject);
