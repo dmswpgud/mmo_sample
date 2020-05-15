@@ -16,6 +16,7 @@ public class Player : Unit
     public GameObject modelHead;
     PlayerAnimationController animController;
     public bool IsDead => STATE == null || STATE?.state == (byte) PlayerState.DEATH;
+    public PlayerState UnitState => (PlayerState)STATE.state; 
 
     void Awake()
     {
@@ -30,6 +31,7 @@ public class Player : Unit
         this.STATE = state;
         this.HPMP = hpMp;
         base.Initialized(model);
+        SetPlayerAnim(UnitState);
     }
     
     public override void SetStateData(PlayerStateData state)
