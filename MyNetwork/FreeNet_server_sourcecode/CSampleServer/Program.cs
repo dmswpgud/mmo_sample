@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using FreeNet;
 
+// 팀장 서버
 namespace CSampleServer
 {
     class Program
