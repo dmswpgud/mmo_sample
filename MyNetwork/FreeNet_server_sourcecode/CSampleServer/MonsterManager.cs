@@ -21,7 +21,7 @@ namespace CSampleServer
         public Random random = new Random();
         public MonsterSpawnDatas monsterSpawnDatas = new MonsterSpawnDatas();
         public UnitInfosPackage monsterInfoDatas = new UnitInfosPackage();
-        public Dictionary<MonsterSawnData, List<CMonster>> dicZonecurrentMoste = new Dictionary<MonsterSawnData, List<CMonster>>();
+        public Dictionary<int, List<CMonster>> dicZonecurrentMoste = new Dictionary<int, List<CMonster>>();
 
         public void Initialized()
         {
@@ -57,6 +57,7 @@ namespace CSampleServer
                 // TODO: 리스폰 포지션이 유효한지 체크해야됨...
                 var spawnPosX = random.Next(spawnData.SpawnZonePosX - spawnData.SpawnZoneRange, spawnData.SpawnZonePosX + spawnData.SpawnZoneRange);
                 var spawnPosY = random.Next(spawnData.SpawnZonePosY - spawnData.SpawnZoneRange, spawnData.SpawnZonePosY + spawnData.SpawnZoneRange);
+                GetMonsterSpawnPosition(spawnData.SpawnZonePosX, spawnData.SpawnZonePosY, spawnData.SpawnZoneRange, out spawnPosX, out spawnPosY);
 
                 var monsterInfo = monsterInfoDatas.datas.Find((p) => p.data.tableId == spawnData.MonsterId);
 
@@ -67,35 +68,67 @@ namespace CSampleServer
                     monsterDataPack.state.posY = (short)spawnPosY;
                     
                     var monsterInstance = new CMonster(monsterDataPack);
-                    AddMonster(spawnData, monsterInstance);
-                    spawnData.currentSpawnCount += 1;
+                    AddMonster(spawnData.SpawnId, monsterInstance);
+                    
                 }
             }
         }
 
-        private void AddMonster(MonsterSawnData spawnData, CMonster instance)
+        private void AddMonster(int spawnId, CMonster instance)
         {
-            if (dicZonecurrentMoste.ContainsKey(spawnData) == false)
+            if (dicZonecurrentMoste.ContainsKey(spawnId) == false)
             {
-                dicZonecurrentMoste.Add(spawnData, new List<CMonster>());
+                dicZonecurrentMoste.Add(spawnId, new List<CMonster>());
             }
 
-            dicZonecurrentMoste[spawnData].Add(instance);
+            dicZonecurrentMoste[spawnId].Add(instance);
+            
+            var spawnData = monsterSpawnDatas.datas.Find(p => p.SpawnId == spawnId);
+            spawnData.currentSpawnCount += 1;
 
             Program.gameServer.userList.Add(instance);
         }
 
         public void RemoveMonster(CMonster instance)
         {
-            foreach (var spawnData in dicZonecurrentMoste.Keys)
+            foreach (var data in dicZonecurrentMoste.Keys)
             {
-                dicZonecurrentMoste[spawnData].Remove(instance);
+                if (dicZonecurrentMoste[data].Contains(instance) == false)
+                    continue;
+
+                dicZonecurrentMoste[data].Remove(instance);
+                var spawnData = monsterSpawnDatas.datas.Find(p => p.SpawnId == data);
                 spawnData.currentSpawnCount -= 1;
             }
 
             Program.gameServer.userList.Remove(instance);
             
             instance = null;
+        }
+
+        private void GetMonsterSpawnPosition(int centerX, int centerY, int range, out int x, out int y)
+        {
+            int checkMaxCount = 100;
+
+            while (checkMaxCount <= 100)
+            {
+                checkMaxCount++;
+                var spawnPosX = random.Next(centerX - range, centerX + range);
+                var spawnPosY = random.Next(centerY - range, centerY + range);
+
+                if (MapManager.I.ExistsMapInfo(spawnPosX, spawnPosY) == false)
+                    continue;
+
+                if (MapManager.I.HasUnit(spawnPosX, spawnPosY))
+                    continue;
+
+                x = spawnPosX;
+                y = spawnPosY;
+                return;
+            }
+            
+            x = random.Next(centerX - range, centerX + range);
+            y = random.Next(centerY - range, centerY + range);
         }
 
         public PlayerDataPackage CopyMonsterDataPack(PlayerDataPackage dataPack)

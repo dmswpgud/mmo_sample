@@ -187,7 +187,7 @@ namespace CSampleServer
         }
 
         // 맵 배열 널 체크
-        private bool ExistsMapInfo(int x, int y)
+        public bool ExistsMapInfo(int x, int y)
         {
             if (x < 0 || x >= mapInfos.GetLength(0))
                 return false;
