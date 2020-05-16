@@ -5,7 +5,8 @@ using UnityEngine;
 
 public partial class GameManager
 {
-    public GameObject PlayerObj;
+    public GameObject PlayerPrefab;
+    public GameObject MonsterPrefab;
     public List<Unit> listUnit = new List<Unit>();
     public Player myPlayer;
     private List<GridPoint> path;
@@ -130,7 +131,7 @@ public partial class GameManager
                 targetTile.GridPoint.Y == myPlayer.STATE.posY)
                 return;
             
-            myPlayer.SetDirectionByPosition(targetTile.GridPoint.X - 1, targetTile.GridPoint.Y - 1);
+            myPlayer.SetDirectionByPosition(targetTile.GridPoint.X, targetTile.GridPoint.Y);
             myPlayer.SetPlayerAnim(PlayerState.ATTACK);
             CNetworkManager.Inst.RequestPlayerState(myPlayer.STATE, receiverUserId: TargetUnit?.ID ?? 0, OnReceivedChangedPlayerState);
             

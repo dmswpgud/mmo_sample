@@ -162,15 +162,16 @@ namespace CSampleServer
                     var monsterdata = new PlayerData();
                     var monsterState = new PlayerStateData();
                     var monsterHp = new HpMp();
+                    var uniqueId = Guid.NewGuid().GetHashCode();
                     monsterdata.name = monsterInfo.data.name;
                     monsterdata.moveSpeed = monsterInfo.data.moveSpeed;
-                    monsterdata.playerId = Guid.NewGuid().GetHashCode();
+                    monsterdata.playerId = uniqueId;
                     monsterdata.tableId = monsterInfo.data.tableId;
                     monsterdata.unitType = monsterInfo.data.unitType;
 
                     monsterState.direction = monsterInfo.state.direction;
                     monsterState.state = monsterInfo.state.state;
-                    monsterState.playerId = Guid.NewGuid().GetHashCode();;
+                    monsterState.playerId = uniqueId;
                     monsterState.posX = (short)spawnPosX;
                     monsterState.posY = (short)spawnPosY;
                     monsterState.unitType = monsterInfo.state.unitType;

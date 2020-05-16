@@ -100,7 +100,8 @@ public partial class GameManager : MonoBehaviour
         switch ((UnitType)data.data.unitType)
         {
             case UnitType.PLAYER:
-                var player = CreatePlayer(data, PlayerObj);
+                var player = CreatePlayer(data, PlayerPrefab);
+                player.gameObject.name = $"Player-{data.data.name}-{data.data.playerId}";
                 listUnit.Add(player);
 
                 if (player.ID == UserId)
@@ -115,7 +116,8 @@ public partial class GameManager : MonoBehaviour
                 }
                 break;
             case UnitType.MONSTER:
-                var moster = CreatePlayer(data, PlayerObj);
+                var moster = CreatePlayer(data, MonsterPrefab);
+                moster.gameObject.name = $"Monster-{data.data.name}-{data.data.playerId}";
                 listUnit.Add(moster);
                 break;
         }

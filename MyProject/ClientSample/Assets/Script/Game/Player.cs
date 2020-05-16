@@ -98,7 +98,10 @@ public class Player : Unit
 
     public void Dead()
     {
-        if (IsDead)
+        if (!IsDead)
+            return;
+
+        if (IsMyPlayer)
         {
             GameManager.Inst.AnnounceDialog.Show("디졌습니다.\n다시시작하세요.", () =>
             {
