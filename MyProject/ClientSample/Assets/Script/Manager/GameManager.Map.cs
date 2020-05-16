@@ -14,11 +14,11 @@ public partial class GameManager : MonoBehaviour
 
     private void UpdateGameManagerMap()
     {
+        if (!myPlayer) return;
+        if (myPlayer.IsDead) return;
+        
         if (InputKey.InputAttack || InputKey.InputChangeDirection)
             return;
-
-        // if (myPlayer.IsDead)
-        //     return;
         
         if (Input.GetMouseButtonDown (0))
         {

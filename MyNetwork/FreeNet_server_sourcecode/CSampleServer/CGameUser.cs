@@ -12,9 +12,8 @@ namespace CSampleServer
 	public class CGameUser : IPeer
 	{
 		CUserToken token;
-		
-		public CPlayer player {private set; get;}
-		private UserDataPackage userDataPackage;
+		public CPlayer player {set; get;}
+		public UserDataPackage userDataPackage;
 
 		public CGameUser(CUserToken token)
 		{
@@ -87,16 +86,8 @@ namespace CSampleServer
 					}
 					// 플레이어 생성.
 					userDataPackage = accountData;
-					var playerDataPack = new PlayerDataPackage();
-					playerDataPack.data = userDataPackage.data;
-					playerDataPack.state = userDataPackage.state;
-					playerDataPack.hpMp = userDataPackage.hpMp;
-					player = new CPlayer(this, playerDataPack);
-					
-					Program.PrintLog($"[{account}] [{player.playerData.name}] 게임접속 성공");
-					
 					Console.WriteLine($"user id {account}");
-					Program.gameServer.UserEntedServer(player);
+					Program.gameServer.UserEntedServer(this);
 					break;
 				}
 				// 채팅 보내달라고 요청이 옴.
@@ -110,8 +101,23 @@ namespace CSampleServer
 				// 내 케릭정보를 보내달라고 요청이 옴.
 				case PROTOCOL.GET_MY_PLAYER_REQ:
 				{
-					player.SetPosition(player.stateData.posX, player.stateData.posY, player.stateData.direction);
+					if (userDataPackage.state.state == (byte) PlayerState.DEATH)
+					{
+						userDataPackage.state.state = (byte) PlayerState.IDLE;
+						userDataPackage.state.posX = 0;
+						userDataPackage.state.posY = 0;
+						userDataPackage.hpMp.Hp = 50;
+					}
+					
 					Program.gameServer.ResponseGetMyPlayer(this);
+					break;
+				}
+				// 플레이어 정보만 삭제.
+				case PROTOCOL.PLAYER_RESET_REQ:
+				{
+					DiscconectedPlayerFromWorld();
+					CPacket response = CPacket.create((short)PROTOCOL.PLAYER_RESET_RES);
+					send(response);
 					break;
 				}
 				// 케릭을 이동시키겠다고 요청이 옴.
@@ -147,16 +153,19 @@ namespace CSampleServer
 		// 접속 종료 이벤트.
 		void IPeer.on_removed()
 		{
+			DiscconectedPlayerFromWorld();
+			Program.remove_user(this);
+		}
+
+		void DiscconectedPlayerFromWorld()
+		{
 			if (player != null)
 			{
 				SaveUserData();
-				
 				player.DisconnectedPlayer();
-				
 				Program.gameServer.DisconnectedUser(player);
+				player = null;
 			}
-
-			Program.remove_user(this);
 		}
 
 		public void send(CPacket msg)

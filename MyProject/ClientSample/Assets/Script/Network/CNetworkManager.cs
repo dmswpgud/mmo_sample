@@ -104,6 +104,11 @@ public partial class CNetworkManager : MonoBehaviour {
                 OnNetworkCallback?.Invoke(data, ERROR.NONE);
                 break;
             }
+            case PROTOCOL.PLAYER_RESET_RES:
+            {
+                OnNetworkCallback?.Invoke(null, ERROR.NONE);
+                break;
+            }
             case PROTOCOL.CHAT_MSG_ACK: // 채팅 정보 받음.
             {
                 var res = new ChatData();

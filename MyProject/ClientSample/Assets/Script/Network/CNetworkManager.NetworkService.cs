@@ -22,6 +22,13 @@ public partial class CNetworkManager : MonoBehaviour
         send(msg);
         OnNetworkCallback = onRes;
     }
+
+    public void RequestReset(Action<ResponseData, ERROR> onRes = null)
+    {
+        CPacket msg = CPacket.create((short)PROTOCOL.PLAYER_RESET_REQ);
+        send(msg);
+        OnNetworkCallback = onRes;
+    }
     
     public void RequestChatMessage(string message, Action<ResponseData, ERROR> onRes)
     {

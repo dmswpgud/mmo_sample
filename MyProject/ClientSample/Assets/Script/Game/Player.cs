@@ -1,6 +1,7 @@
 ﻿using System;
 using GameServer;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : Unit
 {
@@ -39,6 +40,7 @@ public class Player : Unit
         SetPlayerAnim((PlayerState)state.state);
         base.SetDirection((UnitDirection) state.direction, 0.2f);
         base.SetPosition(state.posX, state.posY);
+        Dead();
     }
 
     public override void MovePlayerNextPosition(PlayerStateData playerData = null)
@@ -100,7 +102,10 @@ public class Player : Unit
         {
             GameManager.Inst.AnnounceDialog.Show("디졌습니다.\n다시시작하세요.", () =>
             {
-
+                CNetworkManager.Inst.RequestReset((res, error) =>
+                {
+                    SceneManager.LoadScene(0);
+                });
             });
         }
     }

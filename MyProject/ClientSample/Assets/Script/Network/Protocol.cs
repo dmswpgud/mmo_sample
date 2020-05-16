@@ -48,6 +48,9 @@ namespace GameServer
         PLAYER_STATE_REQ,
         PLAYER_STATE_RES,
         
+        PLAYER_RESET_REQ,
+        PLAYER_RESET_RES,
+
         MONSTER_SPONE_RES,
 
         END
@@ -104,6 +107,13 @@ public class PlayerDataPackage : ResponseData
     public PlayerData data;
     public PlayerStateData state;
     public HpMp hpMp;
+    public PlayerDataPackage() {}
+    public PlayerDataPackage(PlayerData d, PlayerStateData s, HpMp h)
+    {
+        data = d;
+        state = s;
+        hpMp = h;
+    }  
 }
 
 [Serializable]

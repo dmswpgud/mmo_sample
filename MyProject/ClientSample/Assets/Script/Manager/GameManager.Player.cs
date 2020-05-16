@@ -18,8 +18,8 @@ public partial class GameManager
 
     private void UpdateGameManagerPlayer()
     {
-        // if (myPlayer.IsDead)
-        //     return;
+        if (!myPlayer) return;
+        if (myPlayer.IsDead) return;
         
         RequestPlayerState();
     }
