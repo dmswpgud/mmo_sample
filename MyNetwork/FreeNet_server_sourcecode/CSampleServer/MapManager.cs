@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -21,14 +20,9 @@ namespace CSampleServer
         
         public class MapTile
         {
-            public int X;
-            public int Y;
+            public int X, Y;
             public List<CUnit> stayUnit = new List<CUnit>(); 
-            public void AddObjectBase(CUnit target)
-            {
-                stayUnit.Add(target);
-            }
-
+            public void AddObjectBase(CUnit target) => stayUnit.Add(target);
             public void RemoveObjectBase(CUnit target) => stayUnit.Remove(target);
             public bool HasTargetObject(CUnit target) => stayUnit.Contains(target);
         }

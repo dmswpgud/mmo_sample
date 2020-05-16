@@ -96,7 +96,7 @@ namespace CSampleServer
                 attacker.stateData.PushData(response);
                 //defender?.player.stateData.PushData(response);
                 //defender.player.HpMp.PushData(response);
-                CGameServer.ResponsePacketToUsers(GetNearRangeUnit(), response);
+                CGameServer.ResponseToUsers(GetNearRangeUnit(), response);
             }
             else
             {

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using FreeNet;
 using GameServer;
@@ -8,44 +7,11 @@ namespace CSampleServer
     public class CGameServer
     {
         public List<CUnit> userList = new List<CUnit>();
-        public Random random = new Random();
-
-        private delegate void OnSpawnMonster();
-
-        private OnSpawnMonster OnSpawnMonsterEvent;
-        public MonsterSpawnDatas monsterSpawnDatas = new MonsterSpawnDatas();
-        public UnitInfosPackage monsterInfoDatas = new UnitInfosPackage();
 
         public void Initialized()
         {
-            Program.Tick = Tick;
-
             MapManager.I.Initialized();
-
-            // DummyUtils.MonsterSpawnDummyData();
-            // DummyUtils.MonsterDummyData();
-            
-            //
-            InitializedMonsterDatas();
-            InitializedSpawnMonster();
-        }
-
-        private void InitializedMonsterDatas()
-        {
-            var jObj = SystemUtils.LoadJson(Program.monsterInfoJsonPath);
-            monsterInfoDatas = jObj.ToObject<UnitInfosPackage>();
-        }
-
-        private void InitializedSpawnMonster()
-        {
-            var jObj = SystemUtils.LoadJson(Program.monsterSpawnInfoJsonPath);
-            monsterSpawnDatas = jObj.ToObject<MonsterSpawnDatas>();
-            OnSpawnMonsterEvent += MonsterSpawn;
-        }
-
-        public void Tick()
-        {
-            OnSpawnMonsterEvent?.Invoke();
+            MonsterManager.I.Initialized();
         }
 
         public bool ExistsUser(int userId)
@@ -129,64 +95,11 @@ namespace CSampleServer
         }
         
         // 여러명에게 보내기.
-        public static void ResponsePacketToUsers(List<CUnit> listUsers, CPacket response)
+        public static void ResponseToUsers(List<CUnit> listUsers, CPacket response)
         {
             foreach (var user in listUsers)
             {
                 user?.owner?.send(response);
-            }
-        }
-        
-        public void MonsterSpawn()
-        {
-            foreach (var data in monsterSpawnDatas.datas)
-            {
-                if (data.currentSpawnCount >= data.SpawnMaxCount)
-                    continue;
-                
-                if (data.LastSpawnTime != 0 && TimeManager.I.UtcTimeStampSeconds < data.NextSpawnTime)
-                    continue;
-                
-                data.LastSpawnTime = TimeManager.I.UtcTimeStampSeconds;
-                data.NextSpawnTime = TimeManager.I.UtcTimeStampSeconds + data.SpawnRemainSec;
-                
-                // TODO: 리스폰 포지션이 유효한지 체크해야됨...
-                var spawnPosX = random.Next(data.SpawnZonePosX - data.SpawnZoneRange, data.SpawnZonePosX + data.SpawnZoneRange);
-                var spawnPosY = random.Next(data.SpawnZonePosY - data.SpawnZoneRange, data.SpawnZonePosY + data.SpawnZoneRange);
-
-                var monsterInfo = monsterInfoDatas.datas.Find((p) => p.data.tableId == data.MonsterId);
-
-                if (monsterInfo != null)
-                {
-                    var monster = new PlayerDataPackage();
-                    var monsterdata = new PlayerData();
-                    var monsterState = new PlayerStateData();
-                    var monsterHp = new HpMp();
-                    var uniqueId = Guid.NewGuid().GetHashCode();
-                    monsterdata.name = monsterInfo.data.name;
-                    monsterdata.moveSpeed = monsterInfo.data.moveSpeed;
-                    monsterdata.playerId = uniqueId;
-                    monsterdata.tableId = monsterInfo.data.tableId;
-                    monsterdata.unitType = monsterInfo.data.unitType;
-
-                    monsterState.direction = monsterInfo.state.direction;
-                    monsterState.state = monsterInfo.state.state;
-                    monsterState.playerId = uniqueId;
-                    monsterState.posX = (short)spawnPosX;
-                    monsterState.posY = (short)spawnPosY;
-                    monsterState.unitType = monsterInfo.state.unitType;
-
-                    monsterHp.Hp = monsterInfo.hpMp.Hp;
-                    monsterHp.Mp = monsterInfo.hpMp.Mp;
-
-                    monster.data = monsterdata;
-                    monster.state = monsterState;
-                    monster.hpMp = monsterHp;
-                    
-                    userList.Add(new CMonster(monster));
-                    
-                    data.currentSpawnCount++;
-                }
             }
         }
     }
