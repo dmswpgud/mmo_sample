@@ -85,6 +85,11 @@ namespace CSampleServer
             PlayerStateAttack(receiveUserId);
         }
 
+        public override void Dead(CUnit attacker)
+        {
+            
+        }
+
         private void PlayerStateAttack(int defenderUserId)
         {
             var attacker = this;
@@ -101,8 +106,9 @@ namespace CSampleServer
             else
             {
                 var defenderHp = GameUtils.DamageCalculator(attacker, defender);
+                var defenderState = defenderHp <= 0 ? PlayerState.DEATH : PlayerState.DAMAGE;
+                defender.stateData.state = (byte)defenderState;
                 defender.HpMp.Hp = defenderHp;
-                defender.stateData.state = defenderHp <= 0 ? (byte)PlayerState.DEATH : (byte)PlayerState.DAMAGE;
 
                 Program.PrintLog($"[공격자 {playerData.name}] hm{HpMp.Hp}/{HpMp.Mp}  [피격자 {defender.playerData.name}] hm{defender.HpMp.Hp}/{defender.HpMp.Mp}");
                 
@@ -118,6 +124,11 @@ namespace CSampleServer
                     defender.stateData.PushData(response);
                     defender.HpMp.PushData(response);
                     defender.owner?.send(response);
+
+                    if (defenderState == PlayerState.DEATH)
+                    {
+                        defender.Dead(defender);
+                    }
                 }
 
                 { // 공격 > 서버 > 브로드캐스트

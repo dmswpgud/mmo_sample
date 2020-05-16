@@ -7,12 +7,13 @@ namespace CSampleServer
     [Serializable]
     public abstract class CUnit
     {
-        public CGameUser owner;
-        public PlayerData playerData = new PlayerData();
-        public PlayerStateData stateData = new PlayerStateData();
-        public HpMp HpMp = new HpMp();
+        public CGameUser owner { get; }
+        public PlayerData playerData { get; }
+        public PlayerStateData stateData { set; get; }
+        public HpMp HpMp { get; }
         public List<CUnit> prevNearUnits = new List<CUnit>();
         public int NearRange = 5;
+        public PlayerState STATE => (PlayerState)stateData.state;
         
         public CUnit() {}
 
@@ -56,5 +57,6 @@ namespace CSampleServer
         public abstract void ResponseAddNearUnit(List<CUnit> units);
         public abstract void SetPosition(int x, int y, int dir);
         public abstract void RequestPlayerState(int receiveUserId);
+        public abstract void Dead(CUnit attacker);
     }
 }

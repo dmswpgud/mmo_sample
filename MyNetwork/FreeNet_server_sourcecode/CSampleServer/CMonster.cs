@@ -1,20 +1,28 @@
+using System;
 using System.Collections.Generic;
-using FreeNet;
-using GameServer;
 
 namespace CSampleServer
 {
     public class CMonster : CUnit
     {
+        private const int resetSec = 3;    // 몬스터가 죽은 후 사라지는 시간(초)
+        
+        private long delayTime;
+        private Action OnAfterCall;
+
         public CMonster(PlayerDataPackage userPack)  : base(userPack)
         {
             //prevNearUnits = MapManager.I.GetAllOtherUnit(this);
-            playerData = userPack.data;
-            stateData = userPack.state;
-            HpMp = userPack.hpMp;
             SetPosition(stateData.posX, stateData.posY, stateData.direction);
+
+            Program.Tick += Tick;
         }
-        
+
+        void Tick()
+        {
+            OnAfterCall?.Invoke();
+        }
+
         public override void SetPosition(int x, int y, int dir)
         {
             stateData.posX = (short)x;
@@ -60,10 +68,35 @@ namespace CSampleServer
         {
         }
 
+        public override void Dead(CUnit attacker)
+        {
+            var resetTime = TimeManager.I.UtcTimeStampSeconds + resetSec;
+
+            delayTime = resetTime;
+
+            OnDelayCall(DesconnectedWorld, delayTime);
+        }
+
+        private void OnDelayCall(Action onCall, long delay)
+        {
+            long delayCallTime = delay;
+            
+            OnAfterCall = () =>
+            {
+                if (TimeManager.I.UtcTimeStampSeconds > delayCallTime)
+                {
+                    DesconnectedWorld();
+                    OnAfterCall = null;
+                }
+            };
+        }
+
         // 접속 종료.
         public override void DesconnectedWorld()
         {
             base.DesconnectedWorld();
+
+            MonsterManager.I.RemoveMonster(this);
         }
     }
 }

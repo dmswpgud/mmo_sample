@@ -161,6 +161,7 @@ namespace CSampleServer
 			if (player != null)
 			{
 				SaveUserData();
+				PlayerManager.I.RemovePlayer(player);
 				player.DesconnectedWorld();
 				player = null;
 			}

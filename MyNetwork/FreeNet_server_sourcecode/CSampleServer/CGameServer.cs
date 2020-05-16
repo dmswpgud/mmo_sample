@@ -32,8 +32,6 @@ namespace CSampleServer
         {
             lock (unit)
             {
-                userList.Remove(unit);
-            
                 foreach (var otherUser in userList)
                 {
                     CPacket response = CPacket.create((short)PROTOCOL.DISCONECTED_PLAYER_RES);
@@ -59,13 +57,13 @@ namespace CSampleServer
         public void ResponseGetMyPlayer(CGameUser user)
         {
             // 유닛 생성
-            var sponeUnis = new CPlayer(user, new PlayerDataPackage(user.userDataPackage.data, user.userDataPackage.state, user.userDataPackage.hpMp));
+            var playerInstance = new CPlayer(user, new PlayerDataPackage(user.userDataPackage.data, user.userDataPackage.state, user.userDataPackage.hpMp));
             // 유닛을 유저에 등록.
-            user.player = sponeUnis;
+            user.player = playerInstance;
             // 월드에 유닛 추가.
-            userList.Add(sponeUnis);
+            PlayerManager.I.AddPlayer(playerInstance);
             // 포지션 셋팅.
-            sponeUnis.SetPosition(sponeUnis.stateData.posX, sponeUnis.stateData.posY, sponeUnis.stateData.direction);
+            playerInstance.SetPosition(playerInstance.stateData.posX, playerInstance.stateData.posY, playerInstance.stateData.direction);
             
             // 통신.
             CPacket response = CPacket.create((short)PROTOCOL.GET_MY_PLAYER_RES);

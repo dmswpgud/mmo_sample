@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace CSampleServer
 {
@@ -20,6 +21,7 @@ namespace CSampleServer
         public Random random = new Random();
         public MonsterSpawnDatas monsterSpawnDatas = new MonsterSpawnDatas();
         public UnitInfosPackage monsterInfoDatas = new UnitInfosPackage();
+        public Dictionary<MonsterSawnData, List<CMonster>> dicZonecurrentMoste = new Dictionary<MonsterSawnData, List<CMonster>>();
 
         public void Initialized()
         {
@@ -63,9 +65,37 @@ namespace CSampleServer
                     var monsterDataPack = CopyMonsterDataPack(monsterInfo);
                     monsterDataPack.state.posX = (short)spawnPosX;
                     monsterDataPack.state.posY = (short)spawnPosY;
-                    Program.gameServer.userList.Add(new CMonster(monsterDataPack));
+                    
+                    var monsterInstance = new CMonster(monsterDataPack);
+                    AddMonster(spawnData, monsterInstance);
+                    spawnData.currentSpawnCount += 1;
                 }
             }
+        }
+
+        private void AddMonster(MonsterSawnData spawnData, CMonster instance)
+        {
+            if (dicZonecurrentMoste.ContainsKey(spawnData) == false)
+            {
+                dicZonecurrentMoste.Add(spawnData, new List<CMonster>());
+            }
+
+            dicZonecurrentMoste[spawnData].Add(instance);
+
+            Program.gameServer.userList.Add(instance);
+        }
+
+        public void RemoveMonster(CMonster instance)
+        {
+            foreach (var spawnData in dicZonecurrentMoste.Keys)
+            {
+                dicZonecurrentMoste[spawnData].Remove(instance);
+                spawnData.currentSpawnCount -= 1;
+            }
+
+            Program.gameServer.userList.Remove(instance);
+            
+            instance = null;
         }
 
         public PlayerDataPackage CopyMonsterDataPack(PlayerDataPackage dataPack)

@@ -149,10 +149,9 @@ public partial class GameManager : MonoBehaviour
         
         var data = (PlayerData) res;
         var player = listUnit.Find(p => p.DATA.playerId == data.playerId);
-        var index = listUnit.FindIndex(p => p.DATA.playerId == data.playerId);
 
-        RemoveUnitTile(listUnit[index]);
-        listUnit.RemoveAt(index);
+        RemoveUnitTile(player);
+        listUnit.Remove(player);
         Destroy(player.gameObject);
     }
 }
