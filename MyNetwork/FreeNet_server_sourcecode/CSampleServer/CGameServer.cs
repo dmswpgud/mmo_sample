@@ -62,16 +62,16 @@ namespace CSampleServer
         }
         
         // 서버 접속 종료.
-        public void DisconnectedUser(CUnit user)
+        public void DisconnectedUnit(CUnit unit)
         {
-            lock (user)
+            lock (unit)
             {
-                userList.Remove(user);
+                userList.Remove(unit);
             
                 foreach (var otherUser in userList)
                 {
                     CPacket response = CPacket.create((short)PROTOCOL.DISCONECTED_PLAYER_RES);
-                    response.push(user.playerData.playerId);
+                    response.push(unit.playerData.playerId);
                     otherUser?.owner?.send(response);
                 }
             }

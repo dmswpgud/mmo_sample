@@ -32,7 +32,7 @@ public class PlayerAnimationController : MonoBehaviour
                 break;
             case PlayerState.ATTACK:
                 animator.Play("ShieldWarrior@Attack01");
-                break;
+                return;
             case PlayerState.DAMAGE:
                 animator.Play("ShieldWarrior@Damage01");
                 break;
@@ -40,5 +40,6 @@ public class PlayerAnimationController : MonoBehaviour
                 animator.Play("ShieldWarrior@Death01");
                 break;
         }
+        OnFinishedAnim = null;
     }
 }

@@ -45,11 +45,16 @@ namespace CSampleServer
             return list; 
         }
 
+        public virtual void DesconnectedWorld()
+        {
+            MapManager.I.RemoveUnitTile(this);    // 맵에서 유닛 삭제.
+            Program.gameServer.DisconnectedUnit(this); //
+        }
+
         public abstract void ResponseRemoveNearUnit(List<CUnit> units);
         public abstract void RequestPlayerMove();
         public abstract void ResponseAddNearUnit(List<CUnit> units);
         public abstract void SetPosition(int x, int y, int dir);
         public abstract void RequestPlayerState(int receiveUserId);
-        public abstract void DisconnectedPlayer();
     }
 }

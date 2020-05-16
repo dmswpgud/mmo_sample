@@ -121,7 +121,8 @@ namespace CSampleServer
                 }
 
                 { // 공격 > 서버 > 브로드캐스트
-                    foreach (var user in GetNearRangeUnit())
+                    var broadcastUnits = MapManager.I.GetUnitFromUnits(attacker, defender);
+                    foreach (var user in broadcastUnits)
                     {
                         if (attacker.playerData.playerId == user.playerData.playerId)
                             continue;
@@ -138,11 +139,9 @@ namespace CSampleServer
             }
         }
 
-        // 접속 종료.
-        public override void DisconnectedPlayer()
+        public override void DesconnectedWorld()
         {
-            // 접속 종료되었으니 범위내에 다른 플레이어들에게 나를 범위에서 삭제.
-            MapManager.I.RemoveUnitTile(this);
+            base.DesconnectedWorld();
         }
     }
 }

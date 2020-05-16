@@ -60,8 +60,10 @@ namespace CSampleServer
         {
         }
 
-        public override void DisconnectedPlayer()
+        // 접속 종료.
+        public override void DesconnectedWorld()
         {
+            base.DesconnectedWorld();
         }
     }
 }

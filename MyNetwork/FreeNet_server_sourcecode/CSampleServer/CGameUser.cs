@@ -1,11 +1,10 @@
 ﻿using System;
 using FreeNet;
 using Newtonsoft.Json.Linq;
+using GameServer;
 
 namespace CSampleServer
 {
-	using GameServer;
-
 	/// <summary>
 	/// 하나의 session객체를 나타낸다.
 	/// </summary>
@@ -162,8 +161,7 @@ namespace CSampleServer
 			if (player != null)
 			{
 				SaveUserData();
-				player.DisconnectedPlayer();
-				Program.gameServer.DisconnectedUser(player);
+				player.DesconnectedWorld();
 				player = null;
 			}
 		}

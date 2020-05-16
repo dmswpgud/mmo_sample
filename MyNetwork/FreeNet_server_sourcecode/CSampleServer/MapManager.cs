@@ -178,6 +178,20 @@ namespace CSampleServer
             return mapInfos[x, y].stayUnit.Count != 0;
         }
 
+        // A유닛과 B유닛의 범위안에 유닛을 리턴.
+        public List<CUnit> GetUnitFromUnits(CUnit unitA, CUnit unitB)
+        {
+            var resultList = new List<CUnit>();
+            var nearA = unitA.GetNearRangeUnit();
+            var nearB = unitB.GetNearRangeUnit();
+            var AddedUnits = nearB.Where(i => !nearA.Contains(i)).ToList(); // 새로 추가된 플레이어 리스트
+
+            resultList.AddRange(nearA);
+            resultList.AddRange(AddedUnits);
+            
+            return resultList;
+        }
+
         // 맵 배열 널 체크
         private bool ExistsMapInfo(int x, int y)
         {
