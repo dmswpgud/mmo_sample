@@ -150,8 +150,9 @@ public partial class GameManager : MonoBehaviour
         var data = (PlayerData) res;
         var player = listUnit.Find(p => p.DATA.playerId == data.playerId);
 
+        // TODO: 먼가 중복으로 불려서 지운걸 또지우는듯한 에러가...
         RemoveUnitTile(player);
         listUnit.Remove(player);
-        Destroy(player.gameObject);
+        Destroy(player?.gameObject);
     }
 }
