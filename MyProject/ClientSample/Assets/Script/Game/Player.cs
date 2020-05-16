@@ -93,7 +93,7 @@ public class Player : Unit
 
     public override void OnFinishedAnim(Action<PlayerState> onFinished)
     {
-        animController.OnFinishedAnim += onFinished;
+        animController.OnFinishedAnim = onFinished;
     }
 
     public void Dead()

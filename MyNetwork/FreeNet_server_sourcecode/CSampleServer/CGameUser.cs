@@ -102,10 +102,7 @@ namespace CSampleServer
 				{
 					if (userDataPackage.state.state == (byte) PlayerState.DEATH)
 					{
-						userDataPackage.state.state = (byte) PlayerState.IDLE;
-						userDataPackage.state.posX = 0;
-						userDataPackage.state.posY = 0;
-						userDataPackage.hpMp.Hp = 50;
+						PlayerManager.I.ResetDeathPlayer(userDataPackage);
 					}
 					
 					Program.gameServer.ResponseGetMyPlayer(this);

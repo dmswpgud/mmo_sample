@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using GameServer;
 
 namespace CSampleServer
 {
@@ -35,6 +36,14 @@ namespace CSampleServer
             listPlayer.Remove(instance);
             Program.gameServer.userList.Remove(instance);
             instance = null;
+        }
+
+        public void ResetDeathPlayer(UserDataPackage userPack)
+        {
+            userPack.state.state = (byte) PlayerState.IDLE;
+            userPack.state.posX = 0;
+            userPack.state.posY = 0;
+            userPack.hpMp.Hp = 50;
         }
     }
 }
