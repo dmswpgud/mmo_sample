@@ -201,19 +201,31 @@ public class PlayerStateData : ResponseData
 [Serializable]
 public class HpMp : ResponseData
 {
+    public Int32 MaxHp;
+    public Int32 MaxMp;
     public Int32 Hp;
     public Int32 Mp;
+    public short HpRecoveryTime;
+    public short MpRecoveryTime;
 
     public HpMp() {}
     public HpMp(CPacket msg)
     {
+        MaxHp = msg.pop_int32();
+        MaxMp = msg.pop_int32();
         Hp = msg.pop_int32();
         Mp = msg.pop_int32();
+        HpRecoveryTime = msg.pop_int16();
+        MpRecoveryTime = msg.pop_int16();
     }
     public void PushData(CPacket response)
     {
+        response.push(MaxHp);
+        response.push(MaxMp);
         response.push(Hp);
         response.push(Mp);
+        response.push(HpRecoveryTime);
+        response.push(MpRecoveryTime);
     }
 }
 

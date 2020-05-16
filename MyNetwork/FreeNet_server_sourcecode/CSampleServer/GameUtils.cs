@@ -90,7 +90,7 @@ namespace CSampleServer
             userPackage.userId = id;
             userPackage.data = new PlayerData() {playerId = id, name = name, unitType = 0, moveSpeed = 2};
             userPackage.state = new PlayerStateData() {playerId = id, posX = 10, posY = 10, direction = 4};
-            userPackage.hpMp = new HpMp() {Hp = 500, Mp = 10};
+            userPackage.hpMp = new HpMp() {MaxHp = 500, MaxMp = 10, Hp = 500, Mp = 10, HpRecoveryTime = 10, MpRecoveryTime = 10};
             
             var loadJObj = LoadJson(path);
             var jObj = JObject.FromObject(userPackage);
