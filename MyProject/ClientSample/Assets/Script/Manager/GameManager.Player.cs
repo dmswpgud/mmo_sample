@@ -56,7 +56,7 @@ public partial class GameManager
     {
         DrawWall();
 
-        var start = new GridPoint(player.X, player.Y);
+        var start = new GridPoint(player.STATE.posX, player.STATE.posY);
 
         var end = destPoint;
 
@@ -101,6 +101,9 @@ public partial class GameManager
             return;
         }
         
+        if (myPlayer.IsDead)
+            return;
+        
         //DrawWall();
         
         var data = (PlayerStateData) res;
@@ -131,10 +134,16 @@ public partial class GameManager
                 targetTile.GridPoint.Y == myPlayer.STATE.posY)
                 return;
             
+            int a = targetTile.GridPoint.X - myPlayer.X;    // 선 a의 길이
+            int b = targetTile.GridPoint.Y - myPlayer.Y;    // 선 b의 길이
+            var c = Mathf.Sqrt((a * a) + (b * b));  
+            if (c > 1)
+                return;
+            
             myPlayer.SetDirectionByPosition(targetTile.GridPoint.X, targetTile.GridPoint.Y);
             myPlayer.SetPlayerAnim(PlayerState.ATTACK);
-            CNetworkManager.Inst.RequestPlayerState(myPlayer.STATE, receiverUserId: TargetUnit?.ID ?? 0, OnReceivedChangedPlayerState);
             
+            CNetworkManager.Inst.RequestPlayerState(myPlayer.STATE, receiverUserId: TargetUnit?.ID ?? 0, OnReceivedChangedPlayerState);
         }
         #endregion
 

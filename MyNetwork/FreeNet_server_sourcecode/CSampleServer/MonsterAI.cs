@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using FreeNet;
 using GameServer;
 
 namespace CSampleServer
@@ -155,6 +156,74 @@ namespace CSampleServer
             {
                 owner.SetState(PlayerState.DASH_TO_TARGET);
                 return;
+            }
+            
+            var dir = MapManager.I.SetDirectionByPosition(state.posX, state.posY, owner.targetUnit.stateData.posX, owner.targetUnit.stateData.posY);
+            owner.stateData.direction = (byte)dir;
+            MonsterStateAttack(owner.targetUnit.playerData.playerId);
+
+            BehaviorIntervalTime = 2;
+        }
+        
+        private void MonsterStateAttack(int defenderUserId)
+        {
+            var attacker = owner;
+            var defender = owner.GetNearRangeUnit().Find(p => p.playerData.playerId == defenderUserId);
+            CPacket response = CPacket.create((short)PROTOCOL.PLAYER_STATE_RES);
+            
+            if (defender == null)
+            {
+                owner.stateData.PushData(response);
+                //defender?.player.stateData.PushData(response);
+                //defender.player.HpMp.PushData(response);
+                CGameServer.ResponseToUsers(attacker.GetNearRangeUnit(), response);
+            }
+            else
+            {
+                var defenderHp = GameUtils.DamageCalculator(attacker, defender);
+                var defenderState = defenderHp <= 0 ? PlayerState.DEATH : PlayerState.DAMAGE;
+                defender.targetUnit = attacker;
+                defender.stateData.state = (byte)defenderState;
+                defender.HpMp.Hp = defenderHp;
+
+                Program.PrintLog($"[공격자 {attacker.playerData.name}] hm{attacker.HpMp.Hp}/{attacker.HpMp.Mp}  [피격자 {defender.playerData.name}] hm{defender.HpMp.Hp}/{defender.HpMp.Mp}");
+                
+                { // 공격 > 서버 > 공격
+                    attacker.stateData.PushData(response);
+                    defender.stateData.PushData(response);
+                    defender.HpMp.PushData(response);
+                    attacker.owner?.send(response);
+                }
+
+                { // 공격 > 서버 > 피격자
+                    attacker.stateData.PushData(response);
+                    defender.stateData.PushData(response);
+                    defender.HpMp.PushData(response);
+                    defender.owner?.send(response);
+
+                    if (defenderState == PlayerState.DEATH)
+                    {
+                        owner.SetState(PlayerState.IDLE);
+                        defender.Dead(defender);
+                    }
+                }
+
+                { // 공격 > 서버 > 브로드캐스트
+                    var broadcastUnits = MapManager.I.GetUnitFromUnits(attacker, defender);
+                    foreach (var user in broadcastUnits)
+                    {
+                        if (attacker.playerData.playerId == user.playerData.playerId)
+                            continue;
+
+                        if (defender.playerData.playerId == user.playerData.playerId)
+                            continue;
+                        
+                        attacker.stateData.PushData(response);
+                        defender.stateData.PushData(response);
+                        defender.HpMp.PushData(response);
+                        user.owner?.send(response);
+                    }
+                }
             }
         }
     }
