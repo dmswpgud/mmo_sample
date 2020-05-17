@@ -52,6 +52,8 @@
     <Compile Include="CUnit.cs" />
     <Compile Include="GameUtils.cs" />
     <Compile Include="MapManager.cs" />
+    <Compile Include="MonsterManager.cs" />
+    <Compile Include="PlayerManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="protocol.cs" />
