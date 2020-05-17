@@ -107,6 +107,7 @@ namespace CSampleServer
             {
                 var defenderHp = GameUtils.DamageCalculator(attacker, defender);
                 var defenderState = defenderHp <= 0 ? PlayerState.DEATH : PlayerState.DAMAGE;
+                defender.targetUnit = attacker;
                 defender.stateData.state = (byte)defenderState;
                 defender.HpMp.Hp = defenderHp;
 

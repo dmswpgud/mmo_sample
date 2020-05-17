@@ -238,6 +238,13 @@ namespace CSampleServer
             
             return targets.Contains(target);
         }
+        
+        public bool HasRangeInUnit(CUnit center, CUnit target, int centerRange)
+        {
+            var targets = GetAllUnitByNearRange(center.stateData.posX, center.stateData.posY, centerRange);
+
+            return targets.Contains(target);
+        }
 
         public bool HasUnit(int x, int y)
         {

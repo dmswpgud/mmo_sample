@@ -17,6 +17,9 @@ namespace GameServer
     public enum PlayerState
     {
         IDLE, WARK, ATTACK, DAMAGE, CHANGED_DIRECTION, DEATH,
+        
+        // 몬스터 상태값.
+        DASH_TO_TARGET,        
     }
 
     public enum MonsterState

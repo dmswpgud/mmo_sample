@@ -39,7 +39,7 @@ namespace CSampleServer
                     Tick();    
                 }
                 //Console.Write(".");
-                System.Threading.Thread.Sleep(3000);
+                System.Threading.Thread.Sleep(100);
             }
 
             Console.ReadKey();

@@ -7,7 +7,8 @@ namespace CSampleServer
 {
     public class CMonster : CUnit
     {
-        private MonsterAiData MonsterAiData;
+        private MonsterAI MonsterAi;
+        private MonsterAI ai;
         private const int resetSec = 3;    // 몬스터가 죽은 후 사라지는 시간(초)
 
         private CPlayer target;
@@ -24,10 +25,10 @@ namespace CSampleServer
 
         public void SetAiInfo(MonsterAiData aiInfo)
         {
-            MonsterAiData = aiInfo;
+            MonsterAi = new MonsterAI(this, aiInfo);
         }
 
-        private void SetState(PlayerState state)
+        public void SetState(PlayerState state)
         {
             base.stateData.state = (byte) state;
         }
@@ -35,7 +36,8 @@ namespace CSampleServer
         void Tick()
         {
             OnAfterCall?.Invoke();
-            AiTick();
+
+            MonsterAi?.Tick();
         }
 
         public override void SetPosition(int x, int y, int dir)
@@ -47,66 +49,6 @@ namespace CSampleServer
             stateData.direction = (byte)dir;
 
             MapManager.I.AddUnitTile(this, x, y);
-        }
-        
-        private void AiTick()
-        {
-            if (MonsterAiData == null)
-                return;
-
-            switch (STATE)
-            {
-                case PlayerState.IDLE:
-                    SearchTarget();
-                    break;
-                case PlayerState.WARK:
-                    Wark();
-                    break;
-                case PlayerState.ATTACK:
-                    break;
-                case PlayerState.DAMAGE:
-                    break;
-                case PlayerState.CHANGED_DIRECTION:
-                    break;
-            }
-        }
-
-        private void SearchTarget()
-        {
-            // 범위내에 유닛들을 취득.
-            var allUnits = MapManager.I.GetAllUnitByNearRange(stateData.posX, stateData.posY, MonsterAiData.searchTargetRange);
-
-            // 취득한 유닛들중 플레이어를 취득.
-            var targets = allUnits.FindAll(p => p.playerData.unitType == (byte) UnitType.PLAYER);
-            
-            // 플레이어를 타겟으로 지정.
-            //target = (CPlayer)targets[0];
-
-            if (target == null && targets.Count <= 0)
-            {
-                SetState(PlayerState.WARK);
-            }
-        }
-
-        private void Wark()
-        {
-            int destX = stateData.posX;
-            int destY = stateData.posY;
-            
-            MapManager.I.GetRandomPosition(stateData.posX, stateData.posY, MonsterAiData.searchTargetRange, out destX, out destY);
-
-            var path = MapManager.I.FindPath(stateData.posX, stateData.posY, destX, destY);
-
-            if (path.Count <= 0)
-                return;
-            
-            var dir = MapManager.I.SetDirectionByPosition(stateData.posX, stateData.posY, destX, destY);
-            
-            SetPosition((short)path[0].X, (short)path[0].Y, (int)dir);
-            
-            stateData.state = (byte) PlayerState.WARK;
-            
-            RequestPlayerMove();
         }
         
         public override void RequestPlayerMove()

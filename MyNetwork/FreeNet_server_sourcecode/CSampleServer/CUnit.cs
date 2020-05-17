@@ -14,6 +14,7 @@ namespace CSampleServer
         public List<CUnit> prevNearUnits = new List<CUnit>();
         public int NearRange = 5;
         public PlayerState STATE => (PlayerState)stateData.state;
+        public CUnit targetUnit { get; set; }
         
         public CUnit() {}
 
