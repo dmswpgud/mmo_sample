@@ -107,12 +107,12 @@ public partial class GameManager
         
         var player = listUnit.Find(p => p.DATA.playerId == data.playerId);
         
-        if (player.STATE.posX == data.posX && player.STATE.posY == data.posY)
+        if (player?.STATE.posX == data.posX && player?.STATE.posY == data.posY)
         {
             return;
         }
         
-        player.MovePlayerNextPosition(data);    
+        player?.MovePlayerNextPosition(data);    
 
         // var rangeTiles = GetRangeGridPoint(new GridPoint(data.currentPosX, data.currentPosY), data.NearRange);
         // DrawTile(rangeTiles);

@@ -54,6 +54,7 @@
     <Compile Include="GameUtils.cs" />
     <Compile Include="MapManager.cs" />
     <Compile Include="MonsterManager.cs" />
+    <Compile Include="PathFinder.cs" />
     <Compile Include="PlayerManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
