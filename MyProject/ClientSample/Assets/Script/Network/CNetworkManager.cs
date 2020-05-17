@@ -13,6 +13,7 @@ public enum USER_STATE
 public partial class CNetworkManager : MonoBehaviour {
 
     public static CNetworkManager Inst;
+    public string IpAdress;
     CFreeNetUnityService gameserver;
     string received_msg;
 
@@ -47,7 +48,7 @@ public partial class CNetworkManager : MonoBehaviour {
 
     public void connect()
     {
-        this.gameserver.connect("127.0.0.1", 7979);
+        this.gameserver.connect(IpAdress, 7979);
     }
 
     public bool is_connected()

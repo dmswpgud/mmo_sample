@@ -1,0 +1,5 @@
+/Users/jaehyung.eun/mmo_sample/MyNetwork/FreeNet_server_sourcecode/FreeNet/bin/Release/FreeNet.dll
+/Users/jaehyung.eun/mmo_sample/MyNetwork/FreeNet_server_sourcecode/FreeNet/bin/Release/FreeNet.pdb
+/Users/jaehyung.eun/mmo_sample/MyNetwork/FreeNet_server_sourcecode/FreeNet/obj/Release/FreeNet.csprojAssemblyReference.cache
+/Users/jaehyung.eun/mmo_sample/MyNetwork/FreeNet_server_sourcecode/FreeNet/obj/Release/FreeNet.dll
+/Users/jaehyung.eun/mmo_sample/MyNetwork/FreeNet_server_sourcecode/FreeNet/obj/Release/FreeNet.pdb

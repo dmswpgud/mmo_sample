@@ -14,6 +14,7 @@ namespace CSampleServer
         public static string  userInfoJsonPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/mmo_table/userInfo.txt";
         public static string  monsterSpawnInfoJsonPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/mmo_table/monsterSpawnInfo.txt";
         public static string  monsterInfoJsonPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/mmo_table/monsterInfo.txt";
+        public static string  monsterAiInfoJsonPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/mmo_table/monsterAiInfo.txt";
 
         static void Main(string[] args)
         {
@@ -38,7 +39,7 @@ namespace CSampleServer
                     Tick();    
                 }
                 //Console.Write(".");
-                System.Threading.Thread.Sleep(1000);
+                System.Threading.Thread.Sleep(3000);
             }
 
             Console.ReadKey();

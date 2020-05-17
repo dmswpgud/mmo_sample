@@ -10,6 +10,9 @@ namespace CSampleServer
 
         public void Initialized()
         {
+            DummyUtils.DummyLoad();
+            
+            //
             MapManager.I.Initialized();
             MonsterManager.I.Initialized();
         }

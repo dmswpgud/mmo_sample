@@ -18,6 +18,11 @@ namespace GameServer
     {
         IDLE, WARK, ATTACK, DAMAGE, CHANGED_DIRECTION, DEATH,
     }
+
+    public enum MonsterState
+    {
+        IDLE, WARK, ATTACK, DAMAGE, CHANGED_DIRECTION, DEATH,
+    }
     
     public enum PROTOCOL : short
     {
@@ -262,4 +267,17 @@ public class MonsterSawnData : ResponseData
     public int SpawnRemainSec;
     public long LastSpawnTime;
     public long NextSpawnTime;
+}
+
+public class MonsterAiDatas : ResponseData
+{
+    public List<MonsterAiData> datas = new List<MonsterAiData>();
+}
+
+public class MonsterAiData : ResponseData
+{
+    public int dataId;
+    public int behaviorPatternSpeed;
+    public int attackFirst;
+    public int searchTargetRange;
 }

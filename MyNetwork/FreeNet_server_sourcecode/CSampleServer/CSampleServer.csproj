@@ -50,6 +50,7 @@
     <Compile Include="CMonster.cs" />
     <Compile Include="CPlayer.cs" />
     <Compile Include="CUnit.cs" />
+    <Compile Include="DummyUtils.cs" />
     <Compile Include="GameUtils.cs" />
     <Compile Include="MapManager.cs" />
     <Compile Include="MonsterManager.cs" />

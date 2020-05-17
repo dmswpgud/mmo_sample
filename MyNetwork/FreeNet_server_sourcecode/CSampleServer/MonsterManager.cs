@@ -21,6 +21,7 @@ namespace CSampleServer
         public Random random = new Random();
         public MonsterSpawnDatas monsterSpawnDatas = new MonsterSpawnDatas();
         public UnitInfosPackage monsterInfoDatas = new UnitInfosPackage();
+        public MonsterAiDatas monsterAiDatas = new MonsterAiDatas();
         public Dictionary<int, List<CMonster>> dicZonecurrentMoste = new Dictionary<int, List<CMonster>>();
 
         public void Initialized()
@@ -31,6 +32,10 @@ namespace CSampleServer
             // 몬스터 스폰 데이터 로드.
             jObj = SystemUtils.LoadJson(Program.monsterSpawnInfoJsonPath);
             monsterSpawnDatas = jObj.ToObject<MonsterSpawnDatas>();
+            // 몬스터 AI 데이터 로드.
+            jObj = SystemUtils.LoadJson(Program.monsterAiInfoJsonPath);
+            monsterAiDatas = jObj.ToObject<MonsterAiDatas>();
+            
 
             Program.Tick += Tick;
         }
@@ -57,7 +62,7 @@ namespace CSampleServer
                 // TODO: 리스폰 포지션이 유효한지 체크해야됨...
                 var spawnPosX = random.Next(spawnData.SpawnZonePosX - spawnData.SpawnZoneRange, spawnData.SpawnZonePosX + spawnData.SpawnZoneRange);
                 var spawnPosY = random.Next(spawnData.SpawnZonePosY - spawnData.SpawnZoneRange, spawnData.SpawnZonePosY + spawnData.SpawnZoneRange);
-                GetMonsterSpawnPosition(spawnData.SpawnZonePosX, spawnData.SpawnZonePosY, spawnData.SpawnZoneRange, out spawnPosX, out spawnPosY);
+                MapManager.I.GetRandomPosition(spawnData.SpawnZonePosX, spawnData.SpawnZonePosY, spawnData.SpawnZoneRange, out spawnPosX, out spawnPosY);
 
                 var monsterInfo = monsterInfoDatas.datas.Find((p) => p.data.tableId == spawnData.MonsterId);
 
@@ -68,6 +73,8 @@ namespace CSampleServer
                     monsterDataPack.state.posY = (short)spawnPosY;
                     
                     var monsterInstance = new CMonster(monsterDataPack);
+                    var aiInfo = monsterAiDatas.datas.Find((p) => p.dataId == spawnData.MonsterId);
+                    monsterInstance.SetAiInfo(aiInfo);
                     AddMonster(spawnData.SpawnId, monsterInstance);
                     
                 }
@@ -104,31 +111,6 @@ namespace CSampleServer
             Program.gameServer.userList.Remove(instance);
             
             instance = null;
-        }
-
-        private void GetMonsterSpawnPosition(int centerX, int centerY, int range, out int x, out int y)
-        {
-            int checkMaxCount = 100;
-
-            while (checkMaxCount <= 100)
-            {
-                checkMaxCount++;
-                var spawnPosX = random.Next(centerX - range, centerX + range);
-                var spawnPosY = random.Next(centerY - range, centerY + range);
-
-                if (MapManager.I.ExistsMapInfo(spawnPosX, spawnPosY) == false)
-                    continue;
-
-                if (MapManager.I.HasUnit(spawnPosX, spawnPosY))
-                    continue;
-
-                x = spawnPosX;
-                y = spawnPosY;
-                return;
-            }
-            
-            x = random.Next(centerX - range, centerX + range);
-            y = random.Next(centerY - range, centerY + range);
         }
 
         public PlayerDataPackage CopyMonsterDataPack(PlayerDataPackage dataPack)

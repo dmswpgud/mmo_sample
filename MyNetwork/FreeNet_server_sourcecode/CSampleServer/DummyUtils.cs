@@ -5,6 +5,36 @@ namespace CSampleServer
 {
     public class DummyUtils
     {
+        public static void DummyLoad()
+        {
+            // MonsterSpawnDummyData();
+            // MonsterDummyData();
+            //MonsterAiDummyData();
+        }
+        
+        public static void MonsterAiDummyData()
+        {
+            MonsterAiData data1;
+            data1 = new MonsterAiData();
+            data1.dataId = 1;
+            data1.behaviorPatternSpeed = 1;
+            data1.searchTargetRange = 3;
+            data1.attackFirst = 0;
+            
+            MonsterAiData data2;
+            data2 = new MonsterAiData();
+            data2.dataId = 2;
+            data2.behaviorPatternSpeed = 1;
+            data2.searchTargetRange = 3;
+            data2.attackFirst = 0;
+            
+            var datas = new MonsterAiDatas();
+            datas.datas.Add(data1);
+            datas.datas.Add(data2);
+
+            var obj = JObject.FromObject(datas);
+            SystemUtils.SaveJson(Program.monsterAiInfoJsonPath, obj);
+        }
         public static void MonsterSpawnDummyData()
         {
             MonsterSawnData data1;
