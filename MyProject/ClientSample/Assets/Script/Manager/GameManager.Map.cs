@@ -17,7 +17,7 @@ public partial class GameManager : MonoBehaviour
         if (!myPlayer) return;
         if (myPlayer.IsDead) return;
         
-        if (InputKey.InputAttack || InputKey.InputChangeDirection)
+        if (InputKey.InputChangeDirection)
             return;
         
         if (Input.GetMouseButtonDown (0))
@@ -184,5 +184,14 @@ public partial class GameManager : MonoBehaviour
         }
         
         return tiles;
+    }
+
+    public int GetDistance(int currentX, int currentY, int targetX, int targetY)
+    {
+        int a = targetX - currentX;    // 선 a의 길이
+        int b = targetY - currentY;    // 선 b의 길이
+        var dis = Mathf.Sqrt((a * a) + (b * b));  
+        
+        return (int)dis;
     }
 }

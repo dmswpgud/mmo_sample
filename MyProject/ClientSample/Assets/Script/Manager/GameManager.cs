@@ -96,6 +96,9 @@ public partial class GameManager : MonoBehaviour
         }
         
         var data = (PlayerDataPackage) res;
+        
+        if (listUnit.Exists(p => p.DATA.playerId == data.data.playerId))
+            return;
 
         switch ((UnitType)data.data.unitType)
         {
