@@ -36,8 +36,7 @@ public partial class GameManager : MonoBehaviour
 
     private void Update()
     {
-        UpdateGameManagerMap();
-        UpdateGameManagerPlayer();
+        UpdateController();
     }
 
     private void OnDisconnectServer()

@@ -21,6 +21,8 @@ public abstract class Unit : MonoBehaviour
     
     public GameObject Renderer { private set; get; }
 
+    public GameObject targetClicker;
+
     public void Initialized(GameObject renderer = null)
     {
         Renderer = renderer;
@@ -29,6 +31,11 @@ public abstract class Unit : MonoBehaviour
         //
         SetPosition(X, Y);
         SetDirection(Direction);
+    }
+
+    void OnDestroy()
+    {
+        Destroy(targetClicker);
     }
 
     public abstract void MovePlayerNextPosition(PlayerStateData stateData);

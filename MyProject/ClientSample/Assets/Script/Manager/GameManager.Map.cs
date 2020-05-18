@@ -1,37 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using Client.Game.Map;
-using GameServer;
 using UnityEngine;
 
 public partial class GameManager : MonoBehaviour
 {
     public GameObject TileObj;
-    
+
     public TileInfo[,] tileInfos = new TileInfo[Map.MAX_GRID_Y, Map.MAX_GRID_Y];
-    
+
     public GameObject mapCollider;
 
-    private void UpdateGameManagerMap()
-    {
-        if (!myPlayer) return;
-        if (myPlayer.IsDead) return;
-        
-        if (InputKey.InputChangeDirection)
-            return;
-        
-        if (Input.GetMouseButtonDown (0))
-        {
-            var target = GetClickedObject();
-
-            if (target != null && target.isBlock == false)
-            {
-                target.GetComponent<MeshRenderer>().material.color = Color.green;
-                SetPath(myPlayer, target.GridPoint);
-            }
-        }
-    }
-    
     private void MakeMap()
     {
         for (int x = 0; x < Map.MapTiles.GetLength(0); ++x)

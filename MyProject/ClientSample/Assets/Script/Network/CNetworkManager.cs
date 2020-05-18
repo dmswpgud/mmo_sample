@@ -14,6 +14,7 @@ public partial class CNetworkManager : MonoBehaviour {
 
     public static CNetworkManager Inst;
     public string IpAdress;
+    public bool ShowNetworkLog = false;
     CFreeNetUnityService gameserver;
     string received_msg;
 
@@ -82,7 +83,7 @@ public partial class CNetworkManager : MonoBehaviour {
     {
         PROTOCOL protocol_id = (PROTOCOL)msg.pop_protocol_id();
         
-        Debug.Log($"Response : {protocol_id}");
+        if (ShowNetworkLog) {Debug.Log($"Response : {protocol_id}");}
         
         switch (protocol_id)
         {

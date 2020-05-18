@@ -26,5 +26,7 @@ public partial class GameManager : MonoBehaviour
         var sc = ins.GetComponent<TargetClicker>();
 
         sc.SetTrackingTarget(unit, targetTransform, OnSetTargetUnit);
+        
+        unit.targetClicker = sc.gameObject;
     }
 }

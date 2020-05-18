@@ -10,21 +10,13 @@ public partial class GameManager
     public List<Unit> listUnit = new List<Unit>();
     public Player myPlayer;
     private List<GridPoint> path;
-    private Unit TargetUnit;
+    public Unit TargetUnit;
 
     private void OnSetTargetUnit(Unit target)
     {
         TargetUnit = target;
     }
 
-    private void UpdateGameManagerPlayer()
-    {
-        if (!myPlayer) return;
-        if (myPlayer.IsDead) return;
-        
-        RequestPlayerState();
-    }
-    
     private Player CreatePlayer(PlayerDataPackage data, GameObject model)
     {
         GameObject ins = Instantiate(model);
@@ -52,47 +44,6 @@ public partial class GameManager
         return listUnit.Find(p => p.DATA.playerId == id);
     }
     
-    private void SetPath(Player player, GridPoint destPoint)
-    {
-        DrawWall();
-
-        var start = new GridPoint(player.STATE.posX, player.STATE.posY);
-
-        var end = destPoint;
-
-        var pathFinder = new PathFinder();
-        
-        path = pathFinder.FindPath(tileInfos, start, end);
-
-        // 경로가 없다면 리턴.
-        if (path.Count <= 0)
-            return;
-
-        // 방향 설정.
-        player.SetDirectionByPosition(path[0].X, path[0].Y);
-        // 서버에 이동할 경로를 보냄.
-        CNetworkManager.Inst.RequestPlayerMove(path[0].X, path[0].Y, player.STATE.direction, ResponseMovePlayer);
-        
-        // 목표지점에 도착하면 다음 경로로 이동하는걸 경로가 0이 될때까지 반복.
-        player.OnArrivePoint = (p) =>
-        {
-            if (path.Count > 0)
-            {
-                path.RemoveAt(0);
-            }
-            
-            if (path.Count != 0)
-            {        
-                // 방향 설정.
-                player.SetDirectionByPosition(path[0].X, path[0].Y);
-                // 서버에 이동할 경로를 보냄.
-                CNetworkManager.Inst.RequestPlayerMove(path[0].X, path[0].Y, player.STATE.direction, ResponseMovePlayer);
-            }
-        };
-
-        DrawTile(path);
-    }
-
     private void ResponseMovePlayer(ResponseData res, ERROR error)
     {
         if (error != ERROR.NONE)
@@ -121,48 +72,6 @@ public partial class GameManager
         // DrawTile(rangeTiles);
     }
 
-    private void RequestPlayerState()
-    {
-        if (myPlayer == null)
-            return;
-
-        #region ATTACK
-        if (InputKey.InputAttack)
-        {
-            var targetTile = GetClickedObject();
-            if (targetTile.GridPoint.X == myPlayer.STATE.posX &&
-                targetTile.GridPoint.Y == myPlayer.STATE.posY)
-                return;
-            
-            int a = targetTile.GridPoint.X - myPlayer.X;    // 선 a의 길이
-            int b = targetTile.GridPoint.Y - myPlayer.Y;    // 선 b의 길이
-            var c = Mathf.Sqrt((a * a) + (b * b));  
-            if (c > 1)
-                return;
-            
-            myPlayer.SetDirectionByPosition(targetTile.GridPoint.X, targetTile.GridPoint.Y);
-            myPlayer.SetPlayerAnim(PlayerState.ATTACK);
-            
-            CNetworkManager.Inst.RequestPlayerState(myPlayer.STATE, receiverUserId: TargetUnit?.ID ?? 0, OnReceivedChangedPlayerState);
-        }
-        #endregion
-
-        #region CHANGE DIRECTION
-        if (InputKey.InputChangeDirection)
-        {
-            var targetTile = GetClickedObject();
-            if (targetTile.GridPoint.X == myPlayer.STATE.posX &&
-                targetTile.GridPoint.Y == myPlayer.STATE.posY)
-                return;
-
-            if (myPlayer.SetDirectionByPosition(targetTile.GridPoint.X, targetTile.GridPoint.Y))
-            {
-                myPlayer.SetPlayerAnim(PlayerState.CHANGED_DIRECTION);
-                CNetworkManager.Inst.RequestPlayerState(myPlayer.STATE, 0, OnReceivedChangedPlayerState);
-            }
-        }
-        #endregion
-    }
 
     private void OnReceivedChangedPlayerState(ResponseData res, ERROR error)
     {
