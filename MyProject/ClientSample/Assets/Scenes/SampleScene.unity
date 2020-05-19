@@ -881,6 +881,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IpAdress: 127.0.0.1
+  ShowNetworkLog: 0
   message_receiver: {fileID: 0}
   user_state: 0
 --- !u!4 &421563541
@@ -2075,6 +2076,7 @@ MonoBehaviour:
     type: 3}
   listUnit: []
   myPlayer: {fileID: 0}
+  TargetUnit: {fileID: 0}
   LoginDialog: {fileID: 1028406321}
   ChatDialog: {fileID: 188059185}
   AnnounceDialog: {fileID: 208006351}

@@ -26,8 +26,8 @@ public class TargetClicker : MonoBehaviour
 
     public void SetHp(int maxHp, int currentHp)
     {
-        hpBar.value = currentHp;
         hpBar.maxValue = maxHp;
+        hpBar.value = currentHp;
     }
 
     public void OnEnterTarget()

@@ -23,6 +23,7 @@ public partial class GameManager
         var player = ins.GetComponent<Player>();
         player.InitPlayer(data.data, data.state, data.hpMp);
         CreateTargetClicker(player, player.modelHead.transform);
+        player.SetHpMp(data.hpMp);
         return player;
     }
 
@@ -92,6 +93,7 @@ public partial class GameManager
             senderPlayer.OnFinishedAnim((state) =>
             {
                 receiverPlayer?.SetStateData(data.receiverPlayerData);
+                receiverPlayer?.SetHpMp(data.receiverPlayerHpMp);
             });
         }
         else

@@ -43,7 +43,7 @@ namespace CSampleServer
             userPack.state.state = (byte) PlayerState.IDLE;
             userPack.state.posX = 0;
             userPack.state.posY = 0;
-            userPack.hpMp.Hp = 1000;
+            userPack.hpMp.Hp = userPack.hpMp.MaxHp / 2;
         }
     }
 }

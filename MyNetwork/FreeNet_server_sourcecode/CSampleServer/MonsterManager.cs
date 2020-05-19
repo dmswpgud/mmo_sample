@@ -135,6 +135,8 @@ namespace CSampleServer
             monsterState.posY = dataPack.state.posY;
             monsterState.unitType = dataPack.state.unitType;
 
+            monsterHp.MaxHp = dataPack.hpMp.MaxHp;
+            monsterHp.MaxMp = dataPack.hpMp.MaxMp;
             monsterHp.Hp = dataPack.hpMp.Hp;
             monsterHp.Mp = dataPack.hpMp.Mp;
 

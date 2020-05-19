@@ -9,7 +9,7 @@ namespace CSampleServer
         {
             // MonsterSpawnDummyData();
             // MonsterDummyData();
-            //MonsterAiDummyData();
+            // MonsterAiDummyData();
         }
         
         public static void MonsterAiDummyData()
@@ -47,7 +47,7 @@ namespace CSampleServer
             
             data2 = new MonsterSawnData()
             {
-                SpawnId = 2, MonsterId = 2, SpawnZonePosX = 1,SpawnZonePosY = 10, currentSpawnCount = 0, SpawnZoneRange = 3, SpawnMaxCount = 4, SpawnRemainSec = 8
+                SpawnId = 2, MonsterId = 2, SpawnZonePosX = 10, SpawnZonePosY = 10, currentSpawnCount = 0, SpawnZoneRange = 3, SpawnMaxCount = 4, SpawnRemainSec = 8
             };
 
             var datas = new MonsterSpawnDatas();
@@ -77,6 +77,8 @@ namespace CSampleServer
             };
             var hpMp = new HpMp()
             {
+                MaxHp = 50,
+                MaxMp = 10,
                 Hp = 50,
                 Mp = 10,
             };
@@ -106,6 +108,8 @@ namespace CSampleServer
             };
             var hpMp2 = new HpMp()
             {
+                MaxHp = 80,
+                MaxMp = 10,
                 Hp = 80,
                 Mp = 10,
             };

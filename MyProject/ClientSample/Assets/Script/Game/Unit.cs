@@ -40,6 +40,7 @@ public abstract class Unit : MonoBehaviour
 
     public abstract void MovePlayerNextPosition(PlayerStateData stateData);
     public abstract void SetStateData(PlayerStateData stateData);
+    public abstract void SetHpMp(HpMp hpMp);
     public abstract void OnFinishedAnim(Action<PlayerState> onFinished);
 
     protected void SetPosition(int x, int y)
