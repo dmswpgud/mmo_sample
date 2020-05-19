@@ -88,15 +88,6 @@ public partial class GameManager
         // 목적지 한칸 도착하면 날아오는 콜백
         myPlayer.OnArrivePoint = (p) =>
         {
-            if (TargetUnit) // 유닛 있냐 있으면 유닛 좌표로 패스 취득
-            {
-                start = new GridPoint(myPlayer.transform.position.x, myPlayer.transform.position.z);
-                // 경로탐색 도착.
-                end = new GridPoint(TargetUnit.X, TargetUnit.Y);
-
-                pathFinder = new PathFinder();
-            }
-            
             if (path.Count > 0) // 패스가 0 이상이면 0인덱스 지워줌
             {
                 path.RemoveAt(0);

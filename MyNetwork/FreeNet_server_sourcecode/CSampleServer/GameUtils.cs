@@ -83,14 +83,7 @@ namespace CSampleServer
         {
             var path = Program.userInfoJsonPath;
 
-            var userPackage = new UserDataPackage();
-            userPackage.account = account;
-            userPackage.password = password;
-            userPackage.name = name;
-            userPackage.userId = id;
-            userPackage.data = new PlayerData() {playerId = id, name = name, unitType = 0, moveSpeed = 2};
-            userPackage.state = new PlayerStateData() {playerId = id, posX = 10, posY = 10, direction = 4};
-            userPackage.hpMp = new HpMp() {MaxHp = 500, MaxMp = 10, Hp = 500, Mp = 10, HpRecoveryTime = 10, MpRecoveryTime = 10};
+            var userPackage = PlayerManager.I.InitializedPlayerData(account, password, name, id);
             
             var loadJObj = LoadJson(path);
             var jObj = JObject.FromObject(userPackage);

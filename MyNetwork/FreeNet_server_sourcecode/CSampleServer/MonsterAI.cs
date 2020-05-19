@@ -131,6 +131,16 @@ namespace CSampleServer
                 owner.SetState(PlayerState.IDLE);
                 return;
             }
+            
+            // 이동할 타일에 다른 유닛이 있으면 딜레이 후 다시 데쉬.. (유닛이 안겹침)
+            var units = MapManager.I.GetUnits(listPath[0].X, listPath[0].Y);
+            if (units.Exists(p => p.playerData.unitType == (byte) UnitType.MONSTER ||
+                                  p.stateData.state != (byte) PlayerState.DEATH))
+            {
+                owner.SetState(PlayerState.DASH_TO_TARGET);
+                BehaviorIntervalTime = 1;
+                return;
+            }
 
             var dir = MapManager.I.SetDirectionByPosition(state.posX, state.posY, (short) listPath[0].X, (short) listPath[0].Y);
             
@@ -157,7 +167,7 @@ namespace CSampleServer
                 owner.SetState(PlayerState.DASH_TO_TARGET);
                 return;
             }
-            
+
             var dir = MapManager.I.SetDirectionByPosition(state.posX, state.posY, owner.targetUnit.stateData.posX, owner.targetUnit.stateData.posY);
             owner.stateData.direction = (byte)dir;
             MonsterStateAttack(owner.targetUnit.playerData.playerId);

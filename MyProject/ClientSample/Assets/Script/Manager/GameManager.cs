@@ -52,8 +52,6 @@ public partial class GameManager : MonoBehaviour
     private TileInfo GetClickedObject()
     {
         RaycastHit hit;
-        
-        GameObject target = null; 
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); 
 

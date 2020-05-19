@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using GameServer;
 
 namespace CSampleServer
 {
@@ -148,7 +149,7 @@ namespace CSampleServer
             if (y < 0 || y >= matrix.GetLength(1))
                 return false;
 
-            return matrix[x, y] == 1;
+            return MapManager.I.HasUnit(x, y, UnitType.MONSTER) == false && matrix[x, y] == 1;
         }
 
         private List<GridPoint> Reconstruct(GridPoint current) 

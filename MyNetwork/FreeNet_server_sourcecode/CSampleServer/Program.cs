@@ -26,7 +26,7 @@ namespace CSampleServer
             service.session_created_callback += on_session_created;
             // 초기화.
             service.initialize();
-            service.listen("127.0.0.1", 7979, 100);
+            service.listen("192.168.0.4", 7979, 100);
             
             // 게임서버 초기화.
             gameServer.Initialized();

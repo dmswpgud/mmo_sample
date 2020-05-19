@@ -251,6 +251,16 @@ namespace CSampleServer
             return mapInfos[x, y].stayUnit.Count != 0;
         }
 
+        public bool HasUnit(int x, int y, UnitType type)
+        {
+            return mapInfos[x, y].stayUnit.Exists(p => p.playerData.unitType == (byte) type);
+        }
+
+        public List<CUnit> GetUnits(int x, int y)
+        {
+            return mapInfos[x, y].stayUnit;
+        }
+
         // A유닛과 B유닛의 범위안에 유닛을 리턴.
         public List<CUnit> GetUnitFromUnits(CUnit unitA, CUnit unitB)
         {

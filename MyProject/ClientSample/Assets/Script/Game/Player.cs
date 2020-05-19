@@ -16,7 +16,7 @@ public class Player : Unit
     [SerializeField]
     public GameObject modelHead;
     PlayerAnimationController animController;
-    public bool IsDead => STATE == null || STATE?.state == (byte) PlayerState.DEATH;
+    public bool IsDead => STATE?.state == (byte) PlayerState.DEATH;
     public PlayerState UnitState => (PlayerState)STATE.state; 
 
     void Awake()
