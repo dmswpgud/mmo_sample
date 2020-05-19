@@ -65,7 +65,7 @@ public partial class GameManager
         myPlayer.OnArrivePoint = null;
     }
     
-        private void PlayerMove(GridPoint point)
+    private void PlayerMove(GridPoint point)
     {
         DrawWall();
         // 경로탐색 시작.
@@ -85,10 +85,10 @@ public partial class GameManager
         myPlayer.SetDirectionByPosition(path[0].X, path[0].Y);
         // 서버에 이동할 경로를 보냄.
         CNetworkManager.Inst.RequestPlayerMove(path[0].X, path[0].Y, myPlayer.STATE.direction, ResponseMovePlayer);
-        // 
+        // 목적지 한칸 도착하면 날아오는 콜백
         myPlayer.OnArrivePoint = (p) =>
         {
-            if (TargetUnit)
+            if (TargetUnit) // 유닛 있냐 있으면 유닛 좌표로 패스 취득
             {
                 start = new GridPoint(myPlayer.transform.position.x, myPlayer.transform.position.z);
                 // 경로탐색 도착.
@@ -97,16 +97,17 @@ public partial class GameManager
                 pathFinder = new PathFinder();
             }
             
-            if (path.Count > 0)
+            if (path.Count > 0) // 패스가 0 이상이면 0인덱스 지워줌
             {
                 path.RemoveAt(0);
             }
 
-            if (path.Count <= 0)
+            if (path.Count <= 0) // 패스가 0이면 리턴
                 return;
             
-            if (TargetUnit)
+            if (TargetUnit) // 타겟이 있다면
             {
+                // 타겟이 한칸내에 있다면 공격 하고 이 콜백을 끝냄.
                 if (GetDistance(myPlayer.X, myPlayer.Y, TargetUnit.X, TargetUnit.Y) <= 1)
                 {
                     Attack();
@@ -115,11 +116,11 @@ public partial class GameManager
                     return;
                 }
             }
-            
+            // 상태를 워크로 변경
             myPlayer.STATE.state = (byte) PlayerState.WARK;
             // 방향 설정.
             myPlayer.SetDirectionByPosition(path[0].X, path[0].Y);
-            // 서버에 이동할 경로를 보냄.
+            // 서버에 이동할 경로를 보냄. (경로가 없을때까지 무한반복.)
             CNetworkManager.Inst.RequestPlayerMove(path[0].X, path[0].Y, myPlayer.STATE.direction,
                 (res, error) =>
                 {

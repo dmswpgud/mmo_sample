@@ -40,6 +40,9 @@ public class Player : Unit
         SetPlayerAnim((PlayerState)state.state);
         base.SetDirection((UnitDirection) state.direction, 0.2f);
         base.SetPosition(state.posX, state.posY);
+        
+        targetClicker.SetHp(HPMP.MaxHp, HPMP.Hp);
+        
         Dead();
     }
 

@@ -41,6 +41,9 @@ public partial class GameManager : MonoBehaviour
 
     public TileInfo GetTileInfo(int x, int y)
     {
+        if (ExistsMapInfo(x, y) == false)
+            return null;
+        
         return tileInfos[x, y];
     }
     
@@ -172,5 +175,16 @@ public partial class GameManager : MonoBehaviour
         var dis = Mathf.Sqrt((a * a) + (b * b));  
         
         return (int)dis;
+    }
+    
+    public bool ExistsMapInfo(int x, int y)
+    {
+        if (x < 0 || x >= tileInfos.GetLength(0))
+            return false;
+
+        if (y < 0 || y >= tileInfos.GetLength(1))
+            return false;
+            
+        return true;
     }
 }

@@ -382,7 +382,7 @@ GameObject:
   - component: {fileID: 3184412276953185373}
   - component: {fileID: 3184412276953185369}
   m_Layer: 0
-  m_Name: UnitOtherPlayer
+  m_Name: UnitMonster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -447,10 +447,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb4c3e6e353204bbd9e68975ced217f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InspectorView_unitId: 0
+  targetClicker: {fileID: 0}
   IsMyPlayer: 0
   animator: {fileID: 3184412276953185375}
   model: {fileID: 3184412276953185516}
-  modelHead: {fileID: 3184412276953185496}
+  modelHead: {fileID: 3184412276953185463}
 --- !u!1 &3184412276953185457
 GameObject:
   m_ObjectHideFlags: 0

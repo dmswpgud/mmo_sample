@@ -1,8 +1,13 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TargetClicker : MonoBehaviour
 {
+    [SerializeField]
+    private Text txtName;
+    [SerializeField] 
+    private Slider hpBar;
     private Unit Unit;
     private Transform TargetTrf;
     private bool isPressed = false;
@@ -15,10 +20,22 @@ public class TargetClicker : MonoBehaviour
         Unit = unit;
         TargetTrf = targetTransform;
         OnSetTargetUnit = onSetTarget;
+        txtName.text = unit.DATA.name + unit.DATA.playerId.ToString();
+        txtName.gameObject.SetActive(false);
+    }
+
+    public void SetHp(int maxHp, int currentHp)
+    {
+        hpBar.value = currentHp;
+        hpBar.maxValue = maxHp;
     }
 
     public void OnEnterTarget()
     {
+        if (GameManager.Inst.TargetUnit != null)
+            return;
+        
+        txtName.gameObject.SetActive(true);
     }
 
     public void OnExitTarget()
@@ -30,6 +47,8 @@ public class TargetClicker : MonoBehaviour
         {
             OnSetTargetUnit?.Invoke(null);
         }
+        
+        txtName.gameObject.SetActive(false);
     }
 
     public void OnPointDown()
@@ -39,12 +58,16 @@ public class TargetClicker : MonoBehaviour
         
         isPressed = true;
         OnSetTargetUnit?.Invoke(Unit);
+        
+        txtName.gameObject.SetActive(true);
     }
 
     public void OnPointUpTarget()
     {
         isPressed = false;
         OnSetTargetUnit?.Invoke(null);
+        
+        txtName.gameObject.SetActive(false);
     }
     
     void Update()
