@@ -7,6 +7,7 @@ public partial class GameManager
 {
     public GameObject PlayerPrefab;
     public GameObject MonsterPrefab;
+    public GameObject ObjectPrefab;
     public List<Unit> listUnit = new List<Unit>();
     public Player myPlayer;
     private List<GridPoint> path;

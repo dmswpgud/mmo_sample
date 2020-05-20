@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CSampleServer.DefaultNamespace;
 using FreeNet;
 using GameServer;
 
@@ -15,6 +16,7 @@ namespace CSampleServer
             //
             MapManager.I.Initialized();
             MonsterManager.I.Initialized();
+            ItemManager.I.Initialized();
         }
 
         public bool ExistsUser(int userId)

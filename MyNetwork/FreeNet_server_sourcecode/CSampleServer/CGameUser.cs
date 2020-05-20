@@ -124,8 +124,8 @@ namespace CSampleServer
 					var dir = msg.pop_byte();
 					
 					// 이동할 타일에 유닛이 있거나, 그 유닛이 죽은 상태가 아니라면 원래 포지션 셋팅 해서 패킷 보냄.
-					if (MapManager.I.HasUnit(x, y) || 
-					    MapManager.I.GetUnits(x, y).Exists(p => p.stateData.state != (byte)PlayerState.DEATH))
+					if (MapManager.I.HasUnit(x, y) ||
+					    MapManager.I.GetUnits(x, y).Exists(p => p.stateData.state == (byte)PlayerState.DEATH))
 					{
 						player.RequestPlayerMove();
 						return;

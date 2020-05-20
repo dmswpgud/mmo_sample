@@ -7,10 +7,10 @@ namespace CSampleServer
     [Serializable]
     public abstract class CUnit
     {
-        public CGameUser owner { get; }
-        public PlayerData playerData { get; }
+        public CGameUser owner { get; set; }
+        public PlayerData playerData { get; set; }
         public PlayerStateData stateData { set; get; }
-        public HpMp HpMp { get; }
+        public HpMp HpMp { get; set; }
         public List<CUnit> prevNearUnits = new List<CUnit>();
         public int NearRange = 5;
         public PlayerState STATE => (PlayerState)stateData.state;

@@ -319,6 +319,15 @@ namespace CSampleServer
             var goal = new GridPoint(destX, destY);
             return _pathFinder.FindPath(MapTileInfo, start, goal, unitIsBlock);
         }
+        
+        public int GetDistance(int currentX, int currentY, int targetX, int targetY)
+        {
+            int a = targetX - currentX;    // 선 a의 길이
+            int b = targetY - currentY;    // 선 b의 길이
+            var dis = (a * a) + (b * b);  
+        
+            return (int)dis;
+        }
 
         public UnitDirection SetDirectionByPosition(int currentX, int currentY, int destX, int destY)
         {

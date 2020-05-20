@@ -48,10 +48,12 @@
     <Compile Include="CGameServer.cs" />
     <Compile Include="CGameUser.cs" />
     <Compile Include="CMonster.cs" />
+    <Compile Include="CItem.cs" />
     <Compile Include="CPlayer.cs" />
     <Compile Include="CUnit.cs" />
     <Compile Include="DummyUtils.cs" />
     <Compile Include="GameUtils.cs" />
+    <Compile Include="ItemManager.cs" />
     <Compile Include="MapManager.cs" />
     <Compile Include="MonsterAI.cs" />
     <Compile Include="MonsterManager.cs" />

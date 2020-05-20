@@ -120,7 +120,21 @@ public partial class GameManager : MonoBehaviour
                 moster.gameObject.name = $"Monster-{data.data.name}-{data.data.playerId}";
                 listUnit.Add(moster);
                 break;
+            case UnitType.MAP_OBJECT:
+                var cube = CreateItem(data, ObjectPrefab);
+                cube.gameObject.name = $"cube-{data.data.name}-{data.data.playerId}";
+                listUnit.Add(cube);
+                break;
         }
+    }
+
+    private ItemUnit CreateItem(PlayerDataPackage data, GameObject model)
+    {
+        GameObject ins = Instantiate(model);
+        var item = ins.GetComponent<ItemUnit>();
+        item.InitPlayer(data.data, data.state, data.hpMp);
+        CreateTargetClicker(item, item.transform);
+        return item;
     }
 
     private void DestroyUnits(ResponseData res, ERROR error)

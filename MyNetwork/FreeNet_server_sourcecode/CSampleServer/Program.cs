@@ -15,6 +15,7 @@ namespace CSampleServer
         public static string  monsterSpawnInfoJsonPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/mmo_table/monsterSpawnInfo.txt";
         public static string  monsterInfoJsonPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/mmo_table/monsterInfo.txt";
         public static string  monsterAiInfoJsonPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/mmo_table/monsterAiInfo.txt";
+        public static string  itemInfoJsonPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/mmo_table/itemInfo.txt";
 
         static void Main(string[] args)
         {

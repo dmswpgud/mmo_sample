@@ -20,7 +20,7 @@ namespace CSampleServer
         
         public Random random = new Random();
         public MonsterSpawnDatas monsterSpawnDatas = new MonsterSpawnDatas();
-        public UnitInfosPackage monsterInfoDatas = new UnitInfosPackage();
+        public UnitInfosPackage monsterTableDatas = new UnitInfosPackage();
         public MonsterAiDatas monsterAiDatas = new MonsterAiDatas();
         public Dictionary<int, List<CMonster>> dicZonecurrentMoste = new Dictionary<int, List<CMonster>>();
 
@@ -28,7 +28,7 @@ namespace CSampleServer
         {
             // 몬스터 테이블 로드.
             var jObj = SystemUtils.LoadJson(Program.monsterInfoJsonPath);
-            monsterInfoDatas = jObj.ToObject<UnitInfosPackage>();
+            monsterTableDatas = jObj.ToObject<UnitInfosPackage>();
             // 몬스터 스폰 데이터 로드.
             jObj = SystemUtils.LoadJson(Program.monsterSpawnInfoJsonPath);
             monsterSpawnDatas = jObj.ToObject<MonsterSpawnDatas>();
@@ -64,7 +64,7 @@ namespace CSampleServer
                 var spawnPosY = (int)spawnData.SpawnZonePosY;
                 MapManager.I.GetRandomPosition(spawnData.SpawnZonePosX, spawnData.SpawnZonePosY, spawnData.SpawnZoneRange, out spawnPosX, out spawnPosY);
 
-                var monsterInfo = monsterInfoDatas.datas.Find((p) => p.data.tableId == spawnData.MonsterId);
+                var monsterInfo = monsterTableDatas.datas.Find((p) => p.data.tableId == spawnData.MonsterId);
 
                 if (monsterInfo != null)
                 {

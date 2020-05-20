@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using CSampleServer.DefaultNamespace;
 using FreeNet;
 using GameServer;
 
@@ -15,7 +16,7 @@ namespace CSampleServer
         private long delayTime;
         private Action OnAfterCall;
 
-        public CMonster(PlayerDataPackage userPack)  : base(userPack)
+        public CMonster(PlayerDataPackage userPack) : base(userPack)
         {
             //prevNearUnits = MapManager.I.GetAllOtherUnit(this);
             SetPosition(stateData.posX, stateData.posY, stateData.direction);
@@ -88,6 +89,8 @@ namespace CSampleServer
             delayTime = resetTime;
 
             OnDelayCall(DesconnectedWorld, delayTime);
+
+            ItemManager.I.CreateItem(1, stateData.posX, stateData.posY);
         }
 
         private void OnDelayCall(Action onCall, long delay)

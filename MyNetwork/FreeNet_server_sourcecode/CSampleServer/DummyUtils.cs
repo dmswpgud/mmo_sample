@@ -10,6 +10,7 @@ namespace CSampleServer
             // MonsterSpawnDummyData();
             // MonsterDummyData();
             // MonsterAiDummyData();
+            // ItemDummyData();
         }
         
         public static void MonsterAiDummyData()
@@ -126,6 +127,61 @@ namespace CSampleServer
             
             var obj2 = JObject.FromObject(packages);
             SystemUtils.SaveJson(Program.monsterInfoJsonPath, obj2);
+        }
+
+        public static void ItemDummyData()
+        {
+            var pack = new ItemInfoPackage();
+            
+            var weapone = new ItemInfo
+            {
+                tableId = 1,
+                dataId = 0,
+                itemName = "식칼",
+                ac = 0,
+                damage = 10,
+                hitmodifier = 2,
+                itemType = (byte)ItemType.WEAPONE,
+                material = 0,
+                price = 20000,
+                sellPrice = 5000,
+                safenchant = 6,
+            };
+            
+            var armor = new ItemInfo
+            {
+                tableId = 2,
+                dataId = 0,
+                itemName = "앞치마",
+                ac = 3,
+                damage = 0,
+                hitmodifier = 0,
+                itemType = (byte)ItemType.ARMOR,
+                material = 0,
+                price = 10000,
+                sellPrice = 2000,
+                safenchant = 4,
+            };
+            
+            var etc = new ItemInfo
+            {
+                tableId = 2,
+                dataId = 0,
+                itemName = "박카스",
+                itemType = (byte)ItemType.POTION,
+                consume_type = 1,
+                count = 1,
+                stackable = 1,
+                price = 10000,
+                sellPrice = 2000,
+            };
+
+            pack.datas.Add(weapone);
+            pack.datas.Add(armor);
+            pack.datas.Add(etc);
+            
+            var obj2 = JObject.FromObject(pack);
+            SystemUtils.SaveJson(Program.itemInfoJsonPath, obj2);
         }
     }
 }
