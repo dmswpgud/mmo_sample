@@ -17,6 +17,14 @@ namespace GameServer
     public enum PlayerState
     {
         IDLE, WARK, ATTACK, DAMAGE, CHANGED_DIRECTION, DEATH,
+        
+        // 몬스터 상태값.
+        DASH_TO_TARGET,        
+    }
+
+    public enum ItemType
+    {
+        WEAPONE, ARMOR, POTION
     }
 
     public enum MonsterState
@@ -280,4 +288,30 @@ public class MonsterAiData : ResponseData
     public int behaviorPatternSpeed;
     public int attackFirst;
     public int searchTargetRange;
+}
+
+[Serializable]
+public class ItemInfoPackage : ResponseData
+{
+    public List<ItemInfo> datas = new List<ItemInfo>();
+}
+
+[Serializable]
+public class ItemInfo : ResponseData
+{
+    public int dataId;
+    public int tableId;
+    public string itemName;
+    public byte itemType;
+    public int price;
+    public int sellPrice;
+    public byte material;
+    public int damage;
+    public int hitmodifier;
+    public int ac;
+    public byte useX;
+    public byte safenchant;
+    public byte consume_type; // 소비형태
+    public int count;
+    public byte stackable; // 0 중첩 불가 / 1 중첩 가능
 }
