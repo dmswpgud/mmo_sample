@@ -19,8 +19,9 @@ public partial class GameManager
             {
                 if (GetDistance(myPlayer.X, myPlayer.Y, TargetUnit.X, TargetUnit.Y) <= 1)
                 {
+                    // TODO: 어택할때 연타하게되면 플레이어 유닛이 순간이동하는 현상이 있음. 원인은 어택을 하고 서버에서 상태를 받아올때 좌표를 받아서 셋팅하기 때문..
+                    // 해결책은 버튼 연타를 막으면 됨..
                     Attack();
-                    
                     AutoAttack();
                     return;
                 }
@@ -41,6 +42,15 @@ public partial class GameManager
         }
     }
     
+    public void Attack()
+    {
+        myPlayer.SetDirectionByPosition(TargetUnit.X, TargetUnit.Y);
+        myPlayer.SetPlayerAnim(PlayerState.ATTACK);
+        CNetworkManager.Inst.RequestPlayerState(myPlayer.STATE, receiverUserId: TargetUnit?.ID ?? 0,
+            OnReceivedChangedPlayerState);
+        myPlayer.OnArrivePoint = null;
+    }
+    
     public void AutoAttack()
     {
         StopAutoAttack = false;
@@ -56,15 +66,6 @@ public partial class GameManager
         });
     }
 
-    public void Attack()
-    {
-        myPlayer.SetDirectionByPosition(TargetUnit.X, TargetUnit.Y);
-        myPlayer.SetPlayerAnim(PlayerState.ATTACK);
-        CNetworkManager.Inst.RequestPlayerState(myPlayer.STATE, receiverUserId: TargetUnit?.ID ?? 0,
-            OnReceivedChangedPlayerState);
-        myPlayer.OnArrivePoint = null;
-    }
-    
     private void PlayerMove(GridPoint point)
     {
         DrawWall();

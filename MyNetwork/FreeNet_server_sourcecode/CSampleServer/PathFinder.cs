@@ -21,9 +21,19 @@ namespace CSampleServer
         Dictionary<GridPoint, int> fScore = new Dictionary<GridPoint, int>();
 
         Dictionary<GridPoint, GridPoint> nodeLinks = new Dictionary<GridPoint, GridPoint>();
+        private static bool _unitIsBlock;
         
-        public List<GridPoint> FindPath(int[,] graph, GridPoint start, GridPoint goal)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="graph"></param>
+        /// <param name="start"></param>
+        /// <param name="goal"></param>
+        /// <param name="unitIsBlock">유닛을 벽으로 인식할거냐.. 기본 트루</param>
+        /// <returns></returns>
+        public List<GridPoint> FindPath(int[,] graph, GridPoint start, GridPoint goal, bool unitIsBlock = true)
         {
+            _unitIsBlock = unitIsBlock;
             closedSet.Clear();
             openSet.Clear();
             gScore.Clear();
@@ -149,7 +159,7 @@ namespace CSampleServer
             if (y < 0 || y >= matrix.GetLength(1))
                 return false;
 
-            return MapManager.I.HasUnit(x, y, UnitType.MONSTER) == false && matrix[x, y] == 1;
+            return (_unitIsBlock && MapManager.I.HasUnit(x, y, UnitType.MONSTER)) == false && matrix[x, y] == 1;
         }
 
         private List<GridPoint> Reconstruct(GridPoint current) 

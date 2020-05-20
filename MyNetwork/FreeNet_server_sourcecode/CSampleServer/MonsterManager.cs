@@ -60,8 +60,8 @@ namespace CSampleServer
                 spawnData.NextSpawnTime = TimeManager.I.UtcTimeStampSeconds + spawnData.SpawnRemainSec;
                 
                 // TODO: 리스폰 포지션이 유효한지 체크해야됨...
-                var spawnPosX = random.Next(spawnData.SpawnZonePosX - spawnData.SpawnZoneRange, spawnData.SpawnZonePosX + spawnData.SpawnZoneRange);
-                var spawnPosY = random.Next(spawnData.SpawnZonePosY - spawnData.SpawnZoneRange, spawnData.SpawnZonePosY + spawnData.SpawnZoneRange);
+                var spawnPosX = (int)spawnData.SpawnZonePosX;
+                var spawnPosY = (int)spawnData.SpawnZonePosY;
                 MapManager.I.GetRandomPosition(spawnData.SpawnZonePosX, spawnData.SpawnZonePosY, spawnData.SpawnZoneRange, out spawnPosX, out spawnPosY);
 
                 var monsterInfo = monsterInfoDatas.datas.Find((p) => p.data.tableId == spawnData.MonsterId);

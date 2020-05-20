@@ -97,6 +97,7 @@ namespace CSampleServer
         public const int MAX_GRID_Y = 60;
         public MapTile[,] mapInfos = new MapTile[MAX_GRID_X, MAX_GRID_Y];
         private static Random random = new Random();
+        private PathFinder _pathFinder = new PathFinder();
 
         // 맵 생성.
         public void Initialized()
@@ -289,11 +290,11 @@ namespace CSampleServer
         
         public void GetRandomPosition(int centerX, int centerY, int range, out int x, out int y)
         {
-            int checkMaxCount = 100;
+            //int checkMaxCount = 100;
 
-            while (checkMaxCount <= 100)
+            while (true)
             {
-                checkMaxCount++;
+                //checkMaxCount++;
                 var spawnPosX = random.Next(centerX - range, centerX + range);
                 var spawnPosY = random.Next(centerY - range, centerY + range);
 
@@ -307,17 +308,16 @@ namespace CSampleServer
                 y = spawnPosY;
                 return;
             }
-            
-            x = random.Next(centerX - range, centerX + range);
-            y = random.Next(centerY - range, centerY + range);
+
+            // x = centerX;
+            // y = centerY;
         }
 
-        public List<GridPoint> FindPath(int startX, int startY, int destX, int destY)
+        public List<GridPoint> FindPath(int startX, int startY, int destX, int destY, bool unitIsBlock = true)
         {
             var start = new GridPoint(startX, startY);
             var goal = new GridPoint(destX, destY);
-            var path = new PathFinder();
-            return path.FindPath(MapTileInfo, start, goal);
+            return _pathFinder.FindPath(MapTileInfo, start, goal, unitIsBlock);
         }
 
         public UnitDirection SetDirectionByPosition(int currentX, int currentY, int destX, int destY)

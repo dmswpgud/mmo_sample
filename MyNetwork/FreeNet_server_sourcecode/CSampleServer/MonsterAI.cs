@@ -91,12 +91,17 @@ namespace CSampleServer
             int destY = state.posY;
             
             MapManager.I.GetRandomPosition(state.posX, state.posY, MonsterAiData.searchTargetRange, out destX, out destY);
-
+            listPath = MapManager.I.FindPath(state.posX, state.posY, destX, destY);
+            
             if (listPath.Count <= 0)
             {
-                listPath = MapManager.I.FindPath(state.posX, state.posY, destX, destY);
-                owner.SetState(PlayerState.IDLE);
-                return;
+                listPath = MapManager.I.FindPath(state.posX, state.posY, destX, destY, false);
+
+                if (listPath.Count <= 0)
+                {
+                    owner.SetState(PlayerState.IDLE);
+                    return;
+                }
             }
 
             var dir = MapManager.I.SetDirectionByPosition(state.posX, state.posY, (short) listPath[0].X, (short) listPath[0].Y);
@@ -128,6 +133,7 @@ namespace CSampleServer
             
             if (listPath.Count == 0)
             {
+                owner.targetUnit = null;
                 owner.SetState(PlayerState.IDLE);
                 return;
             }
@@ -214,6 +220,7 @@ namespace CSampleServer
                     if (defenderState == PlayerState.DEATH)
                     {
                         owner.SetState(PlayerState.IDLE);
+                        owner.targetUnit = null;
                         defender.Dead(defender);
                     }
                 }
