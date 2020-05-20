@@ -95,13 +95,8 @@ namespace CSampleServer
             
             if (listPath.Count <= 0)
             {
-                listPath = MapManager.I.FindPath(state.posX, state.posY, destX, destY, false);
-
-                if (listPath.Count <= 0)
-                {
-                    owner.SetState(PlayerState.IDLE);
-                    return;
-                }
+                owner.SetState(PlayerState.IDLE);
+                return;
             }
 
             var dir = MapManager.I.SetDirectionByPosition(state.posX, state.posY, (short) listPath[0].X, (short) listPath[0].Y);
