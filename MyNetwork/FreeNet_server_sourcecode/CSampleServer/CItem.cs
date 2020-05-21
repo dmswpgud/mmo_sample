@@ -5,7 +5,7 @@ namespace CSampleServer
 {
     public class CItem : CUnit
     {
-        private ItemInfo _itemInfo;
+        public ItemInfo _itemInfo { get; }
         
         public CItem(ItemInfo itemInfo, int x, int y)
         {
@@ -16,22 +16,22 @@ namespace CSampleServer
             var state = new PlayerStateData();
             var hpmp = new HpMp();
 
-            data.playerId = itemInfo.dataId;
+            data.playerId = itemInfo.uniqueId;
             data.name = itemInfo.itemName;
-            data.unitType = (byte) UnitType.MAP_OBJECT;
-            state.playerId = itemInfo.dataId;
-            state.unitType = (byte) UnitType.MAP_OBJECT;
+            data.unitType = (byte) UnitType.ITEM;
+            state.playerId = itemInfo.uniqueId;
+            state.unitType = (byte) UnitType.ITEM;
             state.posX = (short)x;
             state.posY = (short)y;
             pack.data = data;
             pack.state = state;
             pack.hpMp = hpmp;
             
-            playerData = data;
-            stateData = state;
+            UnitData = data;
+            StateData = state;
             HpMp = new HpMp();
             
-            SetPosition(stateData.posX, stateData.posY, stateData.direction);
+            SetPosition(StateData.posX, StateData.posY, StateData.direction);
         }
         
         public override void ResponseRemoveNearUnit(List<CUnit> units)
@@ -48,19 +48,21 @@ namespace CSampleServer
 
         public override void SetPosition(int x, int y, int dir)
         {
-            stateData.posX = (short)x;
-            stateData.posY = (short)y;
-            stateData.direction = (byte)dir;
+            StateData.posX = (short)x;
+            StateData.posY = (short)y;
+            StateData.direction = (byte)dir;
 
             MapManager.I.AddUnitTile(this, x, y);
         }
 
-        public override void RequestPlayerState(int receiveUserId)
-        {
-        }
-
         public override void Dead(CUnit attacker)
         {
+        }
+        
+        // 접속 종료.
+        public override void DisconnectedWorld()
+        {
+            base.DisconnectedWorld();
         }
     }
 }

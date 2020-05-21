@@ -74,7 +74,7 @@ namespace CSampleServer
 						return;
 					}
 					// 중복된 계정.
-					if (Program.gameServer.userList.Exists(p => p.playerData.playerId == accountData.userId))
+					if (Program.gameServer._listUnit.Exists(p => p.UnitData.playerId == accountData.userId))
 					{
 						CPacket response = CPacket.create((short)PROTOCOL.ERROR);
                     	var errorCode = (short) ERROR.DUPLICATE_USERS;
@@ -125,7 +125,7 @@ namespace CSampleServer
 					
 					// 이동할 타일에 유닛이 있거나, 그 유닛이 죽은 상태가 아니라면 원래 포지션 셋팅 해서 패킷 보냄.
 					if (MapManager.I.HasUnit(x, y) ||
-					    MapManager.I.GetUnits(x, y).Exists(p => p.stateData.state == (byte)PlayerState.DEATH))
+					    MapManager.I.GetUnits(x, y).Exists(p => p.StateData.state == (byte)PlayerState.DEATH))
 					{
 						player.RequestPlayerMove();
 						return;
@@ -138,10 +138,17 @@ namespace CSampleServer
 				// 플레이어가 상태를 보내옴.
 				case PROTOCOL.PLAYER_STATE_REQ:
 				{
-					player.stateData = new PlayerStateData(msg);
+					player.StateData = new PlayerStateData(msg);
 					var receiveUserId = msg.pop_int32();
-					Console.WriteLine($"[{player.playerData.name}] -> [{receiveUserId}] 상태:{(PlayerState)player.stateData.state}");
-					player.RequestPlayerState(receiveUserId);
+					player.PlayerStateAttack(receiveUserId);
+					Console.WriteLine($"[{player.UnitData.name}] -> [{receiveUserId}] 상태:{(PlayerState)player.StateData.state}");
+					break;
+				}
+				// 아이템 줍기.
+				case PROTOCOL.PICKING_ITEM_REQ:
+				{
+					var pickedItemUniqueId = msg.pop_int32();
+					player.RequestPickedItem(pickedItemUniqueId);
 					break;
 				}
 			}
@@ -160,7 +167,7 @@ namespace CSampleServer
 			{
 				SaveUserData();
 				PlayerManager.I.RemovePlayer(player);
-				player.DesconnectedWorld();
+				player.DisconnectedWorld();
 				player = null;
 			}
 		}
@@ -190,8 +197,8 @@ namespace CSampleServer
         	userPackage.account = userDataPackage.account;
         	userPackage.password = userDataPackage.password;
         	userPackage.name = userDataPackage.name;
-			userPackage.data = player.playerData;
-			userPackage.state = player.stateData;
+			userPackage.data = player.UnitData;
+			userPackage.state = player.StateData;
 			userPackage.hpMp = player.HpMp;
 			var save = JObject.FromObject(userPackage);
 			SystemUtils.SaveUserInfo(userPackage.userId.ToString(), save);

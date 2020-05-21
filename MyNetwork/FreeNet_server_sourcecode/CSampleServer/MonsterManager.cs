@@ -35,7 +35,6 @@ namespace CSampleServer
             // 몬스터 AI 데이터 로드.
             jObj = SystemUtils.LoadJson(Program.monsterAiInfoJsonPath);
             monsterAiDatas = jObj.ToObject<MonsterAiDatas>();
-            
 
             Program.Tick += Tick;
         }
@@ -92,8 +91,6 @@ namespace CSampleServer
             
             var spawnData = monsterSpawnDatas.datas.Find(p => p.SpawnId == spawnId);
             spawnData.currentSpawnCount += 1;
-
-            Program.gameServer.userList.Add(instance);
         }
 
         public void RemoveMonster(CMonster instance)
@@ -107,8 +104,6 @@ namespace CSampleServer
                 var spawnData = monsterSpawnDatas.datas.Find(p => p.SpawnId == data);
                 spawnData.currentSpawnCount -= 1;
             }
-
-            Program.gameServer.userList.Remove(instance);
             
             instance = null;
         }

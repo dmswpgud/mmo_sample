@@ -21,6 +21,8 @@ public partial class CNetworkManager : MonoBehaviour {
     public MonoBehaviour message_receiver;
 
     private Action<ResponseData, ERROR> OnNetworkCallback;
+    private Action<ResponseData, ResponseData, ERROR> OnNetworkCallback2;
+    private Action<ResponseData, ResponseData, ResponseData, ERROR> OnNetworkCallback3;
     private Action<ResponseData, ERROR> OnDisconnectedPlayer;
     private Action<ResponseData, ERROR> OnMovePlayer;
 
@@ -192,6 +194,13 @@ public partial class CNetworkManager : MonoBehaviour {
                 statePackage.receiverPlayerHpMp = new HpMp(msg);
 
                 OnReceivedOtherPlayerChangedState?.Invoke(statePackage, ERROR.NONE);
+                break;
+            }
+            case PROTOCOL.PICKING_ITEM_RES:
+            {
+                var stateData = new PlayerStateData(msg);
+                var itemInfo = new ItemInfo(msg);
+                OnNetworkCallback2?.Invoke(stateData, itemInfo, ERROR.NONE);
                 break;
             }
         }

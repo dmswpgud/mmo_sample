@@ -102,4 +102,22 @@ public partial class GameManager
             receiverPlayer?.SetStateData(data.receiverPlayerData);    
         }
     }
+    
+    private void OnResponsePickingItem(ResponseData res1, ResponseData res2, ERROR error)
+    {
+        if (error != ERROR.NONE)
+        {
+            PrintSystemLog(error.ToString());
+            return;
+        }
+        
+        var stateData = (PlayerStateData) res1;
+        var itemData = (ItemInfo) res2;
+        
+        var player = GetPlayerByUserId(stateData.playerId);
+
+        player.SetStateData(stateData);
+
+        Debug.Log($"{itemData.itemName} {itemData.count}을 얻었습니다");
+    }
 }

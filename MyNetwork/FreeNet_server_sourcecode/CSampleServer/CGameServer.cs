@@ -7,7 +7,7 @@ namespace CSampleServer
 {
     public class CGameServer
     {
-        public List<CUnit> userList = new List<CUnit>();
+        public List<CUnit> _listUnit = new List<CUnit>();
 
         public void Initialized()
         {
@@ -21,7 +21,7 @@ namespace CSampleServer
 
         public bool ExistsUser(int userId)
         {
-            return userList.Exists(user => user.playerData.playerId == userId);
+            return _listUnit.Exists(user => user.UnitData.playerId == userId);
         }
 
         // 서버 접속.
@@ -37,11 +37,11 @@ namespace CSampleServer
         {
             lock (unit)
             {
-                foreach (var otherUser in userList)
+                foreach (var otherUser in _listUnit)
                 {
                     CPacket response = CPacket.create((short)PROTOCOL.DISCONECTED_PLAYER_RES);
-                    response.push(unit.playerData.playerId);
-                    otherUser?.owner?.send(response);
+                    response.push(unit.UnitData.playerId);
+                    otherUser?.Owner?.send(response);
                 }
             }
         }
@@ -49,12 +49,12 @@ namespace CSampleServer
         // 다른 유저에게 채팅 보내기
         public void SendChatMessage(CGameUser owner, string text)
         {
-            foreach (var user in userList)
+            foreach (var user in _listUnit)
             {
                 CPacket response = CPacket.create((short)PROTOCOL.CHAT_MSG_ACK);
-                response.push(owner.player.playerData.playerId);
+                response.push(owner.player.UnitData.playerId);
                 response.push(text);
-                user?.owner?.send(response);
+                user?.Owner?.send(response);
             }
         }
 
@@ -68,7 +68,7 @@ namespace CSampleServer
             // 월드에 유닛 추가.
             PlayerManager.I.AddPlayer(playerInstance);
             // 포지션 셋팅.
-            playerInstance.SetPosition(playerInstance.stateData.posX, playerInstance.stateData.posY, playerInstance.stateData.direction);
+            playerInstance.SetPosition(playerInstance.StateData.posX, playerInstance.StateData.posY, playerInstance.StateData.direction);
             
             // 통신.
             CPacket response = CPacket.create((short)PROTOCOL.GET_MY_PLAYER_RES);
@@ -76,14 +76,14 @@ namespace CSampleServer
             var list = MapManager.I.GetAllOtherUnit(user.player);
             var count = list.Count + 1;
             response.push(count);
-            user.player.playerData.PushData(response);
-            user.player.stateData.PushData(response);
+            user.player.UnitData.PushData(response);
+            user.player.StateData.PushData(response);
             user.player.HpMp.PushData(response);
             
             foreach (var unit in user.player.prevNearUnits)
             {
-                unit.playerData.PushData(response);
-                unit.stateData.PushData(response);
+                unit.UnitData.PushData(response);
+                unit.StateData.PushData(response);
                 unit.HpMp.PushData(response);
             }
 
@@ -94,7 +94,7 @@ namespace CSampleServer
                 otherUnit.ResponseAddNearUnit(new List<CUnit>(){user.player});
             }
             
-            Program.PrintLog($"{user.player.playerData.playerId} 케릭 생성.");
+            Program.PrintLog($"{user.player.UnitData.playerId} 케릭 생성.");
         }
         
         // 여러명에게 보내기.
@@ -102,7 +102,7 @@ namespace CSampleServer
         {
             foreach (var user in listUsers)
             {
-                user?.owner?.send(response);
+                user?.Owner?.send(response);
             }
         }
     }

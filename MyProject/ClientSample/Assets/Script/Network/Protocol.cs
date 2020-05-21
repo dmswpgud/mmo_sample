@@ -11,12 +11,12 @@ namespace GameServer
 
     public enum UnitType
     {
-        PLAYER, MONSTER, MAP_OBJECT 
+        PLAYER, MONSTER, ITEM 
     }
 
     public enum PlayerState
     {
-        IDLE, WARK, ATTACK, DAMAGE, CHANGED_DIRECTION, DEATH,
+        IDLE, WARK, ATTACK, DAMAGE, CHANGED_DIRECTION, DEATH, PICKED_ITEM,
         
         // 몬스터 상태값.
         DASH_TO_TARGET,        
@@ -24,7 +24,7 @@ namespace GameServer
 
     public enum ItemType
     {
-        WEAPONE, ARMOR, POTION
+        WEAPONE, HELMET, INNER, ARMOR, CLOAK, GLOBE, SHIELD, BOOTS, RING1, RING2, NECKLACE, BELT, POTION
     }
 
     public enum MonsterState
@@ -64,7 +64,8 @@ namespace GameServer
         PLAYER_RESET_REQ,
         PLAYER_RESET_RES,
 
-        MONSTER_SPONE_RES,
+        PICKING_ITEM_REQ,
+        PICKING_ITEM_RES,
 
         END
     }
@@ -299,7 +300,7 @@ public class ItemInfoPackage : ResponseData
 [Serializable]
 public class ItemInfo : ResponseData
 {
-    public int dataId;
+    public int uniqueId;
     public int tableId;
     public string itemName;
     public byte itemType;
@@ -314,4 +315,43 @@ public class ItemInfo : ResponseData
     public byte consume_type; // 소비형태
     public int count;
     public byte stackable; // 0 중첩 불가 / 1 중첩 가능
+    
+    public ItemInfo() {}
+    
+    public ItemInfo(CPacket msg)
+    {
+        uniqueId = msg.pop_int32();
+        tableId = msg.pop_int32();
+        itemName = msg.pop_string();
+        itemType = msg.pop_byte();
+        price = msg.pop_int32();
+        sellPrice = msg.pop_int32();
+        material = msg.pop_byte();
+        damage = msg.pop_int32();
+        hitmodifier = msg.pop_int32();
+        ac = msg.pop_int32();
+        useX = msg.pop_byte();
+        safenchant = msg.pop_byte();
+        consume_type = msg.pop_byte();
+        count = msg.pop_int16();
+        stackable = msg.pop_byte();
+    }
+    public void PushData(CPacket response)
+    {
+        response.push(uniqueId);
+        response.push(tableId);
+        response.push(itemName);
+        response.push(itemType);
+        response.push(price);
+        response.push(sellPrice);
+        response.push(material);
+        response.push(damage);
+        response.push(hitmodifier);
+        response.push(ac);
+        response.push(useX);
+        response.push(safenchant);
+        response.push(consume_type);
+        response.push(count);
+        response.push(stackable);
+    }
 }

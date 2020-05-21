@@ -120,7 +120,7 @@ public partial class GameManager : MonoBehaviour
                 moster.gameObject.name = $"Monster-{data.data.name}-{data.data.playerId}";
                 listUnit.Add(moster);
                 break;
-            case UnitType.MAP_OBJECT:
+            case UnitType.ITEM:
                 var cube = CreateItem(data, ObjectPrefab);
                 cube.gameObject.name = $"cube-{data.data.name}-{data.data.playerId}";
                 listUnit.Add(cube);

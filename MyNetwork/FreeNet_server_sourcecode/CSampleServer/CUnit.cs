@@ -7,37 +7,52 @@ namespace CSampleServer
     [Serializable]
     public abstract class CUnit
     {
-        public CGameUser owner { get; set; }
-        public PlayerData playerData { get; set; }
-        public PlayerStateData stateData { set; get; }
+        public CGameUser Owner { get; }
+        public PlayerData UnitData { get; set; }
+        public PlayerStateData StateData { set; get; }
         public HpMp HpMp { get; set; }
+        public int NearRange => 5;
+        public int UNIQUE_ID => UnitData.playerId;
+        public PlayerState STATE => (PlayerState)StateData.state;
+        public UnitType TYPE => (UnitType) UnitData.unitType;
+        public int X => StateData.posX;
+        public int Y => StateData.posY;
+        
         public List<CUnit> prevNearUnits = new List<CUnit>();
-        public int NearRange = 5;
-        public PlayerState STATE => (PlayerState)stateData.state;
         public CUnit targetUnit { get; set; }
         
         public CUnit() {}
 
         public CUnit(CGameUser user, PlayerDataPackage userPack)
         {
-            owner = user;
-            playerData = userPack.data;
-            stateData = userPack.state;
+            Initialized();
+            Owner = user;
+            UnitData = userPack.data;
+            StateData = userPack.state;
             HpMp = userPack.hpMp;
         }
 
         public CUnit(PlayerDataPackage userPack)
         {
-            playerData = userPack.data;
-            stateData = userPack.state;
+            Initialized();
+            UnitData = userPack.data;
+            StateData = userPack.state;
             HpMp = userPack.hpMp;
         }
 
-        public bool IsPlayer() => playerData.unitType == (byte) UnitType.PLAYER;
+        protected void Initialized()
+        {
+            if (Program.gameServer._listUnit.Contains(this))
+                return;
+            
+            Program.gameServer._listUnit.Add(this);
+        }
+
+        public bool IsPlayer() => UnitData.unitType == (byte) UnitType.PLAYER;
         
         public List<CUnit> GetNearRangeUnit()
         {
-            var list = MapManager.I.GetAllUnitByNearRange(stateData.posX, stateData.posY, NearRange);
+            var list = MapManager.I.GetAllUnitByNearRange(StateData.posX, StateData.posY, NearRange);
 
             if (list.Contains(this))
             {
@@ -47,9 +62,10 @@ namespace CSampleServer
             return list; 
         }
 
-        public virtual void DesconnectedWorld()
+        public virtual void DisconnectedWorld()
         {
             MapManager.I.RemoveUnitTile(this);    // 맵에서 유닛 삭제.
+            Program.gameServer._listUnit.Remove(this);
             Program.gameServer.DisconnectedUnit(this); //
         }
 
@@ -57,7 +73,6 @@ namespace CSampleServer
         public abstract void RequestPlayerMove();
         public abstract void ResponseAddNearUnit(List<CUnit> units);
         public abstract void SetPosition(int x, int y, int dir);
-        public abstract void RequestPlayerState(int receiveUserId);
         public abstract void Dead(CUnit attacker);
     }
 }

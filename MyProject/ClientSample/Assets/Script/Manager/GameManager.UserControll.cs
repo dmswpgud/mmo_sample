@@ -43,6 +43,15 @@ public partial class GameManager
         {
             StopAutoAttack = true;
         }
+
+        if (InputKey.InputToggle)
+        {
+            var pickingItem = FindNearItem(myPlayer.X, myPlayer.Y);
+            if (pickingItem == null)
+                return;
+            
+            CNetworkManager.Inst.RequestPickingItem(pickingItem.ID, OnResponsePickingItem);
+        }
     }
     
     public void Attack()

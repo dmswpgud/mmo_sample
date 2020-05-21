@@ -30,6 +30,9 @@ public class PlayerAnimationController : MonoBehaviour
             case PlayerState.WARK:
                 animator.Play("ShieldWarrior@Walk01");
                 break;
+            case PlayerState.PICKED_ITEM:
+                animator.Play("ShieldWarrior@Block01");
+                break;
             case PlayerState.ATTACK:
                 animator.Play("ShieldWarrior@Attack01");
                 return;

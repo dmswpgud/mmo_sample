@@ -7,8 +7,8 @@ namespace CSampleServer
     public class MonsterAI
     {
         private CMonster owner;
-        private int unitId => owner.playerData.playerId;
-        private PlayerStateData state => owner.stateData;
+        private int unitId => owner.UnitData.playerId;
+        private PlayerStateData state => owner.StateData;
         private MonsterAiData MonsterAiData;
         private List<GridPoint> listPath = new List<GridPoint>();
         
@@ -72,7 +72,7 @@ namespace CSampleServer
             var allUnits = MapManager.I.GetAllUnitByNearRange(state.posX, state.posY, MonsterAiData.searchTargetRange);
 
             // 취득한 유닛들중 플레이어를 취득.
-            var targets = allUnits.FindAll(p => p.playerData.unitType == (byte) UnitType.PLAYER);
+            var targets = allUnits.FindAll(p => p.UnitData.unitType == (byte) UnitType.PLAYER);
             
             // 플레이어를 타겟으로 지정.
             //target = (CPlayer)targets[0];
@@ -114,8 +114,8 @@ namespace CSampleServer
 
         private void DashToTarget()
         {
-            int destX = owner.targetUnit.stateData.posX;
-            int destY = owner.targetUnit.stateData.posY;
+            int destX = owner.targetUnit.StateData.posX;
+            int destY = owner.targetUnit.StateData.posY;
             
             listPath = MapManager.I.FindPath(state.posX, state.posY, destX, destY);
 
@@ -135,8 +135,8 @@ namespace CSampleServer
             
             // 이동할 타일에 다른 유닛이 있으면 딜레이 후 다시 데쉬.. (유닛이 안겹침)
             var units = MapManager.I.GetUnits(listPath[0].X, listPath[0].Y);
-            if (units.Exists(p => p.playerData.unitType == (byte) UnitType.MONSTER ||
-                                  p.stateData.state != (byte) PlayerState.DEATH))
+            if (units.Exists(p => p.UnitData.unitType == (byte) UnitType.MONSTER ||
+                                  p.StateData.state != (byte) PlayerState.DEATH))
             {
                 owner.SetState(PlayerState.DASH_TO_TARGET);
                 BehaviorIntervalTime = 1;
@@ -169,9 +169,9 @@ namespace CSampleServer
                 return;
             }
 
-            var dir = MapManager.I.SetDirectionByPosition(state.posX, state.posY, owner.targetUnit.stateData.posX, owner.targetUnit.stateData.posY);
-            owner.stateData.direction = (byte)dir;
-            MonsterStateAttack(owner.targetUnit.playerData.playerId);
+            var dir = MapManager.I.SetDirectionByPosition(state.posX, state.posY, owner.targetUnit.StateData.posX, owner.targetUnit.StateData.posY);
+            owner.StateData.direction = (byte)dir;
+            MonsterStateAttack(owner.targetUnit.UnitData.playerId);
 
             BehaviorIntervalTime = 2;
         }
@@ -179,12 +179,12 @@ namespace CSampleServer
         private void MonsterStateAttack(int defenderUserId)
         {
             var attacker = owner;
-            var defender = owner.GetNearRangeUnit().Find(p => p.playerData.playerId == defenderUserId);
+            var defender = owner.GetNearRangeUnit().Find(p => p.UnitData.playerId == defenderUserId);
             CPacket response = CPacket.create((short)PROTOCOL.PLAYER_STATE_RES);
             
             if (defender == null)
             {
-                owner.stateData.PushData(response);
+                owner.StateData.PushData(response);
                 //defender?.player.stateData.PushData(response);
                 //defender.player.HpMp.PushData(response);
                 CGameServer.ResponseToUsers(attacker.GetNearRangeUnit(), response);
@@ -194,23 +194,23 @@ namespace CSampleServer
                 var defenderHp = GameUtils.DamageCalculator(attacker, defender);
                 var defenderState = defenderHp <= 0 ? PlayerState.DEATH : PlayerState.DAMAGE;
                 defender.targetUnit = attacker;
-                defender.stateData.state = (byte)defenderState;
+                defender.StateData.state = (byte)defenderState;
                 defender.HpMp.Hp = defenderHp;
 
-                Program.PrintLog($"[공격자 {attacker.playerData.name}] hm{attacker.HpMp.Hp}/{attacker.HpMp.Mp}  [피격자 {defender.playerData.name}] hm{defender.HpMp.Hp}/{defender.HpMp.Mp}");
+                Program.PrintLog($"[공격자 {attacker.UnitData.name}] hm{attacker.HpMp.Hp}/{attacker.HpMp.Mp}  [피격자 {defender.UnitData.name}] hm{defender.HpMp.Hp}/{defender.HpMp.Mp}");
                 
                 { // 공격 > 서버 > 공격
-                    attacker.stateData.PushData(response);
-                    defender.stateData.PushData(response);
+                    attacker.StateData.PushData(response);
+                    defender.StateData.PushData(response);
                     defender.HpMp.PushData(response);
-                    attacker.owner?.send(response);
+                    attacker.Owner?.send(response);
                 }
 
                 { // 공격 > 서버 > 피격자
-                    attacker.stateData.PushData(response);
-                    defender.stateData.PushData(response);
+                    attacker.StateData.PushData(response);
+                    defender.StateData.PushData(response);
                     defender.HpMp.PushData(response);
-                    defender.owner?.send(response);
+                    defender.Owner?.send(response);
 
                     if (defenderState == PlayerState.DEATH)
                     {
@@ -224,16 +224,16 @@ namespace CSampleServer
                     var broadcastUnits = MapManager.I.GetUnitFromUnits(attacker, defender);
                     foreach (var user in broadcastUnits)
                     {
-                        if (attacker.playerData.playerId == user.playerData.playerId)
+                        if (attacker.UnitData.playerId == user.UnitData.playerId)
                             continue;
 
-                        if (defender.playerData.playerId == user.playerData.playerId)
+                        if (defender.UnitData.playerId == user.UnitData.playerId)
                             continue;
                         
-                        attacker.stateData.PushData(response);
-                        defender.stateData.PushData(response);
+                        attacker.StateData.PushData(response);
+                        defender.StateData.PushData(response);
                         defender.HpMp.PushData(response);
-                        user.owner?.send(response);
+                        user.Owner?.send(response);
                     }
                 }
             }

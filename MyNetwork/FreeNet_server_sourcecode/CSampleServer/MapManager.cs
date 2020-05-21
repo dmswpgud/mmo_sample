@@ -184,8 +184,8 @@ namespace CSampleServer
         public List<CUnit> GetAllOtherUnit(CUnit unit)
         {
             var units = new List<CUnit>();
-            var currentX = unit.stateData.posX;
-            var currentY = unit.stateData.posY;
+            var currentX = unit.X;
+            var currentY = unit.Y;
             var nearRange = unit.NearRange;
             
             for (int x = currentX - nearRange; x <= currentX + nearRange; ++x)
@@ -198,7 +198,7 @@ namespace CSampleServer
                     if (mapInfos[x, y].stayUnit.Contains(unit))
                     {
                         var currentPosUnits = mapInfos[x, y].stayUnit
-                            .FindAll(p => p.playerData.playerId != unit.playerData.playerId);
+                            .FindAll(p => p.UnitData.playerId != unit.UnitData.playerId);
                         units.AddRange(currentPosUnits);
                         continue;
                     }
@@ -242,7 +242,7 @@ namespace CSampleServer
         
         public bool HasRangeInUnit(CUnit center, CUnit target, int centerRange)
         {
-            var targets = GetAllUnitByNearRange(center.stateData.posX, center.stateData.posY, centerRange);
+            var targets = GetAllUnitByNearRange(center.X, center.Y, centerRange);
 
             return targets.Contains(target);
         }
@@ -254,7 +254,7 @@ namespace CSampleServer
 
         public bool HasUnit(int x, int y, UnitType type)
         {
-            return mapInfos[x, y].stayUnit.Exists(p => p.playerData.unitType == (byte) type);
+            return mapInfos[x, y].stayUnit.Exists(p => p.UnitData.unitType == (byte) type);
         }
 
         public List<CUnit> GetUnits(int x, int y)

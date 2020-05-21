@@ -28,13 +28,11 @@ namespace CSampleServer
         public void AddPlayer(CPlayer instance)
         {
             listPlayer.Add(instance);
-            Program.gameServer.userList.Add(instance);
         }
 
         public void RemovePlayer(CPlayer instance)
         {
             listPlayer.Remove(instance);
-            Program.gameServer.userList.Remove(instance);
             instance = null;
         }
 

@@ -136,7 +136,7 @@ namespace CSampleServer
             var weapone = new ItemInfo
             {
                 tableId = 1,
-                dataId = 0,
+                uniqueId = 0,
                 itemName = "식칼",
                 ac = 0,
                 damage = 10,
@@ -151,7 +151,7 @@ namespace CSampleServer
             var armor = new ItemInfo
             {
                 tableId = 2,
-                dataId = 0,
+                uniqueId = 0,
                 itemName = "앞치마",
                 ac = 3,
                 damage = 0,
@@ -165,8 +165,8 @@ namespace CSampleServer
             
             var etc = new ItemInfo
             {
-                tableId = 2,
-                dataId = 0,
+                tableId = 3,
+                uniqueId = 0,
                 itemName = "박카스",
                 itemType = (byte)ItemType.POTION,
                 consume_type = 1,

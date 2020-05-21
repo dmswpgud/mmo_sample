@@ -19,7 +19,7 @@ namespace CSampleServer
         public CMonster(PlayerDataPackage userPack) : base(userPack)
         {
             //prevNearUnits = MapManager.I.GetAllOtherUnit(this);
-            SetPosition(stateData.posX, stateData.posY, stateData.direction);
+            SetPosition(StateData.posX, StateData.posY, StateData.direction);
 
             Program.Tick += Tick;
         }
@@ -31,7 +31,7 @@ namespace CSampleServer
 
         public void SetState(PlayerState state)
         {
-            base.stateData.state = (byte) state;
+            base.StateData.state = (byte) state;
         }
 
         void Tick()
@@ -45,9 +45,9 @@ namespace CSampleServer
         {
             prevNearUnits = MapManager.I.GetAllOtherUnit(this);
             
-            stateData.posX = (short)x;
-            stateData.posY = (short)y;
-            stateData.direction = (byte)dir;
+            StateData.posX = (short)x;
+            StateData.posY = (short)y;
+            StateData.direction = (byte)dir;
 
             MapManager.I.AddUnitTile(this, x, y);
         }
@@ -63,8 +63,8 @@ namespace CSampleServer
             foreach (var unit in nearUnits)
             {
                 response = CPacket.create((short)PROTOCOL.PLAYER_MOVE_RES);
-                stateData.PushData(response);
-                unit?.owner?.send(response);
+                StateData.PushData(response);
+                unit?.Owner?.send(response);
             }
         }
 
@@ -78,19 +78,15 @@ namespace CSampleServer
         {
         }
 
-        public override void RequestPlayerState(int receiveUserId)
-        {
-        }
-
         public override void Dead(CUnit attacker)
         {
             var resetTime = TimeManager.I.UtcTimeStampSeconds + resetSec;
 
             delayTime = resetTime;
 
-            OnDelayCall(DesconnectedWorld, delayTime);
+            OnDelayCall(DisconnectedWorld, delayTime);
 
-            ItemManager.I.CreateItem(1, stateData.posX, stateData.posY);
+            ItemManager.I.CreateItem(3, X, Y);
         }
 
         private void OnDelayCall(Action onCall, long delay)
@@ -108,9 +104,9 @@ namespace CSampleServer
         }
 
         // 접속 종료.
-        public override void DesconnectedWorld()
+        public override void DisconnectedWorld()
         {
-            base.DesconnectedWorld();
+            base.DisconnectedWorld();
 
             MonsterManager.I.RemoveMonster(this);
         }

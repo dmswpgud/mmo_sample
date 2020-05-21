@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Client.Game.Map;
+using GameServer;
 using UnityEngine;
 
 public partial class GameManager : MonoBehaviour
@@ -186,5 +187,24 @@ public partial class GameManager : MonoBehaviour
             return false;
             
         return true;
+    }
+
+    public ItemUnit FindNearItem(int posX, int posY)
+    {
+        var nearRangePoint = GetRangeGridPoint(new GridPoint(posX, posY), 1);
+        for (int i = 0; i < nearRangePoint.Count; ++i)
+        {
+            var canPickingItem = listUnit.Find(p =>
+                
+                p.X == nearRangePoint[i].X && p.Y == nearRangePoint[i].Y && 
+                p.DATA.unitType == (byte) UnitType.ITEM
+            );
+            
+            if (canPickingItem == null)
+                continue;
+            
+            return (ItemUnit)canPickingItem;
+        }
+        return null;
     }
 }

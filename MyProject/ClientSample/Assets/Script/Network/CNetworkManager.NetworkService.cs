@@ -64,6 +64,14 @@ public partial class CNetworkManager : MonoBehaviour
         OnNetworkCallback = onRes;
     }
 
+    public void RequestPickingItem(int serverId, Action<ResponseData, ResponseData, ERROR> onRes)
+    {
+        CPacket msg = CPacket.create((short)PROTOCOL.PICKING_ITEM_REQ);
+        msg.push(serverId);
+        send(msg);
+        OnNetworkCallback2 = onRes;
+    }
+
     public void RegisterDisconnectedServer(Action onRes)
     {
         OnReceivedDisconnectedServer = onRes;
