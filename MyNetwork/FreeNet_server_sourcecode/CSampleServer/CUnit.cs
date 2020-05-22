@@ -7,13 +7,14 @@ namespace CSampleServer
     [Serializable]
     public abstract class CUnit
     {
-        public CGameUser Owner { get; }
+        public CGameUser Owner { get; set; }
         public PlayerData UnitData { get; set; }
-        public PlayerStateData StateData { set; get; }
+        public PlayerStateData StateData { get; set; }
         public HpMp HpMp { get; set; }
         public int NearRange => 5;
         public int UNIQUE_ID => UnitData.playerId;
         public PlayerState STATE => (PlayerState)StateData.state;
+        public UnitDirection DIRECTION => (UnitDirection) StateData.direction;
         public UnitType TYPE => (UnitType) UnitData.unitType;
         public int X => StateData.posX;
         public int Y => StateData.posY;
@@ -23,21 +24,12 @@ namespace CSampleServer
         
         public CUnit() {}
 
-        public CUnit(CGameUser user, PlayerDataPackage userPack)
+        public CUnit(PlayerData data, PlayerStateData state, HpMp hpMp)
         {
             Initialized();
-            Owner = user;
-            UnitData = userPack.data;
-            StateData = userPack.state;
-            HpMp = userPack.hpMp;
-        }
-
-        public CUnit(PlayerDataPackage userPack)
-        {
-            Initialized();
-            UnitData = userPack.data;
-            StateData = userPack.state;
-            HpMp = userPack.hpMp;
+            UnitData = data;
+            StateData = state;
+            HpMp = hpMp;
         }
 
         protected void Initialized()
@@ -72,7 +64,7 @@ namespace CSampleServer
         public abstract void ResponseRemoveNearUnit(List<CUnit> units);
         public abstract void RequestPlayerMove();
         public abstract void ResponseAddNearUnit(List<CUnit> units);
-        public abstract void SetPosition(int x, int y, int dir);
+        public abstract void SetPosition(int x, int y, UnitDirection dir);
         public abstract void Dead(CUnit attacker);
     }
 }

@@ -62,13 +62,14 @@ namespace CSampleServer
         public void ResponseGetMyPlayer(CGameUser user)
         {
             // 유닛 생성
-            var playerInstance = new CPlayer(user, new PlayerDataPackage(user.userDataPackage.data, user.userDataPackage.state, user.userDataPackage.hpMp));
+            var playerInstance = new CPlayer(user.userDataPackage.data, user.userDataPackage.state, user.userDataPackage.hpMp);
+            playerInstance.Initialized(user);
             // 유닛을 유저에 등록.
             user.player = playerInstance;
             // 월드에 유닛 추가.
             PlayerManager.I.AddPlayer(playerInstance);
             // 포지션 셋팅.
-            playerInstance.SetPosition(playerInstance.StateData.posX, playerInstance.StateData.posY, playerInstance.StateData.direction);
+            playerInstance.SetPosition(playerInstance.StateData.posX, playerInstance.StateData.posY, playerInstance.DIRECTION);
             
             // 통신.
             CPacket response = CPacket.create((short)PROTOCOL.GET_MY_PLAYER_RES);

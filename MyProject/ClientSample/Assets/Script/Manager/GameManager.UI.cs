@@ -5,12 +5,10 @@ using UnityEngine;
 public partial class GameManager : MonoBehaviour
 {
     public LoginDialog LoginDialog;
-
     public ChatDialog ChatDialog;
-
     public AnnounceDialog AnnounceDialog;
-
     public TargetClicker TargetClicker;
+    public InventoryDialog _inventoryDialog;
     
     public void PrintSystemLog(string text)
     {

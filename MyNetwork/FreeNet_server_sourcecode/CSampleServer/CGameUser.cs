@@ -131,7 +131,7 @@ namespace CSampleServer
 						return;
 					}
 					// 뭐가 없으면 이동 허가. (포지션 셋팅 후 패킷 전송)
-					player.SetPosition(x, y, dir);
+					player.SetPosition(x, y, (UnitDirection)dir);
 					player.RequestPlayerMove();
 					break;
 				}
@@ -141,7 +141,7 @@ namespace CSampleServer
 					player.StateData = new PlayerStateData(msg);
 					var receiveUserId = msg.pop_int32();
 					player.PlayerStateAttack(receiveUserId);
-					Console.WriteLine($"[{player.UnitData.name}] -> [{receiveUserId}] 상태:{(PlayerState)player.StateData.state}");
+					Console.WriteLine($"[{player.UnitData.name}] -> [{receiveUserId}] 상태:{player.STATE}");
 					break;
 				}
 				// 아이템 줍기.

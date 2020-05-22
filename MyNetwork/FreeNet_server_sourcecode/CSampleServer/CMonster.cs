@@ -16,10 +16,10 @@ namespace CSampleServer
         private long delayTime;
         private Action OnAfterCall;
 
-        public CMonster(PlayerDataPackage userPack) : base(userPack)
+        public CMonster(PlayerData data, PlayerStateData state, HpMp hpMp) : base(data, state, hpMp)
         {
             //prevNearUnits = MapManager.I.GetAllOtherUnit(this);
-            SetPosition(StateData.posX, StateData.posY, StateData.direction);
+            SetPosition(X, Y, DIRECTION);
 
             Program.Tick += Tick;
         }
@@ -41,7 +41,7 @@ namespace CSampleServer
             MonsterAi?.Tick();
         }
 
-        public override void SetPosition(int x, int y, int dir)
+        public override void SetPosition(int x, int y, UnitDirection dir)
         {
             prevNearUnits = MapManager.I.GetAllOtherUnit(this);
             

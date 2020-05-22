@@ -7,11 +7,11 @@ namespace CSampleServer
 {
     public class CPlayer : CUnit
     {
-        public CPlayer(CGameUser owner, PlayerDataPackage user) : base(owner, user) { }
+        public CPlayer(PlayerData data, PlayerStateData state, HpMp hpMp) : base(data, state, hpMp) { }
         
         private PlayerItemService _itemService = new PlayerItemService();
 
-        public override void SetPosition(int x, int y, int dir)
+        public override void SetPosition(int x, int y, UnitDirection dir)
         {
             prevNearUnits = MapManager.I.GetAllOtherUnit(this);
             
@@ -20,6 +20,11 @@ namespace CSampleServer
             StateData.direction = (byte)dir;
 
             MapManager.I.AddUnitTile(this, x, y);
+        }
+
+        public void Initialized(CGameUser gameUser)
+        {
+            Owner = gameUser;
         }
 
         // 플레이어가 범위내에 있을 시 알리기.

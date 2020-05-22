@@ -71,7 +71,7 @@ namespace CSampleServer
                     monsterDataPack.state.posX = (short)spawnPosX;
                     monsterDataPack.state.posY = (short)spawnPosY;
                     
-                    var monsterInstance = new CMonster(monsterDataPack);
+                    var monsterInstance = new CMonster(monsterDataPack.data, monsterDataPack.state, monsterDataPack.hpMp);
                     var aiInfo = monsterAiDatas.datas.Find((p) => p.dataId == spawnData.MonsterId);
                     monsterInstance.SetAiInfo(aiInfo);
                     AddMonster(spawnData.SpawnId, monsterInstance);

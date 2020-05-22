@@ -5,33 +5,16 @@ namespace CSampleServer
 {
     public class CItem : CUnit
     {
-        public ItemInfo _itemInfo { get; }
-        
-        public CItem(ItemInfo itemInfo, int x, int y)
-        {
-            _itemInfo = itemInfo;
-            
-            var pack = new PlayerDataPackage();
-            var data = new PlayerData();
-            var state = new PlayerStateData();
-            var hpmp = new HpMp();
+        public ItemInfo _itemInfo { get; private set; }
 
-            data.playerId = itemInfo.uniqueId;
-            data.name = itemInfo.itemName;
-            data.unitType = (byte) UnitType.ITEM;
-            state.playerId = itemInfo.uniqueId;
-            state.unitType = (byte) UnitType.ITEM;
-            state.posX = (short)x;
-            state.posY = (short)y;
-            pack.data = data;
-            pack.state = state;
-            pack.hpMp = hpmp;
-            
-            UnitData = data;
-            StateData = state;
-            HpMp = new HpMp();
-            
-            SetPosition(StateData.posX, StateData.posY, StateData.direction);
+        public CItem(PlayerData data, PlayerStateData state, HpMp hpMp) : base(data, state, hpMp)
+        {
+            SetPosition(X, Y, DIRECTION);
+        }
+
+        public void SetItemInfo(ItemInfo info)
+        {
+            _itemInfo = info;
         }
         
         public override void ResponseRemoveNearUnit(List<CUnit> units)
@@ -46,7 +29,7 @@ namespace CSampleServer
         {
         }
 
-        public override void SetPosition(int x, int y, int dir)
+        public override void SetPosition(int x, int y, UnitDirection dir)
         {
             StateData.posX = (short)x;
             StateData.posY = (short)y;

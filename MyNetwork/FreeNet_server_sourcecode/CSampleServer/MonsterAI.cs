@@ -101,7 +101,7 @@ namespace CSampleServer
 
             var dir = MapManager.I.SetDirectionByPosition(state.posX, state.posY, (short) listPath[0].X, (short) listPath[0].Y);
             
-            owner.SetPosition((short)listPath[0].X, (short)listPath[0].Y, (int)dir);
+            owner.SetPosition((short)listPath[0].X, (short)listPath[0].Y, dir);
             
             state.state = (byte) PlayerState.WARK;
             
@@ -145,7 +145,7 @@ namespace CSampleServer
 
             var dir = MapManager.I.SetDirectionByPosition(state.posX, state.posY, (short) listPath[0].X, (short) listPath[0].Y);
             
-            owner.SetPosition((short)listPath[0].X, (short)listPath[0].Y, (int)dir);
+            owner.SetPosition((short)listPath[0].X, (short)listPath[0].Y, dir);
             
             state.state = (byte) PlayerState.DASH_TO_TARGET;
             

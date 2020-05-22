@@ -112,12 +112,14 @@ public partial class GameManager
         }
         
         var stateData = (PlayerStateData) res1;
-        var itemData = (ItemInfo) res2;
+        var itemInfo = (ItemInfo) res2;
         
         var player = GetPlayerByUserId(stateData.playerId);
 
         player.SetStateData(stateData);
 
-        Debug.Log($"{itemData.itemName} {itemData.count}을 얻었습니다");
+        AddItem(itemInfo);
+
+        Debug.Log($"{itemInfo.itemName} {itemInfo.count}을 얻었습니다");
     }
 }

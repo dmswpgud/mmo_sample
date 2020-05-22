@@ -52,6 +52,11 @@ public partial class GameManager
             
             CNetworkManager.Inst.RequestPickingItem(pickingItem.ID, OnResponsePickingItem);
         }
+
+        if (InputKey.InputInventory)
+        {
+            _inventoryDialog.OnInventory(_listItem);
+        }
     }
     
     public void Attack()
