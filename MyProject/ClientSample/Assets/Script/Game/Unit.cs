@@ -10,11 +10,11 @@ using DG.Tweening;
 /// </summary>
 public abstract class Unit : MonoBehaviour
 {
-    public PlayerData DATA { protected set; get; }
-    public PlayerStateData STATE { protected set; get; }
+    public UnitData DATA { protected set; get; }
+    public UnitStateData STATE { protected set; get; }
 
     [SerializeField] private int InspectorView_unitId;
-    public int ID => DATA.playerId;
+    public int ID => DATA.UniqueId;
     public int X => STATE.posX;
     public int Y => STATE.posY;
     public UnitDirection Direction => (UnitDirection)STATE.direction;
@@ -38,8 +38,8 @@ public abstract class Unit : MonoBehaviour
         Destroy(targetClicker.gameObject);
     }
 
-    public abstract void MovePlayerNextPosition(PlayerStateData stateData);
-    public abstract void SetStateData(PlayerStateData stateData);
+    public abstract void MovePlayerNextPosition(UnitStateData stateData);
+    public abstract void SetStateData(UnitStateData stateData);
     public abstract void SetHpMp(HpMp hpMp);
     public abstract void OnFinishedAnim(Action<PlayerState> onFinished);
 

@@ -60,17 +60,17 @@ namespace CSampleServer
         
         public static void MonsterDummyData()
         {
-            var data = new PlayerData
+            var data = new UnitData
             {
                 tableId = 1,
-                playerId = 0,
+                UniqueId = 0,
                 name = "오크",
                 unitType = (byte)UnitType.MONSTER,
                 moveSpeed = 1,
             };
-            var state = new PlayerStateData
+            var state = new UnitStateData
             {
-                playerId = 1,
+                UniqueId = 1,
                 direction = 0,
                 unitType = (byte)UnitType.MONSTER,
                 posX = 0,
@@ -91,17 +91,17 @@ namespace CSampleServer
             };
             
             //
-            var data2 = new PlayerData
+            var data2 = new UnitData
             {
                 tableId = 2,
-                playerId = 0,
+                UniqueId = 0,
                 name = "늑대인간",
                 unitType = (byte)UnitType.MONSTER,
                 moveSpeed = 1,
             };
-            var state2 = new PlayerStateData
+            var state2 = new UnitStateData
             {
-                playerId = 2,
+                UniqueId = 2,
                 direction = 0,
                 unitType = (byte)UnitType.MONSTER,
                 posX = 0,

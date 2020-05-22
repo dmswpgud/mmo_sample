@@ -133,9 +133,9 @@ public partial class GameManager
             CNetworkManager.Inst.RequestPlayerMove(path[0].X, path[0].Y, myPlayer.STATE.direction,
                 (res, error) =>
                 {
-                    var data = (PlayerStateData) res;
+                    var data = (UnitStateData) res;
 
-                    var resPlayer = listUnit.Find(resp => p.DATA.playerId == data.playerId);
+                    var resPlayer = listUnit.Find(resp => p.DATA.UniqueId == data.UniqueId);
 
                     if (resPlayer?.STATE.posX == data.posX && resPlayer?.STATE.posY == data.posY)
                     {

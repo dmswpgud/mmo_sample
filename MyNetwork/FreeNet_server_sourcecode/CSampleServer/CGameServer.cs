@@ -21,14 +21,14 @@ namespace CSampleServer
 
         public bool ExistsUser(int userId)
         {
-            return _listUnit.Exists(user => user.UnitData.playerId == userId);
+            return _listUnit.Exists(user => user.UnitData.UniqueId == userId);
         }
 
         // 서버 접속.
         public void UserEntedServer(CGameUser user)
         {
             CPacket response = CPacket.create((short)PROTOCOL.ENTER_GAME_ROOM_RES);
-            response.push(user.userDataPackage.data.playerId);
+            response.push(user.userDataPackage.data.UniqueId);
             user?.send(response);
         }
         
@@ -40,7 +40,7 @@ namespace CSampleServer
                 foreach (var otherUser in _listUnit)
                 {
                     CPacket response = CPacket.create((short)PROTOCOL.DISCONECTED_PLAYER_RES);
-                    response.push(unit.UnitData.playerId);
+                    response.push(unit.UnitData.UniqueId);
                     otherUser?.Owner?.send(response);
                 }
             }
@@ -52,7 +52,7 @@ namespace CSampleServer
             foreach (var user in _listUnit)
             {
                 CPacket response = CPacket.create((short)PROTOCOL.CHAT_MSG_ACK);
-                response.push(owner.player.UnitData.playerId);
+                response.push(owner.player.UnitData.UniqueId);
                 response.push(text);
                 user?.Owner?.send(response);
             }
@@ -95,7 +95,7 @@ namespace CSampleServer
                 otherUnit.ResponseAddNearUnit(new List<CUnit>(){user.player});
             }
             
-            Program.PrintLog($"{user.player.UnitData.playerId} 케릭 생성.");
+            Program.PrintLog($"{user.player.UnitData.UniqueId} 케릭 생성.");
         }
         
         // 여러명에게 보내기.

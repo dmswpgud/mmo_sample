@@ -7,7 +7,7 @@ namespace CSampleServer
     {
         public ItemInfo _itemInfo { get; private set; }
 
-        public CItem(PlayerData data, PlayerStateData state, HpMp hpMp) : base(data, state, hpMp)
+        public CItem(UnitData data, UnitStateData state, HpMp hpMp) : base(data, state, hpMp)
         {
             SetPosition(X, Y, DIRECTION);
         }

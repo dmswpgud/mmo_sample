@@ -94,14 +94,14 @@ public partial class GameManager : MonoBehaviour
         
         var data = (PlayerDataPackage) res;
         
-        if (listUnit.Exists(p => p.DATA.playerId == data.data.playerId))
+        if (listUnit.Exists(p => p.DATA.UniqueId == data.data.UniqueId))
             return;
 
         switch ((UnitType)data.data.unitType)
         {
             case UnitType.PLAYER:
                 var player = CreatePlayer(data, PlayerPrefab);
-                player.gameObject.name = $"Player-{data.data.name}-{data.data.playerId}";
+                player.gameObject.name = $"Player-{data.data.name}-{data.data.UniqueId}";
                 listUnit.Add(player);
 
                 if (player.ID == UserId)
@@ -117,12 +117,12 @@ public partial class GameManager : MonoBehaviour
                 break;
             case UnitType.MONSTER:
                 var moster = CreatePlayer(data, MonsterPrefab);
-                moster.gameObject.name = $"Monster-{data.data.name}-{data.data.playerId}";
+                moster.gameObject.name = $"Monster-{data.data.name}-{data.data.UniqueId}";
                 listUnit.Add(moster);
                 break;
             case UnitType.ITEM:
                 var cube = CreateItem(data, ObjectPrefab);
-                cube.gameObject.name = $"cube-{data.data.name}-{data.data.playerId}";
+                cube.gameObject.name = $"cube-{data.data.name}-{data.data.UniqueId}";
                 listUnit.Add(cube);
                 break;
         }
@@ -161,8 +161,8 @@ public partial class GameManager : MonoBehaviour
             return;
         }
         
-        var data = (PlayerData) res;
-        var player = listUnit.Find(p => p.DATA.playerId == data.playerId);
+        var data = (UnitData) res;
+        var player = listUnit.Find(p => p.DATA.UniqueId == data.UniqueId);
 
         // TODO: 먼가 중복으로 불려서 지운걸 또지우는듯한 에러가...
         RemoveUnitTile(player);

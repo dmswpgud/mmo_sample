@@ -74,7 +74,7 @@ namespace CSampleServer
 						return;
 					}
 					// 중복된 계정.
-					if (Program.gameServer._listUnit.Exists(p => p.UnitData.playerId == accountData.userId))
+					if (Program.gameServer._listUnit.Exists(p => p.UnitData.UniqueId == accountData.userId))
 					{
 						CPacket response = CPacket.create((short)PROTOCOL.ERROR);
                     	var errorCode = (short) ERROR.DUPLICATE_USERS;
@@ -138,7 +138,7 @@ namespace CSampleServer
 				// 플레이어가 상태를 보내옴.
 				case PROTOCOL.PLAYER_STATE_REQ:
 				{
-					player.StateData = new PlayerStateData(msg);
+					player.StateData = new UnitStateData(msg);
 					var receiveUserId = msg.pop_int32();
 					player.PlayerStateAttack(receiveUserId);
 					Console.WriteLine($"[{player.UnitData.name}] -> [{receiveUserId}] 상태:{player.STATE}");

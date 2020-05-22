@@ -70,6 +70,7 @@
      <Compile Include="Assets\FreeNet\CRemoteServerPeer.cs" />
      <Compile Include="Assets\Script\Game\GameUtils.cs" />
      <Compile Include="Assets\Script\Game\InputKey.cs" />
+     <Compile Include="Assets\Script\Game\ItemUnit.cs" />
      <Compile Include="Assets\Script\Game\Map.cs" />
      <Compile Include="Assets\Script\Game\MapMaker.cs" />
      <Compile Include="Assets\Script\Game\PathFinder.cs" />
@@ -77,9 +78,11 @@
      <Compile Include="Assets\Script\Game\PlayerAnimationController.cs" />
      <Compile Include="Assets\Script\Game\TileInfo.cs" />
      <Compile Include="Assets\Script\Game\Unit.cs" />
+     <Compile Include="Assets\Script\Manager\GameManager.Item.cs" />
      <Compile Include="Assets\Script\Manager\GameManager.Map.cs" />
      <Compile Include="Assets\Script\Manager\GameManager.Player.cs" />
      <Compile Include="Assets\Script\Manager\GameManager.UI.cs" />
+     <Compile Include="Assets\Script\Manager\GameManager.UserControll.cs" />
      <Compile Include="Assets\Script\Manager\GameManager.cs" />
      <Compile Include="Assets\Script\Network\CLogManager.cs" />
      <Compile Include="Assets\Script\Network\CNetworkManager.NetworkService.cs" />
@@ -88,7 +91,9 @@
      <Compile Include="Assets\Script\Network\Protocol.cs" />
      <Compile Include="Assets\Script\UI\AnnounceDialog.cs" />
      <Compile Include="Assets\Script\UI\ChatDialog.cs" />
+     <Compile Include="Assets\Script\UI\InventoryDialog.cs" />
      <Compile Include="Assets\Script\UI\LoginDialog.cs" />
+     <Compile Include="Assets\Script\UI\SlotWidget.cs" />
      <Compile Include="Assets\Script\UI\TargetClicker.cs" />
      <None Include="Assets\DOTween\readme.txt" />
  <Reference Include="Unity.Timeline.Editor">

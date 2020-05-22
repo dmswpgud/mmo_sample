@@ -26,7 +26,7 @@ public class Player : Unit
         animController.Set(model, animator);
     }
 
-    public void InitPlayer(PlayerData data, PlayerStateData state, HpMp hpMp)
+    public void InitPlayer(UnitData data, UnitStateData state, HpMp hpMp)
     {
         this.DATA = data;
         this.STATE = state;
@@ -35,7 +35,7 @@ public class Player : Unit
         SetPlayerAnim(UnitState);
     }
     
-    public override void SetStateData(PlayerStateData state)
+    public override void SetStateData(UnitStateData state)
     {
         SetPlayerAnim((PlayerState)state.state);
         base.SetDirection((UnitDirection) state.direction, 0.2f);
@@ -49,9 +49,9 @@ public class Player : Unit
         Dead();
     }
 
-    public override void MovePlayerNextPosition(PlayerStateData playerData = null)
+    public override void MovePlayerNextPosition(UnitStateData unitData = null)
     {
-        STATE = playerData;
+        STATE = unitData;
         nextTile = GameManager.Inst.GetTileInfo(STATE.posX, STATE.posY);
         SetDirection((UnitDirection)STATE.direction, DATA.moveSpeed / 4f);
     }

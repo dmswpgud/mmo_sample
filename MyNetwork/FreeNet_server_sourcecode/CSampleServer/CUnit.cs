@@ -8,11 +8,11 @@ namespace CSampleServer
     public abstract class CUnit
     {
         public CGameUser Owner { get; set; }
-        public PlayerData UnitData { get; set; }
-        public PlayerStateData StateData { get; set; }
+        public UnitData UnitData { get; set; }
+        public UnitStateData StateData { get; set; }
         public HpMp HpMp { get; set; }
         public int NearRange => 5;
-        public int UNIQUE_ID => UnitData.playerId;
+        public int UNIQUE_ID => UnitData.UniqueId;
         public PlayerState STATE => (PlayerState)StateData.state;
         public UnitDirection DIRECTION => (UnitDirection) StateData.direction;
         public UnitType TYPE => (UnitType) UnitData.unitType;
@@ -24,7 +24,7 @@ namespace CSampleServer
         
         public CUnit() {}
 
-        public CUnit(PlayerData data, PlayerStateData state, HpMp hpMp)
+        public CUnit(UnitData data, UnitStateData state, HpMp hpMp)
         {
             Initialized();
             UnitData = data;

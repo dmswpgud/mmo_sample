@@ -111,18 +111,18 @@ public class UserDataPackage : ResponseData
     public string account;
     public string password;
     public string name;
-    public PlayerData data;
-    public PlayerStateData state;
+    public UnitData data;
+    public UnitStateData state;
     public HpMp hpMp;
 }
 
 public class PlayerDataPackage : ResponseData
 {
-    public PlayerData data;
-    public PlayerStateData state;
+    public UnitData data;
+    public UnitStateData state;
     public HpMp hpMp;
     public PlayerDataPackage() {}
-    public PlayerDataPackage(PlayerData d, PlayerStateData s, HpMp h)
+    public PlayerDataPackage(UnitData d, UnitStateData s, HpMp h)
     {
         data = d;
         state = s;
@@ -133,8 +133,8 @@ public class PlayerDataPackage : ResponseData
 [Serializable]
 public class PlayerStatePackage : ResponseData
 {
-    public PlayerStateData senderPlayerData;
-    public PlayerStateData receiverPlayerData;
+    public UnitStateData SenderUnitData;
+    public UnitStateData ReceiverUnitData;
     public HpMp receiverPlayerHpMp;
 }
 
@@ -154,18 +154,18 @@ public class PlayerIdData : ResponseData
 }
 
 [Serializable]
-public class PlayerData : ResponseData
+public class UnitData : ResponseData
 {
     public int tableId;
-    public Int32 playerId;
+    public Int32 UniqueId;
     public string name;
     public byte unitType;
     public byte moveSpeed;
-        
-    public PlayerData(){}
-    public PlayerData(CPacket response)
+    
+    public UnitData(){}
+    public UnitData(CPacket response)
     {
-        playerId = response.pop_int32();
+        UniqueId = response.pop_int32();
         name = response.pop_string();
         unitType = response.pop_byte();
         moveSpeed = response.pop_byte();
@@ -173,7 +173,7 @@ public class PlayerData : ResponseData
         
     public void PushData(CPacket response)
     {
-        response.push(playerId);
+        response.push(UniqueId);
         response.push(name);
         response.push(unitType);
         response.push(moveSpeed);
@@ -181,19 +181,19 @@ public class PlayerData : ResponseData
 }
 
 [Serializable]
-public class PlayerStateData : ResponseData
+public class UnitStateData : ResponseData
 {
-    public Int32 playerId;
+    public Int32 UniqueId;
     public byte unitType;
     public byte state;
     public byte direction;
     public short posX;
     public short posY;
     
-    public PlayerStateData() {}
-    public PlayerStateData(CPacket msg)
+    public UnitStateData() {}
+    public UnitStateData(CPacket msg)
     {
-        playerId = msg.pop_int32();
+        UniqueId = msg.pop_int32();
         unitType = msg.pop_byte();
         state = msg.pop_byte();
         direction = msg.pop_byte();
@@ -203,7 +203,7 @@ public class PlayerStateData : ResponseData
 
     public void PushData(CPacket response)
     {
-        response.push(playerId);
+        response.push(UniqueId);
         response.push(unitType);
         response.push(state);
         response.push(direction);
@@ -260,7 +260,7 @@ public class UnitsDataPackate : ResponseData
 
 public class PlayerDataPackages : ResponseData
 {
-    public List<PlayerData> datas = new List<PlayerData>();
+    public List<UnitData> datas = new List<UnitData>();
 }
 
 [Serializable]

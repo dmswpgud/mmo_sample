@@ -36,14 +36,14 @@ public partial class GameManager
             return;
         }
         
-        var data = (PlayerData) res;
+        var data = (UnitData) res;
         DestroyUnit(data, ERROR.NONE);
-        PrintSystemLog($"{data.playerId}님이 서버를 종료했습니다.");
+        PrintSystemLog($"{data.UniqueId}님이 서버를 종료했습니다.");
     }
 
     public Unit GetPlayerByUserId(int id)
     {
-        return listUnit.Find(p => p.DATA.playerId == id);
+        return listUnit.Find(p => p.DATA.UniqueId == id);
     }
     
     private void ResponseMovePlayer(ResponseData res, ERROR error)
@@ -59,9 +59,9 @@ public partial class GameManager
         
         //DrawWall();
         
-        var data = (PlayerStateData) res;
+        var data = (UnitStateData) res;
         
-        var player = listUnit.Find(p => p.DATA.playerId == data.playerId);
+        var player = listUnit.Find(p => p.DATA.UniqueId == data.UniqueId);
         
         if (player?.STATE.posX == data.posX && player?.STATE.posY == data.posY)
         {
@@ -85,21 +85,21 @@ public partial class GameManager
         
         PlayerStatePackage data = (PlayerStatePackage) res;
 
-        var senderPlayer = GetPlayerByUserId(data.senderPlayerData.playerId);
-        var receiverPlayer = GetPlayerByUserId(data.receiverPlayerData.playerId);
+        var senderPlayer = GetPlayerByUserId(data.senderUnitData.UniqueId);
+        var receiverPlayer = GetPlayerByUserId(data.receiverUnitData.UniqueId);
 
         if (senderPlayer)
         {
-            senderPlayer.SetStateData(data.senderPlayerData);
+            senderPlayer.SetStateData(data.senderUnitData);
             senderPlayer.OnFinishedAnim((state) =>
             {
-                receiverPlayer?.SetStateData(data.receiverPlayerData);
+                receiverPlayer?.SetStateData(data.receiverUnitData);
                 receiverPlayer?.SetHpMp(data.receiverPlayerHpMp);
             });
         }
         else
         {
-            receiverPlayer?.SetStateData(data.receiverPlayerData);    
+            receiverPlayer?.SetStateData(data.receiverUnitData);    
         }
     }
     
@@ -111,10 +111,10 @@ public partial class GameManager
             return;
         }
         
-        var stateData = (PlayerStateData) res1;
+        var stateData = (UnitStateData) res1;
         var itemInfo = (ItemInfo) res2;
         
-        var player = GetPlayerByUserId(stateData.playerId);
+        var player = GetPlayerByUserId(stateData.UniqueId);
 
         player.SetStateData(stateData);
 

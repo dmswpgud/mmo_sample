@@ -20,7 +20,7 @@ public class TargetClicker : MonoBehaviour
         Unit = unit;
         TargetTrf = targetTransform;
         OnSetTargetUnit = onSetTarget;
-        txtName.text = unit.DATA.name + unit.DATA.playerId.ToString();
+        txtName.text = unit.DATA.name + unit.DATA.UniqueId.ToString();
         txtName.gameObject.SetActive(false);
     }
 

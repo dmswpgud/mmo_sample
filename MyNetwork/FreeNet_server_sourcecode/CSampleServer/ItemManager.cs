@@ -38,8 +38,8 @@ namespace CSampleServer
                 
                 var instance = InitializedObjectData(itemInfo);
 
-                var data = new PlayerData {playerId = instance.uniqueId, name = instance.itemName, unitType = (byte)UnitType.ITEM};
-                var state = new PlayerStateData {posX = (short)posX, posY = (short)posY};
+                var data = new UnitData {UniqueId = instance.uniqueId, name = instance.itemName, unitType = (byte)UnitType.ITEM};
+                var state = new UnitStateData {posX = (short)posX, posY = (short)posY};
                 var hpMp = new HpMp();
                 
                 var item = new CItem(data, state, hpMp);

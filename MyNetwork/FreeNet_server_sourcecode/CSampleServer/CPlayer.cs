@@ -7,7 +7,7 @@ namespace CSampleServer
 {
     public class CPlayer : CUnit
     {
-        public CPlayer(PlayerData data, PlayerStateData state, HpMp hpMp) : base(data, state, hpMp) { }
+        public CPlayer(UnitData data, UnitStateData state, HpMp hpMp) : base(data, state, hpMp) { }
         
         private PlayerItemService _itemService = new PlayerItemService();
 
@@ -96,7 +96,7 @@ namespace CSampleServer
         public void PlayerStateAttack(int defenderUserId)
         {
             var attacker = this;
-            var defender = GetNearRangeUnit().Find(p => p.UnitData.playerId == defenderUserId);
+            var defender = GetNearRangeUnit().Find(p => p.UnitData.UniqueId == defenderUserId);
             CPacket response = CPacket.create((short)PROTOCOL.PLAYER_STATE_RES);
             
             if (defender == null)

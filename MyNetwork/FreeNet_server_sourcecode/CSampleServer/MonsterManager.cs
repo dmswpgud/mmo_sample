@@ -113,17 +113,17 @@ namespace CSampleServer
             var uniqueId = Guid.NewGuid().GetHashCode();
             
             var monster = new PlayerDataPackage();
-            var monsterdata = new PlayerData();
-            var monsterState = new PlayerStateData();
+            var monsterdata = new UnitData();
+            var monsterState = new UnitStateData();
             var monsterHp = new HpMp();
 
-            monsterdata.playerId = uniqueId;
+            monsterdata.UniqueId = uniqueId;
             monsterdata.name = dataPack.data.name;
             monsterdata.moveSpeed = dataPack.data.moveSpeed;
             monsterdata.tableId = dataPack.data.tableId;
             monsterdata.unitType = dataPack.data.unitType;
 
-            monsterState.playerId = uniqueId;
+            monsterState.UniqueId = uniqueId;
             monsterState.direction = dataPack.state.direction;
             monsterState.state = dataPack.state.state;
             monsterState.posX = dataPack.state.posX;

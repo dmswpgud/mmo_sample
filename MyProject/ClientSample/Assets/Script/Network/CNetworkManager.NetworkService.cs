@@ -55,7 +55,7 @@ public partial class CNetworkManager : MonoBehaviour
         OnMovePlayer = onRes;
     }
     
-    public void RequestPlayerState(PlayerStateData stateData, Int32 receiverUserId, Action<ResponseData, ERROR> onRes)
+    public void RequestPlayerState(UnitStateData stateData, Int32 receiverUserId, Action<ResponseData, ERROR> onRes)
     {
         CPacket msg = CPacket.create((short)PROTOCOL.PLAYER_STATE_REQ);
         stateData.PushData(msg);

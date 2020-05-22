@@ -128,8 +128,8 @@ public partial class CNetworkManager : MonoBehaviour {
                 for (int i = 0; i < count; ++i)
                 {
                     var data = new PlayerDataPackage();
-                    data.data = new PlayerData(msg);
-                    data.state = new PlayerStateData(msg);
+                    data.data = new UnitData(msg);
+                    data.state = new UnitStateData(msg);
                     data.hpMp = new HpMp(msg);
                     unitPack.datas.Add(data);
                 }
@@ -139,15 +139,15 @@ public partial class CNetworkManager : MonoBehaviour {
             }
             case PROTOCOL.DISCONECTED_PLAYER_RES: // 다른 유저가 접속을 끊었다고 알려옴.
             {
-                PlayerData data = new PlayerData(msg);
+                UnitData data = new UnitData(msg);
                 OnDisconnectedPlayer?.Invoke(data, ERROR.NONE);
                 break;
             }
             case PROTOCOL.PLAYER_MOVE_RES: // 유닛의 이동 요청 후 이동 횄다고 알려옴.
             {
-                var data = new PlayerStateData(msg);
+                var data = new UnitStateData(msg);
 
-                if (GameManager.Inst.UserId == data.playerId)
+                if (GameManager.Inst.UserId == data.UniqueId)
                 {
                     OnMovePlayer?.Invoke(data, ERROR.NONE);
                 }
@@ -164,8 +164,8 @@ public partial class CNetworkManager : MonoBehaviour {
                 for (int i = 0; i < count; ++i)
                 {
                     var data = new PlayerDataPackage();
-                    data.data = new PlayerData(msg);
-                    data.state = new PlayerStateData(msg);
+                    data.data = new UnitData(msg);
+                    data.state = new UnitStateData(msg);
                     data.hpMp = new HpMp(msg);
                     unitPack.datas.Add(data);
                 }
@@ -179,7 +179,7 @@ public partial class CNetworkManager : MonoBehaviour {
                 var unitPack = new PlayerDataPackages();
                 for (int i = 0; i < count; ++i)
                 {
-                    var data = new PlayerData(msg);
+                    var data = new UnitData(msg);
                     unitPack.datas.Add(data);
                 }
                 OnReceivedRemoveNearPlayer?.Invoke(unitPack, ERROR.NONE);
@@ -189,8 +189,8 @@ public partial class CNetworkManager : MonoBehaviour {
             case PROTOCOL.PLAYER_STATE_RES: // 플레이어 상태값을 보내옴.
             {
                 var statePackage = new PlayerStatePackage();
-                statePackage.senderPlayerData = new PlayerStateData(msg);
-                statePackage.receiverPlayerData = new PlayerStateData(msg);
+                statePackage.senderUnitData = new UnitStateData(msg);
+                statePackage.receiverUnitData = new UnitStateData(msg);
                 statePackage.receiverPlayerHpMp = new HpMp(msg);
 
                 OnReceivedOtherPlayerChangedState?.Invoke(statePackage, ERROR.NONE);
@@ -198,7 +198,7 @@ public partial class CNetworkManager : MonoBehaviour {
             }
             case PROTOCOL.PICKING_ITEM_RES:
             {
-                var stateData = new PlayerStateData(msg);
+                var stateData = new UnitStateData(msg);
                 var itemInfo = new ItemInfo(msg);
                 OnNetworkCallback2?.Invoke(stateData, itemInfo, ERROR.NONE);
                 break;

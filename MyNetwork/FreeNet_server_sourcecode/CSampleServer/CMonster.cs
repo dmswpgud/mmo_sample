@@ -16,7 +16,7 @@ namespace CSampleServer
         private long delayTime;
         private Action OnAfterCall;
 
-        public CMonster(PlayerData data, PlayerStateData state, HpMp hpMp) : base(data, state, hpMp)
+        public CMonster(UnitData data, UnitStateData state, HpMp hpMp) : base(data, state, hpMp)
         {
             //prevNearUnits = MapManager.I.GetAllOtherUnit(this);
             SetPosition(X, Y, DIRECTION);

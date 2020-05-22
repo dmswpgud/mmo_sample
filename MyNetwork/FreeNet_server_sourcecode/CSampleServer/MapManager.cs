@@ -198,7 +198,7 @@ namespace CSampleServer
                     if (mapInfos[x, y].stayUnit.Contains(unit))
                     {
                         var currentPosUnits = mapInfos[x, y].stayUnit
-                            .FindAll(p => p.UnitData.playerId != unit.UnitData.playerId);
+                            .FindAll(p => p.UnitData.UniqueId != unit.UnitData.UniqueId);
                         units.AddRange(currentPosUnits);
                         continue;
                     }

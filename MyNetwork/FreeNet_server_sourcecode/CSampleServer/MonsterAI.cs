@@ -7,8 +7,8 @@ namespace CSampleServer
     public class MonsterAI
     {
         private CMonster owner;
-        private int unitId => owner.UnitData.playerId;
-        private PlayerStateData state => owner.StateData;
+        private int unitId => owner.UnitData.UniqueId;
+        private UnitStateData state => owner.StateData;
         private MonsterAiData MonsterAiData;
         private List<GridPoint> listPath = new List<GridPoint>();
         
@@ -171,7 +171,7 @@ namespace CSampleServer
 
             var dir = MapManager.I.SetDirectionByPosition(state.posX, state.posY, owner.targetUnit.StateData.posX, owner.targetUnit.StateData.posY);
             owner.StateData.direction = (byte)dir;
-            MonsterStateAttack(owner.targetUnit.UnitData.playerId);
+            MonsterStateAttack(owner.targetUnit.UnitData.UniqueId);
 
             BehaviorIntervalTime = 2;
         }
@@ -179,7 +179,7 @@ namespace CSampleServer
         private void MonsterStateAttack(int defenderUserId)
         {
             var attacker = owner;
-            var defender = owner.GetNearRangeUnit().Find(p => p.UnitData.playerId == defenderUserId);
+            var defender = owner.GetNearRangeUnit().Find(p => p.UnitData.UniqueId == defenderUserId);
             CPacket response = CPacket.create((short)PROTOCOL.PLAYER_STATE_RES);
             
             if (defender == null)
@@ -224,10 +224,10 @@ namespace CSampleServer
                     var broadcastUnits = MapManager.I.GetUnitFromUnits(attacker, defender);
                     foreach (var user in broadcastUnits)
                     {
-                        if (attacker.UnitData.playerId == user.UnitData.playerId)
+                        if (attacker.UnitData.UniqueId == user.UnitData.UniqueId)
                             continue;
 
-                        if (defender.UnitData.playerId == user.UnitData.playerId)
+                        if (defender.UnitData.UniqueId == user.UnitData.UniqueId)
                             continue;
                         
                         attacker.StateData.PushData(response);
