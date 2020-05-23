@@ -58,7 +58,7 @@
     <Compile Include="MonsterAI.cs" />
     <Compile Include="MonsterManager.cs" />
     <Compile Include="PathFinder.cs" />
-    <Compile Include="PlayerItemService.cs" />
+    <Compile Include="ItemService.cs" />
     <Compile Include="PlayerManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

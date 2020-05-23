@@ -128,8 +128,8 @@ namespace CSampleServer
             
             if (listPath.Count == 0)
             {
-                owner.targetUnit = null;
-                owner.SetState(PlayerState.IDLE);
+                //owner.targetUnit = null;
+                owner.SetState(PlayerState.DASH_TO_TARGET);
                 return;
             }
             

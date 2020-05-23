@@ -151,6 +151,13 @@ namespace CSampleServer
 					player.RequestPickedItem(pickedItemUniqueId);
 					break;
 				}
+				// 아이템 사용.
+				case PROTOCOL.USE_ITEM_REQ:
+				{
+					var itemId = msg.pop_int32();
+					player.RequestUseItem(itemId);
+					break;
+				}
 			}
 		}
 

@@ -127,7 +127,7 @@ public partial class CNetworkManager : MonoBehaviour {
                 var unitPack = new UnitsDataPackate();
                 for (int i = 0; i < count; ++i)
                 {
-                    var data = new PlayerDataPackage();
+                    var data = new UnitDataPackage();
                     data.data = new UnitData(msg);
                     data.state = new UnitStateData(msg);
                     data.hpMp = new HpMp(msg);
@@ -163,7 +163,7 @@ public partial class CNetworkManager : MonoBehaviour {
                 var unitPack = new UnitsDataPackate();
                 for (int i = 0; i < count; ++i)
                 {
-                    var data = new PlayerDataPackage();
+                    var data = new UnitDataPackage();
                     data.data = new UnitData(msg);
                     data.state = new UnitStateData(msg);
                     data.hpMp = new HpMp(msg);
@@ -188,7 +188,7 @@ public partial class CNetworkManager : MonoBehaviour {
             }
             case PROTOCOL.PLAYER_STATE_RES: // 플레이어 상태값을 보내옴.
             {
-                var statePackage = new PlayerStatePackage();
+                var statePackage = new UnitStatePackage();
                 statePackage.senderUnitData = new UnitStateData(msg);
                 statePackage.receiverUnitData = new UnitStateData(msg);
                 statePackage.receiverPlayerHpMp = new HpMp(msg);
@@ -201,6 +201,16 @@ public partial class CNetworkManager : MonoBehaviour {
                 var stateData = new UnitStateData(msg);
                 var itemInfo = new ItemInfo(msg);
                 OnNetworkCallback2?.Invoke(stateData, itemInfo, ERROR.NONE);
+                break;
+            }
+            case PROTOCOL.USE_ITEM_RES:
+            {
+                var itemInfo = new ItemInfo(msg);
+                var pack = new UnitDataPackage();
+                pack.data = new UnitData(msg);
+                pack.state = new UnitStateData(msg);
+                pack.hpMp = new HpMp(msg);
+                OnNetworkCallback2?.Invoke(itemInfo, pack, ERROR.NONE);
                 break;
             }
         }

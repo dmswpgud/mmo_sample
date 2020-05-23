@@ -7,9 +7,12 @@ namespace CSampleServer
 {
     public class CPlayer : CUnit
     {
-        public CPlayer(UnitData data, UnitStateData state, HpMp hpMp) : base(data, state, hpMp) { }
+        private ItemService _itemService;
         
-        private PlayerItemService _itemService = new PlayerItemService();
+        public CPlayer(UnitData data, UnitStateData state, HpMp hpMp) : base(data, state, hpMp)
+        {
+            _itemService = new ItemService(this);
+        }
 
         public override void SetPosition(int x, int y, UnitDirection dir)
         {
@@ -173,6 +176,22 @@ namespace CSampleServer
                 }
                 
                 itemInstance.DisconnectedWorld();
+            }
+        }
+        
+        // 아이템 사용.
+        public void RequestUseItem(int itemId)
+        {
+            _itemService.UseItem(itemId);
+        }
+
+        public override void RecoveryHp(int recovery)
+        {
+            HpMp.Hp += recovery;
+
+            if (HpMp.MaxHp < HpMp.Hp)
+            {
+                HpMp.Hp = HpMp.MaxHp;
             }
         }
 

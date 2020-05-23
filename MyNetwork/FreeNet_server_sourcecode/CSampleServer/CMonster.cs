@@ -51,7 +51,11 @@ namespace CSampleServer
 
             MapManager.I.AddUnitTile(this, x, y);
         }
-        
+
+        public override void RecoveryHp(int recovery)
+        {
+        }
+
         public override void RequestPlayerMove()
         {
             // 이동한 플레이어에게 서버에 이동한거 등록했다고 답장

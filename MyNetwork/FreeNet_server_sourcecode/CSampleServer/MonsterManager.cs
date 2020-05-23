@@ -108,11 +108,11 @@ namespace CSampleServer
             instance = null;
         }
 
-        public PlayerDataPackage CopyMonsterDataPack(PlayerDataPackage dataPack)
+        public UnitDataPackage CopyMonsterDataPack(UnitDataPackage dataPack)
         {
             var uniqueId = Guid.NewGuid().GetHashCode();
             
-            var monster = new PlayerDataPackage();
+            var monster = new UnitDataPackage();
             var monsterdata = new UnitData();
             var monsterState = new UnitStateData();
             var monsterHp = new HpMp();

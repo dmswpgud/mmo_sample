@@ -38,6 +38,10 @@ namespace CSampleServer
             MapManager.I.AddUnitTile(this, x, y);
         }
 
+        public override void RecoveryHp(int recovery)
+        {
+        }
+
         public override void Dead(CUnit attacker)
         {
         }

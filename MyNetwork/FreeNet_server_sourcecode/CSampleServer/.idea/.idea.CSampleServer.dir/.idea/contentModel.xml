@@ -8,15 +8,23 @@
       <e p="bin" t="ExcludeRecursive" />
       <e p="CGameServer.cs" t="Include" />
       <e p="CGameUser.cs" t="Include" />
+      <e p="CItem.cs" t="Include" />
       <e p="CMonster.cs" t="Include" />
       <e p="CPlayer.cs" t="Include" />
       <e p="CSampleServer.csproj" t="IncludeRecursive" />
       <e p="CUnit.cs" t="Include" />
+      <e p="DummyUtils.cs" t="Include" />
       <e p="GameUtils.cs" t="Include" />
+      <e p="ItemManager.cs" t="Include" />
+      <e p="ItemService.cs" t="Include" />
       <e p="MapManager.cs" t="Include" />
+      <e p="MonsterAI.cs" t="Include" />
+      <e p="MonsterManager.cs" t="Include" />
       <e p="obj" t="ExcludeRecursive" />
       <e p="packages" t="ExcludeRecursive" />
       <e p="packages.config" t="Include" />
+      <e p="PathFinder.cs" t="Include" />
+      <e p="PlayerManager.cs" t="Include" />
       <e p="Program.cs" t="Include" />
       <e p="Properties" t="Include">
         <e p="AssemblyInfo.cs" t="Include" />

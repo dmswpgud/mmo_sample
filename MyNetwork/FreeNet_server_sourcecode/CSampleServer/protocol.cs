@@ -66,6 +66,9 @@ namespace GameServer
 
         PICKING_ITEM_REQ,
         PICKING_ITEM_RES,
+        
+        USE_ITEM_REQ,
+        USE_ITEM_RES,
 
         END
     }
@@ -116,13 +119,13 @@ public class UserDataPackage : ResponseData
     public HpMp hpMp;
 }
 
-public class PlayerDataPackage : ResponseData
+public class UnitDataPackage : ResponseData
 {
     public UnitData data;
     public UnitStateData state;
     public HpMp hpMp;
-    public PlayerDataPackage() {}
-    public PlayerDataPackage(UnitData d, UnitStateData s, HpMp h)
+    public UnitDataPackage() {}
+    public UnitDataPackage(UnitData d, UnitStateData s, HpMp h)
     {
         data = d;
         state = s;
@@ -131,10 +134,10 @@ public class PlayerDataPackage : ResponseData
 }
 
 [Serializable]
-public class PlayerStatePackage : ResponseData
+public class UnitStatePackage : ResponseData
 {
-    public UnitStateData SenderUnitData;
-    public UnitStateData ReceiverUnitData;
+    public UnitStateData senderUnitData;
+    public UnitStateData receiverUnitData;
     public HpMp receiverPlayerHpMp;
 }
 
@@ -161,7 +164,7 @@ public class UnitData : ResponseData
     public string name;
     public byte unitType;
     public byte moveSpeed;
-    
+        
     public UnitData(){}
     public UnitData(CPacket response)
     {
@@ -245,7 +248,7 @@ public class HpMp : ResponseData
 
 public class UnitInfosPackage : ResponseData
 {
-    public List<PlayerDataPackage> datas = new List<PlayerDataPackage>();
+    public List<UnitDataPackage> datas = new List<UnitDataPackage>();
 }
 
 public class MonsterSpawnDatas : ResponseData
@@ -255,7 +258,7 @@ public class MonsterSpawnDatas : ResponseData
 
 public class UnitsDataPackate : ResponseData
 {
-    public List<PlayerDataPackage> datas = new List<PlayerDataPackage>();
+    public List<UnitDataPackage> datas = new List<UnitDataPackage>();
 }
 
 public class PlayerDataPackages : ResponseData

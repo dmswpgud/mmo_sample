@@ -18,7 +18,7 @@ public partial class GameManager
         TargetUnit = target;
     }
 
-    private Player CreatePlayer(PlayerDataPackage data, GameObject model)
+    private Player CreatePlayer(UnitDataPackage data, GameObject model)
     {
         GameObject ins = Instantiate(model);
         var player = ins.GetComponent<Player>();
@@ -83,7 +83,7 @@ public partial class GameManager
             return;
         }
         
-        PlayerStatePackage data = (PlayerStatePackage) res;
+        UnitStatePackage data = (UnitStatePackage) res;
 
         var senderPlayer = GetPlayerByUserId(data.senderUnitData.UniqueId);
         var receiverPlayer = GetPlayerByUserId(data.receiverUnitData.UniqueId);

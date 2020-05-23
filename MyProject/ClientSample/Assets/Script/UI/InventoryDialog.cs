@@ -28,14 +28,14 @@ public class InventoryDialog : MonoBehaviour
         }
         
         _listItem = items;
-        MakeItemSlot();
+        UpdateItems(items);
     }
 
-    private void MakeItemSlot()
+    public void UpdateItems(List<ItemInfo> items)
     {
         for (int i = 0; i < _listItem.Count; ++i)
         {
-            _listSlotWidget[i].SetData(_listItem[i]);
+            _listSlotWidget[i].SetData(_listItem[i], p => GameManager.Inst.RequestUseItem(p));
 ;        }
     }
 

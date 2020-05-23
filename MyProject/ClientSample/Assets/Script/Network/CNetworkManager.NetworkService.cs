@@ -71,6 +71,14 @@ public partial class CNetworkManager : MonoBehaviour
         send(msg);
         OnNetworkCallback2 = onRes;
     }
+    
+    public void RequestUseItem(int itemId, Action<ResponseData, ResponseData, ERROR> onRes)
+    {
+            CPacket msg = CPacket.create((short)PROTOCOL.USE_ITEM_REQ);
+            msg.push(itemId);
+            send(msg);
+            OnNetworkCallback2 = onRes;
+    }
 
     public void RegisterDisconnectedServer(Action onRes)
     {

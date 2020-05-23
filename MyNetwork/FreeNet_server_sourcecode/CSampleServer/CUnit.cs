@@ -65,6 +65,7 @@ namespace CSampleServer
         public abstract void RequestPlayerMove();
         public abstract void ResponseAddNearUnit(List<CUnit> units);
         public abstract void SetPosition(int x, int y, UnitDirection dir);
+        public abstract void RecoveryHp(int recovery);
         public abstract void Dead(CUnit attacker);
     }
 }

@@ -92,7 +92,7 @@ public partial class GameManager : MonoBehaviour
             return;
         }
         
-        var data = (PlayerDataPackage) res;
+        var data = (UnitDataPackage) res;
         
         if (listUnit.Exists(p => p.DATA.UniqueId == data.data.UniqueId))
             return;
@@ -128,7 +128,7 @@ public partial class GameManager : MonoBehaviour
         }
     }
 
-    private ItemUnit CreateItem(PlayerDataPackage data, GameObject model)
+    private ItemUnit CreateItem(UnitDataPackage data, GameObject model)
     {
         GameObject ins = Instantiate(model);
         var item = ins.GetComponent<ItemUnit>();

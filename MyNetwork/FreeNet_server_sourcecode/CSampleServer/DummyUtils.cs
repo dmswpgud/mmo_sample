@@ -83,7 +83,7 @@ namespace CSampleServer
                 Hp = 50,
                 Mp = 10,
             };
-            var dataPack = new PlayerDataPackage()
+            var dataPack = new UnitDataPackage()
             {
                 data = data,
                 state = state,
@@ -114,7 +114,7 @@ namespace CSampleServer
                 Hp = 80,
                 Mp = 10,
             };
-            var dataPack2 = new PlayerDataPackage()
+            var dataPack2 = new UnitDataPackage()
             {
                 data = data2,
                 state = state2,
